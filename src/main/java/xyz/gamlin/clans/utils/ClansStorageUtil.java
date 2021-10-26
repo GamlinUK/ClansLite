@@ -99,7 +99,6 @@ public class ClansStorageUtil {
     public static boolean updatePrefix(Player player, String newPrefix) {
         Clan playerClan = findClanByOwner(player);
         if (playerClan != null) {
-            System.out.println("Hello!!");
             playerClan.setClanPrefix(newPrefix);
             try {
                 saveClans();
@@ -121,7 +120,6 @@ public class ClansStorageUtil {
         gson.toJson(clans, writer);
         writer.flush();
         writer.close();
-        System.out.println("Clans data updated.");
     }
 
     public static ArrayList<Clan> getClansRaw() {
@@ -156,7 +154,6 @@ public class ClansStorageUtil {
             Reader reader = new FileReader(file);
             Clan[] n = gson.fromJson(reader, Clan[].class);
             clans = new ArrayList<>(Arrays.asList(n));
-            System.out.println("Clan data loaded");
         }
 
     }
