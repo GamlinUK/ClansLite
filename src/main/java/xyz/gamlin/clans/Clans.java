@@ -1,32 +1,23 @@
 package xyz.gamlin.clans;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bstats.bukkit.Metrics;
 import xyz.gamlin.clans.commands.ClanAdmin;
 import xyz.gamlin.clans.commands.ClanCommand;
 import xyz.gamlin.clans.listeners.ClanChat;
-import xyz.gamlin.clans.models.Clan;
 import xyz.gamlin.clans.utils.ClansStorageUtil;
+import xyz.gamlin.clans.utils.ColorUtils;
+import xyz.gamlin.clans.utils.TaskTimerUtils;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 public final class Clans extends JavaPlugin {
 
+    Logger logger = this.getLogger();
+
     private static Clans plugin;
-
-    public static Clans getPlugin() {
-        return plugin;
-    }
-
-    FileConfiguration config = getConfig();
-
-    public FileConfiguration getClansConfig() { return config; }
 
     @Override
     public void onEnable() {
@@ -36,8 +27,8 @@ public final class Clans extends JavaPlugin {
 
         plugin = this;
 
-        config.options().copyDefaults();
-        saveConfig();
+        getConfig().options().copyDefaults();
+        saveDefaultConfig();
 
 
         this.getCommand("clan").setExecutor(new ClanCommand());
@@ -50,6 +41,14 @@ public final class Clans extends JavaPlugin {
         }
 
         this.getServer().getPluginManager().registerEvents(new ClanChat(), this);
+
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+            @Override
+            public void run() {
+                TaskTimerUtils.runClansAutoSaveOne();
+                logger.info(ColorUtils.translateColorCodes("&6ClansLite: &aAuto save task has started."));
+            }
+        },100L);
     }
 
     @Override
@@ -57,4 +56,7 @@ public final class Clans extends JavaPlugin {
         // Plugin shutdown logic
     }
 
+    public static Clans getPlugin() {
+        return plugin;
+    }
 }

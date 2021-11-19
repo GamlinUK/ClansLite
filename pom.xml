@@ -5,15 +5,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>xyz.gamlin</groupId>
-    <artifactId>clanslite</artifactId>
-    <version>1.0-SNAPSHOT-w43a</version>
+    <artifactId>ClansLite</artifactId>
+    <version>1.0-SNAPSHOT-w44a</version>
     <packaging>jar</packaging>
 
     <name>ClansLite</name>
 
     <description>Aa simple clans plugin for Minecraft.</description>
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <url>https://gamlin.xyz</url>
@@ -46,6 +46,7 @@
                                 </relocation>
                             </relocations>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <outputFile>/Users/mark/IdeaProjects/${project.artifactId}-${project.version}.jar</outputFile>
                         </configuration>
                     </execution>
                 </executions>
