@@ -21,6 +21,7 @@ public class TaskTimerUtils {
                 if (time == 1){
                     try {
                         ClansStorageUtil.saveClans();
+                        logger.severe("&6ClansLite: &aSaved all Clans to file!");
                     } catch (IOException e) {
                         logger.severe("&6ClansLite: &4Failed to save clans.json to file!");
                         e.printStackTrace();
@@ -44,6 +45,7 @@ public class TaskTimerUtils {
                 if (time == 1){
                     try {
                         ClansStorageUtil.saveClans();
+                        logger.severe("&6ClansLite: &aSaved all Clans to file!");
                     } catch (IOException e) {
                         logger.severe("&6ClansLite: &4Failed to save clans.json to file!");
                         e.printStackTrace();
