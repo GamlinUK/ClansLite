@@ -18,7 +18,7 @@ The `/clan` command is the main command of the plugin, with `/clan` you can do t
 ## /clanadmin command
 Aliases: `/ca`  
 
-The `/clanadmin` command is purely for server admins.Only 1 argument is implemented which is `/clanadmin save` - which will save all current clan info to the `clans.json` data file.
+The `/clanadmin` command is purely for server admins only. 2 arguments are implemented which are `/clanadmin save` - which will save all current clan info to the `clans.json` data file.  '/clanadmin reload' - This reloads the plugins config.yml file.
 
 ## Permissions
 ClansLite comes with 2 permissions:
