@@ -46,7 +46,7 @@
                                 </relocation>
                             </relocations>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputFile>/Users/mark/IdeaProjects/${project.artifactId}-${project.version}.jar</outputFile>
+                            <outputFile>/Users/mark/Desktop/Desktop/Minecraft/Java 1.17.1/1.17.1 Test Server/plugins/${project.artifactId}-${project.version}.jar</outputFile>
                         </configuration>
                     </execution>
                 </executions>
