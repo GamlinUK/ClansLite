@@ -6,7 +6,6 @@ import xyz.gamlin.clans.Clans;
 import xyz.gamlin.clans.models.Clan;
 
 import java.io.*;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.UUID;
@@ -132,12 +131,13 @@ public class ClansStorageUtil {
             String clanName = clan.getClanName();
             ArrayList<UUID> clanSize = clan.getClanMembers();
             String clanSizeString = "";
+            String clanMembers = String.valueOf(clanSize.size() + 1);
             if (clanSize == null) {
-                clanSizeString = MessageFormat.format("{0} §3member", 1);
+                clanSizeString = ColorUtils.translateColorCodes("{0} &3member").replace("{0}", "1");
             } else {
-                clanSizeString = MessageFormat.format("{0} §3members", clanSize.size() + 1);
+                clanSizeString = ColorUtils.translateColorCodes("{0} &3members").replace("{0}", clanMembers);
             }
-            String clanInfo = MessageFormat.format("§6{0} §3 - {1}", clanName, clanSizeString);
+            String clanInfo = ColorUtils.translateColorCodes("&6{0} &3 - {1}").replace("{0}", clanName).replace("{1}", clanSizeString);
             clanData.add(clanInfo);
         }
         return clanData;

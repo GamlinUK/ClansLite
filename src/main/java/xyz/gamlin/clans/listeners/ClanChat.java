@@ -7,6 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import xyz.gamlin.clans.models.Clan;
 import xyz.gamlin.clans.utils.ClansStorageUtil;
+import xyz.gamlin.clans.utils.ColorUtils;
 
 public class ClanChat implements Listener {
 
@@ -18,7 +19,7 @@ public class ClanChat implements Listener {
         if (ClansStorageUtil.playerIsInClan(player)) {
             Clan clan = ClansStorageUtil.findClanByPlayer(player);
 
-            format = StringUtils.replace(format, clanMergeTag, "§a§l" + clan.getClanPrefix() + " §r");
+            format = StringUtils.replace(format, clanMergeTag, ColorUtils.translateColorCodes(clan.getClanPrefix() + " &r"));
 
         } else {
             format = StringUtils.replace(format, clanMergeTag, "");
