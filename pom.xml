@@ -6,7 +6,7 @@
 
     <groupId>xyz.gamlin</groupId>
     <artifactId>ClansLite</artifactId>
-    <version>1.0-SNAPSHOT-w45a</version>
+    <version>1.1-SNAPSHOT-w10a</version>
     <packaging>jar</packaging>
 
     <name>ClansLite</name>
@@ -46,7 +46,7 @@
                                 </relocation>
                             </relocations>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputFile>/Users/mark/Desktop/Desktop/Minecraft/Java 1.17.1/1.17.1 Test Server/plugins/${project.artifactId}-${project.version}.jar</outputFile>
+                            <outputFile>/Users/mark/Desktop/Desktop/Minecraft/Java 1.18/1.18 Test Server/plugins/${project.artifactId}-${project.version}.jar</outputFile>
                         </configuration>
                     </execution>
                 </executions>
@@ -78,7 +78,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.17.1-R0.1-SNAPSHOT</version>
+            <version>1.18-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
