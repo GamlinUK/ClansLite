@@ -13,7 +13,7 @@
 
     <description>Aa simple clans plugin for Minecraft.</description>
     <properties>
-        <java.version>11</java.version>
+        <java.version>11.0.13</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <url>https://gamlin.xyz</url>
@@ -46,7 +46,7 @@
                                 </relocation>
                             </relocations>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputFile>/Users/mark/Desktop/Desktop/Minecraft/Java 1.18/1.18 Test Server/plugins/${project.artifactId}-${project.version}.jar</outputFile>
+                            <outputFile>/Users/mark/IdeaProjects/${project.artifactId}-${project.version}.jar</outputFile>
                         </configuration>
                     </execution>
                 </executions>
