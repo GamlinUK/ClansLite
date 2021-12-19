@@ -6,7 +6,7 @@
 
     <groupId>xyz.gamlin</groupId>
     <artifactId>ClansLite</artifactId>
-    <version>1.1-SNAPSHOT-w21a</version>
+    <version>1.1-SNAPSHOT-w22a</version>
     <packaging>jar</packaging>
 
     <name>ClansLite</name>
