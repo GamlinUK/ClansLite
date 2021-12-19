@@ -16,6 +16,9 @@ public class ClanChat implements Listener {
         String clanMergeTag = "{CLAN}";
         Player player = event.getPlayer();
         String format = event.getFormat();
+        if (!(player.hasPermission("clanslite.clan")|| player.hasPermission("clanslite.*")||player.isOp())){
+            return;
+        }
         if (ClansStorageUtil.playerIsInClan(player)) {
             Clan clan = ClansStorageUtil.findClanByPlayer(player);
 
@@ -24,8 +27,6 @@ public class ClanChat implements Listener {
         } else {
             format = StringUtils.replace(format, clanMergeTag, "");
         }
-
         event.setFormat(format);
     }
-
 }
