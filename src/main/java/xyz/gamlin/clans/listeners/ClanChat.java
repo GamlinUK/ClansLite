@@ -24,8 +24,6 @@ public class ClanChat implements Listener {
         } else {
             format = StringUtils.replace(format, clanMergeTag, "");
         }
-
         event.setFormat(format);
     }
-
 }

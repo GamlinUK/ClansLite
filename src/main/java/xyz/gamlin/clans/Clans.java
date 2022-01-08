@@ -24,11 +24,13 @@ public final class Clans extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        //Plugin startup logic
+        plugin = this;
 
         //Server version compatibility check
         if (!(Bukkit.getServer().getVersion().contains("1.13")||Bukkit.getServer().getVersion().contains("1.14")||
                 Bukkit.getServer().getVersion().contains("1.15")||Bukkit.getServer().getVersion().contains("1.16")||
-                Bukkit.getServer().getVersion().contains("1.17"))){
+                Bukkit.getServer().getVersion().contains("1.17")||Bukkit.getServer().getVersion().contains("1.18"))){
             logger.warning(ColorUtils.translateColorCodes("&4-------------------------------------------"));
             logger.warning(ColorUtils.translateColorCodes("&6ClansLite: &4This plugin is only supported on the Minecraft versions listed below:"));
             logger.warning(ColorUtils.translateColorCodes("&6ClansLite: &41.13.x"));
@@ -36,17 +38,16 @@ public final class Clans extends JavaPlugin {
             logger.warning(ColorUtils.translateColorCodes("&6ClansLite: &41.15.x"));
             logger.warning(ColorUtils.translateColorCodes("&6ClansLite: &41.16.x"));
             logger.warning(ColorUtils.translateColorCodes("&6ClansLite: &41.17.x"));
+            logger.warning(ColorUtils.translateColorCodes("&6ClansLite: &41.18.x"));
             logger.warning(ColorUtils.translateColorCodes("&6ClansLite: &4Is now disabling!"));
             logger.warning(ColorUtils.translateColorCodes("&4-------------------------------------------"));
-            Bukkit.getPluginManager().disablePlugin(this);
+            Bukkit.getPluginManager().disablePlugin(plugin);
         }else {
             logger.info(ColorUtils.translateColorCodes("&a-------------------------------------------"));
             logger.info(ColorUtils.translateColorCodes("&6ClansLite: &aA supported Minecraft version has been detected"));
             logger.info(ColorUtils.translateColorCodes("&6ClansLite: &6Continuing plugin startup"));
             logger.info(ColorUtils.translateColorCodes("&a-------------------------------------------"));
         }
-
-        plugin = this;
 
         //Load plugin metrics
         int pluginId = 13076;
@@ -62,7 +63,7 @@ public final class Clans extends JavaPlugin {
             logger.severe("&6ClansLite: &4Failed to load clans.json!");
             logger.severe("&6ClansLite: &4Disabling plugin!");
             e.printStackTrace();
-            Bukkit.getPluginManager().disablePlugin(this);
+            Bukkit.getPluginManager().disablePlugin(plugin);
         }
 
         //Register the plugin commands
@@ -74,10 +75,10 @@ public final class Clans extends JavaPlugin {
 
         //Plugin startup message
         logger.info(ColorUtils.translateColorCodes("-------------------------------------------"));
-        logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Plugin created by: &bGamlin"));
-        logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Plugin contributors: &bLoving11ish"));
+        logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Plugin created by: &b&lGamlin"));
+        logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Plugin contributors: &b&lLoving11ish"));
         logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3has been loaded successfully"));
-        logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Plugin Version: &d" + pluginVersion));
+        logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Plugin Version: &d&l" + pluginVersion));
         logger.info(ColorUtils.translateColorCodes("-------------------------------------------"));
 
         //Start auto save task
@@ -92,23 +93,35 @@ public final class Clans extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        //Plugin shutdown logic
 
         //Safely stop the auto save tasks if running
-        if (Bukkit.getScheduler().isCurrentlyRunning(TaskTimerUtils.taskID1)||Bukkit.getScheduler().isQueued(TaskTimerUtils.taskID1)){
-            Bukkit.getScheduler().cancelTask(TaskTimerUtils.taskID1);
+        try {
+            if (Bukkit.getScheduler().isCurrentlyRunning(TaskTimerUtils.taskID1)||Bukkit.getScheduler().isQueued(TaskTimerUtils.taskID1)){
+                Bukkit.getScheduler().cancelTask(TaskTimerUtils.taskID1);
+            }
+            if (Bukkit.getScheduler().isCurrentlyRunning(TaskTimerUtils.taskID2)||Bukkit.getScheduler().isQueued(TaskTimerUtils.taskID2)){
+                Bukkit.getScheduler().cancelTask(TaskTimerUtils.taskID2);
+            }
+        }catch (Exception e){
+            logger.info(ColorUtils.translateColorCodes("-------------------------------------------"));
+            logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Plugin created by: &b&lGamlin"));
+            logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Plugin contributors: &b&lLoving11ish"));
+            logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Background tasks have disabled successfully!"));
         }
-        if (Bukkit.getScheduler().isCurrentlyRunning(TaskTimerUtils.taskID2)||Bukkit.getScheduler().isQueued(TaskTimerUtils.taskID2)){
-            Bukkit.getScheduler().cancelTask(TaskTimerUtils.taskID2);
+        try {
+            ClansStorageUtil.saveClans();
+            logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3clans.json has been successfully saved!"));
+        }catch (IOException e){
+            logger.severe("&6ClansLite: &4Failed to save clans.json!");
+            logger.severe("&6ClansLite: &4See below error for details!");
+            e.printStackTrace();
         }
-
-        //Plugin shutdown message
-        logger.info(ColorUtils.translateColorCodes("-------------------------------------------"));
-        logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Plugin created by: &bGamlin"));
-        logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Plugin contributors: &bLoving11ish"));
-        logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3has been shutdown successfully"));
+        //Final plugin shutdown message
+        logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Plugin Version: &d&l" + pluginVersion));
+        logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Has been shutdown successfully"));
         logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Goodbye!"));
         logger.info(ColorUtils.translateColorCodes("-------------------------------------------"));
-
     }
 
     public static Clans getPlugin() {
