@@ -6,7 +6,7 @@
 
     <groupId>xyz.gamlin</groupId>
     <artifactId>ClansLite</artifactId>
-    <version>1.1-SNAPSHOT-w22a</version>
+    <version>1.0-SNAPSHOT-22w2a</version>
     <packaging>jar</packaging>
 
     <name>ClansLite</name>
@@ -47,7 +47,7 @@
                                 </relocation>
                             </relocations>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputFile>/Users/mark/IdeaProjects/${project.artifactId}-${project.version}.jar</outputFile>
+                            <outputFile>C:\Users\Jamie\Documents\PluginTestServer\plugins\${project.artifactId}-${project.version}.jar</outputFile>
                         </configuration>
                     </execution>
                 </executions>

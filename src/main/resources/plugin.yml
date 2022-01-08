@@ -23,6 +23,6 @@ commands:
       - ca
 permissions:
   clanslite.clan:
-    default: false
+    default: true
   clanslite.clanadmin:
     default: op
