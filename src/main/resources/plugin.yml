@@ -3,14 +3,13 @@ version: '${project.version}'
 main: xyz.gamlin.clans.Clans
 api-version: 1.13
 prefix: ClansLite
-load: STARTUP
 authors: [ Gamlin, Loving11ish ]
 description: A simple clans plugin for Minecraft.
 website: https://gamlin.xyz
 commands:
   clan:
     description: Create, delete and manage clans!
-    usage: "Usage: /clan [created|disband|invite|kick|info|list|prefix]"
+    usage: "Usage: /clan [created|disband|invite|kick|info|list|prefix|ally]"
     permission: clanslite.clan
     aliases:
       - clans

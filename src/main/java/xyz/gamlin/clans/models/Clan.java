@@ -1,59 +1,78 @@
 package xyz.gamlin.clans.models;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 public class Clan {
 
-    private String clanName;
-    private UUID clanOwner;
-    private ArrayList<UUID> clanMembers;
+    private String clanFinalOwner;
+    private String clanFinalName;
     private String clanPrefix;
+    private ArrayList<String> clanMembers;
+    private ArrayList<String> clanAllies;
 
-    public Clan(UUID clanOwner, String clanName) {
-        this.clanName = clanName;
-        this.clanOwner = clanOwner;
-        this.clanPrefix = clanName;
-        this.clanMembers = new ArrayList<>();
+
+    public Clan(String clanOwner, String clanName) {
+        clanFinalOwner = clanOwner;
+        clanFinalName = clanName;
+        clanPrefix = clanFinalName;
+        clanMembers = new ArrayList<>();
+        clanAllies = new ArrayList<>();
     }
 
-    public String getClanName() {
-        return clanName;
+    public String getClanOwner() {
+        return clanFinalOwner;
     }
 
-    public void setClanName(String clanName) {
-        this.clanName = clanName;
+    @Deprecated
+    public void setClanOwner(String clanOwner) {
+        clanFinalOwner = clanOwner;
     }
 
-    public UUID getClanOwner() {
-        return clanOwner;
+    public String getClanFinalName() {
+        return clanFinalName;
     }
 
-    public void setClanOwner(UUID clanOwner) {
-        this.clanOwner = clanOwner;
-    }
-
-    public ArrayList<UUID> getClanMembers() {
-        return clanMembers;
-    }
-
-    public void setClanMembers(ArrayList<UUID> clanMembers) {
-        this.clanMembers = clanMembers;
-    }
-
-    public Boolean addClanMember(UUID clanMember) {
-        return this.clanMembers.add(clanMember);
-    }
-
-    public Boolean removeClanMember(UUID clanMember) {
-        return this.clanMembers.remove(clanMember);
+    public void setClanFinalName(String newClanFinalName) {
+        clanFinalName = newClanFinalName;
     }
 
     public String getClanPrefix() {
         return clanPrefix;
     }
 
-    public void setClanPrefix(String clanPrefix) {
-        this.clanPrefix = clanPrefix;
+    public void setClanPrefix(String newClanPrefix) {
+        clanPrefix = newClanPrefix;
+    }
+
+    public ArrayList<String> getClanMembers() {
+        return clanMembers;
+    }
+
+    public void setClanMembers(ArrayList<String> clanMembersList) {
+        clanMembers = clanMembersList;
+    }
+
+    public void addClanMember(String clanMember) {
+        clanMembers.add(clanMember);
+    }
+
+    public Boolean removeClanMember(String clanMember) {
+        return clanMembers.remove(clanMember);
+    }
+
+    public ArrayList<String> getClanAllies() {
+        return clanAllies;
+    }
+
+    public void addClanAlly(String ally){
+        clanAllies.add(ally);
+    }
+
+    public void removeClanAlly(String allyUUID){
+        clanAllies.remove(allyUUID);
+    }
+
+    public void setClanAllies(ArrayList<String> clanAlliesList) {
+        clanAllies = clanAlliesList;
     }
 }
