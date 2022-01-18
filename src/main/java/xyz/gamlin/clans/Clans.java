@@ -3,9 +3,10 @@ package xyz.gamlin.clans;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bstats.bukkit.Metrics;
 import xyz.gamlin.clans.commands.ClanAdmin;
 import xyz.gamlin.clans.commands.ClanCommand;
+import xyz.gamlin.clans.files.ClansFileManager;
+import xyz.gamlin.clans.files.MessagesFileManager;
 import xyz.gamlin.clans.listeners.ClanChat;
 import xyz.gamlin.clans.utils.ClansStorageUtil;
 import xyz.gamlin.clans.utils.ColorUtils;
@@ -21,6 +22,8 @@ public final class Clans extends JavaPlugin {
     Logger logger = this.getLogger();
 
     private static Clans plugin;
+    public MessagesFileManager messagesFileManager;
+    public ClansFileManager clansFileManager;
 
     @Override
     public void onEnable() {
@@ -41,7 +44,7 @@ public final class Clans extends JavaPlugin {
             logger.warning(ColorUtils.translateColorCodes("&6ClansLite: &41.18.x"));
             logger.warning(ColorUtils.translateColorCodes("&6ClansLite: &4Is now disabling!"));
             logger.warning(ColorUtils.translateColorCodes("&4-------------------------------------------"));
-            Bukkit.getPluginManager().disablePlugin(plugin);
+            Bukkit.getPluginManager().disablePlugin(this);
         }else {
             logger.info(ColorUtils.translateColorCodes("&a-------------------------------------------"));
             logger.info(ColorUtils.translateColorCodes("&6ClansLite: &aA supported Minecraft version has been detected"));
@@ -49,21 +52,27 @@ public final class Clans extends JavaPlugin {
             logger.info(ColorUtils.translateColorCodes("&a-------------------------------------------"));
         }
 
-        //Load plugin metrics
-        int pluginId = 13076;
-        Metrics metrics = new Metrics(this, pluginId);
-
         //Load the plugin configs
         getConfig().options().copyDefaults();
         saveDefaultConfig();
 
-        try {
-            ClansStorageUtil.loadClans();
-        } catch (IOException e) {
-            logger.severe("&6ClansLite: &4Failed to load clans.json!");
-            logger.severe("&6ClansLite: &4Disabling plugin!");
-            e.printStackTrace();
-            Bukkit.getPluginManager().disablePlugin(plugin);
+        //Load messages.yml
+        this.messagesFileManager = new MessagesFileManager();
+        messagesFileManager.MessagesFileManager(this);
+
+        //Load clans.yml
+        this.clansFileManager = new ClansFileManager();
+        clansFileManager.ClansFileManager(this);
+        if (clansFileManager.getClansConfig().contains("clans.data")){
+            try {
+                ClansStorageUtil.restoreClans();
+            } catch (IOException e) {
+                logger.severe(ColorUtils.translateColorCodes("&6ClansLite: &4Failed to load data from clans.yml!"));
+                logger.severe(ColorUtils.translateColorCodes("&6ClansLite: &4See below for errors!"));
+                logger.severe(ColorUtils.translateColorCodes("&6ClansLite: &4Disabling Plugin!"));
+                e.printStackTrace();
+                Bukkit.getPluginManager().disablePlugin(this);
+            }
         }
 
         //Register the plugin commands
@@ -86,7 +95,7 @@ public final class Clans extends JavaPlugin {
             @Override
             public void run() {
                 TaskTimerUtils.runClansAutoSaveOne();
-                logger.info(ColorUtils.translateColorCodes("&6ClansLite: &aAuto save task has started."));
+                logger.info(ColorUtils.translateColorCodes(messagesFileManager.getMessagesConfig().getString("auto-save-started")));
             }
         },100L);
     }
@@ -109,14 +118,19 @@ public final class Clans extends JavaPlugin {
             logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Plugin contributors: &b&lLoving11ish"));
             logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Background tasks have disabled successfully!"));
         }
-        try {
-            ClansStorageUtil.saveClans();
-            logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3clans.json has been successfully saved!"));
-        }catch (IOException e){
-            logger.severe("&6ClansLite: &4Failed to save clans.json!");
-            logger.severe("&6ClansLite: &4See below error for details!");
-            e.printStackTrace();
+
+        //Save clansList HashMap to clans.yml
+        if (!ClansStorageUtil.getRawClansList().isEmpty()){
+            try {
+                ClansStorageUtil.saveClans();
+                logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3All clans saved to clans.yml successfully!"));
+            } catch (IOException e) {
+                logger.severe(ColorUtils.translateColorCodes("&6ClansLite: &4Failed to save clans to clans.yml!"));
+                logger.severe(ColorUtils.translateColorCodes("&6ClansLite: &4See below error for reason!"));
+                e.printStackTrace();
+            }
         }
+
         //Final plugin shutdown message
         logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Plugin Version: &d&l" + pluginVersion));
         logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Has been shutdown successfully"));

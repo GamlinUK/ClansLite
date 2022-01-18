@@ -1,33 +1,32 @@
 package xyz.gamlin.clans.models;
 
 import java.util.Date;
-import java.util.UUID;
 
 public class ClanInvite {
 
-    private UUID inviter;
-    private UUID invitee;
+    private String inviter;
+    private String invitee;
     final Date inviteTime;
 
-    public ClanInvite(UUID inviter, UUID invitee) {
+    public ClanInvite(String inviter, String invitee) {
         this.inviter = inviter;
         this.invitee = invitee;
         this.inviteTime = new Date();
     }
 
-    public UUID getInviter() {
+    public String getInviter() {
         return inviter;
     }
 
-    public void setInviter(UUID inviter) {
+    public void setInviter(String inviter) {
         this.inviter = inviter;
     }
 
-    public UUID getInvitee() {
+    public String getInvitee() {
         return invitee;
     }
 
-    public void setInvitee(UUID invitee) {
+    public void setInvitee(String invitee) {
         this.invitee = invitee;
     }
 

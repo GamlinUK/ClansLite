@@ -1,0 +1,102 @@
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#                                        ----[ClansLite]----                                        #
+#                                        ----[By Gamlin]----                                        #
+#                                ----[Contributors: Loving11ish]----                                #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#                                  ----[Plugin Messages File]----                                   #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+#Clan Creation Messages
+clan-name-too-short: "&3Clan name too short - minimum length is &63 characters&3."
+clan-name-too-long: "&3Clan name too long - maximum length is &616 characters&3."
+clan-created-successfully: "&3Clan &6%CLAN% &3was Created!"
+clan-creation-failed: "&3Clan &6%CLAN% &3was NOT created, please make sure you're not already in a clan!"
+
+#Clan Disbanded Messages
+clan-successfully-disbanded: "&3Clan was disbanded!"
+clan-disband-failure: "&3Failed to disband clan - Please make sure you're the owner!"
+
+#Clan Invite Messages
+clan-invite-no-valid-player: "&3Please specify a player to invite!"
+clan-invite-not-clan-owner: "&3You must be a clan owner to invite people!"
+clan-invite-self-error: "&3You can't invite yourself!"
+clan-invitee-not-found: "&3Player &6%INVITED% &3was not found, make sure they are online!"
+clan-invite-invited-already-in-clan: "&3Player &6%INVITED% &3is already in a clan!"
+clan-invite-max-size-reached: "&3You have reached the clam members size limit &a%LIMIT%&3!"
+clan-invite-successful: "&3You have invited &6%INVITED% &3to your clan!"
+clan-invite-failed: "&3Failed to send invite to &6%INVITED%&3, this player might already have an invitation!"
+clan-invited-player-invite-pending: "&3You have been invited to a clan by &6%CLANOWNER% &3- use /clan join"
+
+#Clan Join Messages
+clan-join-successful: "&3Successfully joined &6%CLAN%&3!"
+clan-join-failed: "&3Failed to join &6%CLAN%&3"
+clan-join-failed-no-valid-clan: "&3Failed to join a clan - no clan was found!"
+clan-join-failed-no-invite: "&3Failed to join a clan - no invite was found!"
+
+#Clan Leave Messages
+failed-clan-owner: "&3You are the owner of a clan, use &6/clan disband&3."
+clan-leave-successful: "&3You have left &6%CLAN%."
+clan-leave-failed: "&3Failed to leave clan, please try again later."
+
+#Clan Kick Messages
+clan-member-kick-successful: "&3Player &6%KICKEDPLAYER%&3 was kicked from your clan."
+clan-kicked-player-message: "&3You were kicked from &6%CLAN%&3!"
+targeted-player-is-not-in-your-clan: "&3Player &6%KICKEDPLAYER%&3 is not in your clan."
+could-not-find-specified-player: "&3Could not find player &6%KICKEDPLAYER%&3."
+must-be-owner-to-kick: "&3You are not an owner of a clan!"
+incorrect-kick-command-usage: "&3Unrecognised argument please use &6/clan kick <member>&3."
+failed-cannot-kick-yourself: "&3You cannot kick yourself, use &6/clan leave&3."
+
+#Clan Prefix Messages
+clan-prefix-change-successful: "&3Successfully changed clan prefix to &6%CLANPREFIX%&3!"
+clan-prefix-too-long: "&3Clan prefix too long - maximum length is &616 characters&3."
+clan-prefix-too-short: "&3Clan prefix too short - minimum length is 763 characters&3."
+clan-invalid-prefix: "&3Please provide a new prefix. Use &b/clan prefix <prefix>&3!"
+must-be-owner-to-change-prefix: "&3You are not an owner of a clan!"
+
+#Clan List Messages
+no-clans-to-list: "&3No clans found!\n&3Create one using &b/clan create <name>&3!"
+clans-list-header: "&7----- &6ClansList &7-----&r\n&3&lCurrent clans:\n"
+clans-list-footer: "\n&7-----"
+
+#Clan Info Messages
+clan-info-header: "&7----- &6ClanInfo &7-----&r\n&3Name: %CLAN%&r\n&3Prefix: &7(%CLANPREFIX%&r&7)&r"
+clan-info-owner-online: "\n\n&3Owner: &a%OWNER%"
+clan-info-owner-offline: "\n\n&3Owner: &c%OWNER%&7&o(offline)"
+clan-info-members-header: "\n\n&3Members:"
+clan-info-members-online: "\n&a%MEMBER%\n"
+clan-info-members-offline: "\n&c%MEMBER%&7&o(offline)\n"
+clan-info-allies-header: "\n\n&3Allied Clans:"
+clan-ally-members: "\n&a%ALLYCLAN%\n"
+clan-info-footer: "\n&7-----"
+not-in-clan: "&3You are not in a clan!"
+
+#Clan Ally Messages
+added-clan-to-your-allies: "&3You successfully added &6%ALLYCLAN% &3to your allies!"
+clan-added-to-other-allies: "&6%CLANOWNER% &3has added your clan to their allies!"
+failed-to-add-clan-to-allies: "&3Unable to add &6%ALLYOWNER%&3! Make sure the owner is online!"
+failed-player-not-clan-owner: "&6%ALLYOWNER%&3 is not a clan owner!"
+removed-clan-from-your-allies: "&3You Successfully removed &6%ALLYCLAN% &3from your allies!"
+clan-removed-from-other-allies: "&3The clan owner &6%CLANOWNER% &3has removed your clan from their allies!"
+failed-to-remove-clan-from-allies: "&3Unable to remove &6%ALLYOWNER%&3! Make sure they're you ally"
+ally-clan-add-owner-offline: "&3Unable to add &6%ALLYOWNER%&3! Make sure the owner is online!"
+ally-clan-remove-owner-offline: "&3Unable to remove &6%ALLYOWNER%&3! Make sure the owner is online!"
+incorrect-clan-ally-command-usage: "&3Unrecognised argument please use &6/clan [add|remove] <clan-owner>&3."
+failed-cannot-ally-your-own-clan: "&3You cannot be an ally with your &3&lOWN&r&3 clan!"
+clan-ally-max-amount-reached: "&3You have reached the clan allies amount limit &a%LIMIT%&3!"
+
+#General Plugin Messages
+clan-must-be-owner: "&3You must be the clan owner to do this."
+plugin-reload-successful: "&6ClansLite: &aThe configs have been reloaded!"
+incorrect-command-usage: "&3Unrecognised argument please use &6/clan&3."
+player-only-command: "&4Sorry, that command can only be run by a player!"
+saving-clans-start: "&6ClansLite: Saving clans data..."
+save-completed: "&6ClansLite: &aClans saved!"
+auto-save-started: "&6ClansLite: &aAuto save task has started."
+auto-save-complete: "&6ClansLite: &aSaved all Clans to file!"
+auto-save-failed: "&6ClansLite: &4Failed to save clans.yml to file!"
+clans-save-error-1: "&6ClansLite: &4Failed to save clans.yml to file!"
+clans-save-error-2: "&6ClansLite: &4Check the console for errors!"
+clans-update-error: "&6ClansLite: &4Failed to update clans.yml file!\n&6ClansLite: &4Check the console for errors!"

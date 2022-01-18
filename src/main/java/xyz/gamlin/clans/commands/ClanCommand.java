@@ -1,6 +1,7 @@
 package xyz.gamlin.clans.commands;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -9,17 +10,27 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import xyz.gamlin.clans.Clans;
 import xyz.gamlin.clans.models.Clan;
+import xyz.gamlin.clans.models.ClanInvite;
 import xyz.gamlin.clans.utils.ClanInviteUtil;
 import xyz.gamlin.clans.utils.ClansStorageUtil;
 import xyz.gamlin.clans.utils.ColorUtils;
 
-import java.util.ArrayList;
-import java.util.UUID;
+import java.io.IOException;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class ClanCommand implements CommandExecutor {
 
     Logger logger = Clans.getPlugin().getLogger();
+
+    private static final FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+    private static final String CLAN_PLACEHOLDER = "%CLAN%";
+    private static final String INVITED_PLAYER = "%INVITED%";
+    private static final String PLAYER_TO_KICK = "%KICKEDPLAYER%";
+    private static final String CLAN_OWNER = "%OWNER%";
+    private static final String CLAN_MEMBER = "%MEMBER%";
+    private static final String ALLY_CLAN = "%ALLYCLAN%";
+    private static final String ALLY_OWNER = "%ALLYOWNER%";
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -35,16 +46,19 @@ public class ClanCommand implements CommandExecutor {
                                 "\n/clan kick <player>" +
                                 "\n/clan info" +
                                 "\n/clan list" +
-                                "\n/clan prefix <prefix>"
+                                "\n/clan prefix <prefix>" +
+                                "\n/clan ally [add|remove] <clan-owner>"
                 ));
-            } else {
+            }else {
+
+//----------------------------------------------------------------------------------------------------------------------
                 if (args[0].equalsIgnoreCase("create")) {
                     if (args.length >= 2) {
                         if (args[1].length() < 3) {
-                            player.sendMessage(ColorUtils.translateColorCodes("&3Clan name too short - minimum length is &63 characters&3."));
+                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-name-too-short")));
                             return true;
                         } else if (args[1].length() > 16) {
-                            player.sendMessage(ColorUtils.translateColorCodes("&3Clan name too long - maximum length is &616 characters&3."));
+                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-name-too-long")));
                             return true;
                         } else {
                             StringBuilder stringBuilder = new StringBuilder();
@@ -54,266 +68,417 @@ public class ClanCommand implements CommandExecutor {
                             }
                             stringBuilder.append(args[args.length - 1]);
 
-                            if (ClansStorageUtil.createClan(player, stringBuilder.toString()) != null) {
-                                String clanCreated = ColorUtils.translateColorCodes("&3Clan &6{0} &3was Created!").replace("{0}", args[1]);
+                            if (!ClansStorageUtil.isClanExisting(player)) {
+                                ClansStorageUtil.createClan(player, args[1]);
+                                String clanCreated = ColorUtils.translateColorCodes(messagesConfig.getString("clan-created-successfully")).replace(CLAN_PLACEHOLDER, args[1]);
                                 player.sendMessage(clanCreated);
                             } else {
-                                String clanNotCreated = ColorUtils.translateColorCodes("&3Clan &6{0} &3was NOT created, please make sure you're not already in a clan!").replace("{0}", args[1]);
+                                String clanNotCreated = ColorUtils.translateColorCodes(messagesConfig.getString("clan-creation-failed")).replace(CLAN_PLACEHOLDER, args[1]);
                                 player.sendMessage(clanNotCreated);
                             }
                             return true;
                         }
                     }
                 }
+
+//----------------------------------------------------------------------------------------------------------------------
                 if (args[0].equalsIgnoreCase("disband")) {
-                    if (ClansStorageUtil.deleteClan(player)) {
-                        sender.sendMessage(ColorUtils.translateColorCodes("&3Clan was disbanded!"));
-                    } else {
-                        sender.sendMessage(ColorUtils.translateColorCodes("&3Failed to disband clan - Please make sure you're the owner!"));
+                    try {
+                        if (ClansStorageUtil.deleteClan(player)) {
+                            sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-successfully-disbanded")));
+                        } else {
+                            sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-disband-failure")));
+                        }
+                    } catch (IOException e) {
+                        sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clans-update-error")));
+                        e.printStackTrace();
                     }
                     return true;
-
                 }
+
+//----------------------------------------------------------------------------------------------------------------------
                 if (args[0].equalsIgnoreCase("invite")) {
                     if (args.length == 2) {
                         if (args[1].length() < 1) {
-
-                            sender.sendMessage(ColorUtils.translateColorCodes("&3Please specify a player to invite!"));
+                            sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-no-valid-player")));
                             return true;
-
                         }
-
                         if (ClansStorageUtil.findClanByOwner(player) == null) {
-
-                            sender.sendMessage(ColorUtils.translateColorCodes("&3You must be a clan owner to invite people!"));
+                            sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-not-clan-owner")));
                             return true;
-
                         } else {
-
                             String invitedPlayerStr = args[1];
-
                             if (invitedPlayerStr.equalsIgnoreCase(player.getName())) {
-
-                                sender.sendMessage(ColorUtils.translateColorCodes("&3You can't invite yourself!"));
-
+                                sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-self-error")));
                             } else {
-
                                 Player invitedPlayer = Bukkit.getPlayer(invitedPlayerStr);
-
                                 if (invitedPlayer == null) {
-
-                                    String playerNotFound = ColorUtils.translateColorCodes("&3Player &6{0} &3was not found, make sure they are online!").replace("{0}", invitedPlayerStr);
+                                    String playerNotFound = ColorUtils.translateColorCodes(messagesConfig.getString("clan-invitee-not-found")).replace(INVITED_PLAYER, invitedPlayerStr);
                                     sender.sendMessage(playerNotFound);
-
                                 } else if (ClansStorageUtil.findClanByPlayer(invitedPlayer) != null) {
-
-                                    String playerNotFound = ColorUtils.translateColorCodes("&3Player &6{0} §3is already in a clan!").replace("{0}", invitedPlayerStr);
-                                    sender.sendMessage(playerNotFound);
-
+                                    String playerAlreadyInClan = ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-invited-already-in-clan")).replace(INVITED_PLAYER, invitedPlayerStr);
+                                    sender.sendMessage(playerAlreadyInClan);
                                 } else {
-
                                     Clan clan = ClansStorageUtil.findClanByOwner(player);
-
                                     if (clan.getClanMembers().size() >= clansConfig.getInt("max-clan-size")) {
-
                                         Integer maxSize = clansConfig.getInt("max-clan-size");
-                                        player.sendMessage(ColorUtils.translateColorCodes("&3You have reached the clam members size limit " + "&a(" + maxSize + ") &3!"));
+                                        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-max-size-reached")).replace("%LIMIT%", maxSize.toString()));
                                         return true;
-
                                     }
-
-                                    if (ClanInviteUtil.createInvite(player.getUniqueId(), invitedPlayer.getUniqueId()) != null) {
-
-                                        String confirmationString = ColorUtils.translateColorCodes("&3You have invited &6{0}&3 to your clan!").replace("{0}", invitedPlayer.getName());
+                                    if (ClanInviteUtil.createInvite(player.getUniqueId().toString(), invitedPlayer.getUniqueId().toString()) != null) {
+                                        String confirmationString = ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-successful")).replace(INVITED_PLAYER, invitedPlayer.getName());
                                         player.sendMessage(confirmationString);
-                                        String invitationString = ColorUtils.translateColorCodes("&3You have been invited to a clan by &6{0}&3 - use /clan join").replace("{0}", player.getName());
+                                        String invitationString = ColorUtils.translateColorCodes(messagesConfig.getString("clan-invited-player-invite-pending")).replace("%CLANOWNER%", player.getName());
                                         invitedPlayer.sendMessage(invitationString);
-
                                     } else {
-
-                                        String failureString = ColorUtils.translateColorCodes("&3Failed to send invite to &6{0}&3, this player might already have an invitation!").replace("{0}", invitedPlayer.getName());
+                                        String failureString = ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-failed")).replace(INVITED_PLAYER, invitedPlayer.getName());
                                         player.sendMessage(failureString);
-
                                     }
                                 }
                             }
                         }
-
                     } else {
-                        sender.sendMessage(ColorUtils.translateColorCodes("&3Please specify a player to invite!"));
+                        sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-no-valid-player")));
                     }
-
                     return true;
-
                 }
+
+//----------------------------------------------------------------------------------------------------------------------
                 if (args[0].equalsIgnoreCase("prefix")) {
                     if (args.length == 2) {
-                        if (args[1].length() >= 3 && args[1].length() <= 16) {
-                            // C/U prefix
-                            Clan playerClan = ClansStorageUtil.findClanByOwner(player);
-                            ClansStorageUtil.updatePrefix(player, args[1]);
-                            String prefixConfirmation = ColorUtils.translateColorCodes("&3Successfully changed clan prefix to &6{0}&3!").replace("{0}", playerClan.getClanPrefix());
-                            sender.sendMessage(prefixConfirmation);
-                            return true;
-                        } else if (args[1].length() > 16) {
-                            sender.sendMessage(ColorUtils.translateColorCodes("&3Clan prefix too long - maximum length is &616 characters&3."));
-                            return true;
-                        } else {
-                            sender.sendMessage(ColorUtils.translateColorCodes("&3Clan prefix too short - minimum length is 763 characters&3."));
-                            return true;
+                        if (ClansStorageUtil.isClanOwner(player)){
+                            if (args[1].length() >= 3 && args[1].length() <= 16) {
+                                // C/U prefix
+                                Clan playerClan = ClansStorageUtil.findClanByOwner(player);
+                                ClansStorageUtil.updatePrefix(player, args[1]);
+                                String prefixConfirmation = ColorUtils.translateColorCodes(messagesConfig.getString("clan-prefix-change-successful")).replace("%CLANPREFIX%", playerClan.getClanPrefix());
+                                sender.sendMessage(prefixConfirmation);
+                                return true;
+                            } else if (args[1].length() > 16) {
+                                sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-prefix-too-long")));
+                                return true;
+                            } else {
+                                sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-prefix-too-short")));
+                                return true;
+                            }
+                        }else {
+                            sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("must-be-owner-to-change-prefix")));
                         }
                     } else {
-                        sender.sendMessage(ColorUtils.translateColorCodes("&3Clan prefix too short - minimum length is &63 characters&3."));
+                        sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invalid-prefix")));
                     }
                     return true;
                 }
+
+//----------------------------------------------------------------------------------------------------------------------
                 if (args[0].equalsIgnoreCase("list")) {
-                    ArrayList clans = ClansStorageUtil.getClans();
+                    Set<Map.Entry<UUID, Clan>> clans = ClansStorageUtil.getClans();
                     StringBuilder clansString = new StringBuilder();
                     if (clans.size() == 0) {
-                        sender.sendMessage(ColorUtils.translateColorCodes("&3No clans found!"));
+                        sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("no-clans-to-list")));
                     } else {
-                        clansString.append(ColorUtils.translateColorCodes("&3&lCurrent clans:\n"));
-                        clans.forEach((clan) -> clansString.append(ColorUtils.translateColorCodes(clan + "\n")));
+                        clansString.append(ColorUtils.translateColorCodes(messagesConfig.getString("clans-list-header") + "\n"));
+                        clans.forEach((clan) ->
+                                clansString.append(ColorUtils.translateColorCodes(clan.getValue().getClanFinalName() + "\n")));
+                        clansString.append(" ");
+                        clansString.append(ColorUtils.translateColorCodes(messagesConfig.getString("clans-list-footer")));
                         sender.sendMessage(clansString.toString());
                     }
                     return true;
                 }
+
+//----------------------------------------------------------------------------------------------------------------------
                 if (args[0].equalsIgnoreCase("join")) {
-                    if (ClanInviteUtil.searchInvitee(player.getUniqueId())) {
-                        Clan clan = ClansStorageUtil.findClanByPlayer(ClanInviteUtil.getInviteOwner(player.getUniqueId()));
+                    StringBuilder inviterUUIDString = new StringBuilder();
+                    Set<Map.Entry<UUID, ClanInvite>> clanInvitesList = ClanInviteUtil.getInvites();
+                    if (ClanInviteUtil.searchInvitee(player.getUniqueId().toString())) {
+                        clanInvitesList.forEach((invites) ->
+                                inviterUUIDString.append(invites.getValue().getInviter()));
+                        Clan clan = ClansStorageUtil.findClanByOwner(ClanInviteUtil.getInviteOwner(inviterUUIDString.toString()));
                         if (clan != null) {
                             if (ClansStorageUtil.addClanMember(clan, player)) {
-                                String joinMessage = ColorUtils.translateColorCodes("&3Successfully joined &6{0}&3!").replace("{0}", clan.getClanName());
+                                String joinMessage = ColorUtils.translateColorCodes(messagesConfig.getString("clan-join-successful")).replace(CLAN_PLACEHOLDER, clan.getClanFinalName());
                                 player.sendMessage(joinMessage);
                             } else {
-                                String failureMessage = ColorUtils.translateColorCodes("§3Failed to join §6{0}§3").replace("{0}", clan.getClanName());
+                                String failureMessage = ColorUtils.translateColorCodes(messagesConfig.getString("clan-join-failed")).replace(CLAN_PLACEHOLDER, clan.getClanFinalName());
                                 player.sendMessage(failureMessage);
                             }
                         } else {
-                            player.sendMessage(ColorUtils.translateColorCodes("&3Failed to join a clan - no clan was found!"));
+                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-join-failed-no-valid-clan")));
                         }
                     } else {
-                        player.sendMessage(ColorUtils.translateColorCodes("&3Failed to join a clan - no invite was found!"));
+                        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-join-failed-no-invite")));
                     }
-
                     return true;
                 }
+
+//----------------------------------------------------------------------------------------------------------------------
                 if (args[0].equalsIgnoreCase("kick")) {
                     if (args.length == 2) {
-                        if (args[1].length() < 1) {
+                        if (args[1].length() > 1) {
                             Clan targetClan = ClansStorageUtil.findClanByOwner(player);
                             if (ClansStorageUtil.findClanByOwner(player) != null) {
                                 Player playerToKick = Bukkit.getPlayer(args[1]);
                                 if (playerToKick != null) {
-
-                                    Clan playerClan = ClansStorageUtil.findClanByPlayer(playerToKick);
-
-                                    if (targetClan.equals(playerClan)) {
-
-                                        targetClan.removeClanMember(playerToKick.getUniqueId());
-                                        String playerKickedMessage = ColorUtils.translateColorCodes("&3Player &6{0}&3 was kicked from your clan.").replace("{0}", args[1]);
-                                        player.sendMessage(playerKickedMessage);
-
-                                        if (playerToKick.isOnline()) {
-                                            String kickMessage = ColorUtils.translateColorCodes("&3You were kicked from &6{0}.").replace("{0}", targetClan.getClanName());
-                                            playerToKick.sendMessage(kickMessage);
-                                            return true;
+                                    if (!player.getName().equalsIgnoreCase(args[1])){
+                                        Clan playerClan = ClansStorageUtil.findClanByPlayer(playerToKick);
+                                        if (targetClan.equals(playerClan)) {
+                                            targetClan.removeClanMember(playerToKick.getUniqueId().toString());
+                                            String playerKickedMessage = ColorUtils.translateColorCodes(messagesConfig.getString("clan-member-kick-successful")).replace(PLAYER_TO_KICK, args[1]);
+                                            player.sendMessage(playerKickedMessage);
+                                            if (playerToKick.isOnline()) {
+                                                String kickMessage = ColorUtils.translateColorCodes(messagesConfig.getString("clan-kicked-player-message")).replace(CLAN_PLACEHOLDER, targetClan.getClanFinalName());
+                                                playerToKick.sendMessage(kickMessage);
+                                                return true;
+                                            }
+                                        }else {
+                                            String differentClanMessage = ColorUtils.translateColorCodes(messagesConfig.getString("targeted-player-is-not-in-your-clan")).replace(PLAYER_TO_KICK, args[1]);
+                                            player.sendMessage(differentClanMessage);
                                         }
-                                    } else {
-                                        String differentClanMessage = ColorUtils.translateColorCodes("§3Player §6{0}§3 is not in your clan.").replace("{0}", args[1]);
-                                        player.sendMessage(differentClanMessage);
+                                    }else {
+                                        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("failed-cannot-kick-yourself")));
                                     }
-
-                                } else {
-                                    String playerNotFound = ColorUtils.translateColorCodes("&3Could not find player &6{0}&3.").replace("{0}", args[1]);
+                                }else {
+                                    String playerNotFound = ColorUtils.translateColorCodes(messagesConfig.getString("could-not-find-specified-player")).replace(PLAYER_TO_KICK, args[1]);
                                     player.sendMessage(playerNotFound);
                                 }
-
-                            } else {
-                                player.sendMessage(ColorUtils.translateColorCodes("&3You are not an owner of a clan!"));
+                            }else {
+                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("must-be-owner-to-kick")));
                             }
-
+                        }else {
+                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("incorrect-kick-command-usage")));
                         }
                     }
                     return true;
                 }
+
+//----------------------------------------------------------------------------------------------------------------------
                 if (args[0].equalsIgnoreCase("info")) {
-
-                    Clan clan = ClansStorageUtil.findClanByPlayer(player);
-
-                    if (clan != null) {
-
-                        ArrayList<UUID> clanMembers = clan.getClanMembers();
-                        StringBuilder clanInfo = new StringBuilder(ColorUtils.translateColorCodes("&7-----\n&6&l{0}&r&7 ({1})&r").replace("{0}", clan.getClanName()).replace("{1}", clan.getClanPrefix()));
-                        Player clanOwner = Bukkit.getPlayer(clan.getClanOwner());
-
+                    Clan clanByOwner = ClansStorageUtil.findClanByOwner(player);
+                    Clan clanByPlayer = ClansStorageUtil.findClanByPlayer(player);
+                    if (clanByOwner != null) {
+                        ArrayList<String> clanMembers = clanByOwner.getClanMembers();
+                        ArrayList<String> clanAllies = clanByOwner.getClanAllies();
+                        StringBuilder clanInfo = new StringBuilder(ColorUtils.translateColorCodes(messagesConfig.getString("clan-info-header"))
+                                .replace(CLAN_PLACEHOLDER, ColorUtils.translateColorCodes(clanByOwner.getClanFinalName()))
+                                .replace("%CLANPREFIX%", ColorUtils.translateColorCodes(clanByOwner.getClanPrefix())));
+                        UUID clanOwnerUUID = UUID.fromString(clanByOwner.getClanOwner());
+                        Player clanOwner = Bukkit.getPlayer(clanOwnerUUID);
                         if (clanOwner != null) {
-                            clanInfo.append(ColorUtils.translateColorCodes("\n\n&3Owner: &a{0}").replace("{0}", clanOwner.getName()));
-                        } else {
-                            String offlineOwner = Bukkit.getOfflinePlayer(clan.getClanOwner()).getName();
-                            clanInfo.append(ColorUtils.translateColorCodes("\n\n&3Owner: &c{0}").replace("{0}", offlineOwner));
+                            clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-info-owner-online")).replace(CLAN_OWNER, clanOwner.getName()));
+                        }else {
+                            UUID uuid = UUID.fromString(clanByOwner.getClanOwner());
+                            String offlineOwner = Bukkit.getOfflinePlayer(uuid).getName();
+                            clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-info-owner-offline")).replace(CLAN_OWNER, offlineOwner));
                         }
-
                         if (clanMembers.size() > 0) {
-
-                            clanInfo.append(ColorUtils.translateColorCodes("\n\n&3Members:"));
-
-                            for (UUID clanMember : clanMembers) {
-
+                            clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-info-members-header")));
+                            for (String clanMember : clanMembers) {
                                 if (clanMember != null) {
-
-                                    Player clanPlayer = Bukkit.getPlayer(clanMember);
-
+                                    UUID memberUUID = UUID.fromString(clanMember);
+                                    Player clanPlayer = Bukkit.getPlayer(memberUUID);
                                     if (clanPlayer != null) {
-
-                                        clanInfo.append(ColorUtils.translateColorCodes("\n&a{0}").replace("{0}", clanPlayer.getName()));
-
+                                        clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-info-members-online") + "\n").replace(CLAN_MEMBER, clanPlayer.getName()));
                                     } else {
-
-                                        String offlinePlayer = Bukkit.getOfflinePlayer(clanMember).getName();
-                                        clanInfo.append(ColorUtils.translateColorCodes("\n&c{0}").replace("{0}", offlinePlayer));
-
+                                        UUID uuid = UUID.fromString(clanMember);
+                                        String offlinePlayer = Bukkit.getOfflinePlayer(uuid).getName();
+                                        clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-info-members-offline") + "\n").replace(CLAN_MEMBER, offlinePlayer));
                                     }
                                 }
 
                             }
                         }
-
+                        if (clanAllies.size() > 0){
+                            clanInfo.append(" ");
+                            clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-info-allies-header")));
+                            for (String clanAlly : clanAllies){
+                                if (clanAlly != null){
+                                    Player allyOwner = Bukkit.getPlayer(clanAlly);
+                                    if (allyOwner != null){
+                                        Clan allyClan = ClansStorageUtil.findClanByOwner(allyOwner);
+                                        String clanAllyName = allyClan.getClanFinalName();
+                                        clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-ally-members").replace(ALLY_CLAN, clanAllyName)));
+                                    }else {
+                                        UUID uuid = UUID.fromString(clanAlly);
+                                        OfflinePlayer offlineOwnerPlayer = Bukkit.getOfflinePlayer(uuid);
+                                        Clan offlineAllyClan = ClansStorageUtil.findClanByOfflineOwner(offlineOwnerPlayer);
+                                        String offlineAllyName = offlineAllyClan.getClanFinalName();
+                                        clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-ally-members").replace(ALLY_CLAN, offlineAllyName)));
+                                    }
+                                }
+                            }
+                        }
+                        clanInfo.append(" ");
+                        clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-info-footer")));
                         player.sendMessage(clanInfo.toString());
+                    }else if (clanByPlayer != null){
+                        ArrayList<String> clanMembers = clanByPlayer.getClanMembers();
+                        ArrayList<String> clanAllies = clanByPlayer.getClanAllies();
+                        StringBuilder clanInfo = new StringBuilder(ColorUtils.translateColorCodes(messagesConfig.getString("clan-info-header"))
+                                .replace(CLAN_PLACEHOLDER, ColorUtils.translateColorCodes(clanByPlayer.getClanFinalName()))
+                                .replace("%CLANPREFIX%", ColorUtils.translateColorCodes(clanByPlayer.getClanPrefix())));
+                        UUID clanOwnerUUID = UUID.fromString(clanByPlayer.getClanOwner());
+                        Player clanOwner = Bukkit.getPlayer(clanOwnerUUID);
+                        if (clanOwner != null) {
+                            clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-info-owner-online")).replace(CLAN_OWNER, clanOwner.getName()));
+                        } else {
+                            UUID uuid = UUID.fromString(clanByPlayer.getClanOwner());
+                            String offlineOwner = Bukkit.getOfflinePlayer(uuid).getName();
+                            clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-info-owner-offline")).replace(CLAN_OWNER, offlineOwner));
+                        }
+                        if (clanMembers.size() > 0) {
+                            clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-info-members-header")));
+                            for (String clanMember : clanMembers) {
+                                if (clanMember != null) {
+                                    UUID memberUUID = UUID.fromString(clanMember);
+                                    Player clanPlayer = Bukkit.getPlayer(memberUUID);
+                                    if (clanPlayer != null) {
+                                        clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-info-members-online") + "\n").replace(CLAN_MEMBER, clanPlayer.getName()));
+                                    } else {
+                                        UUID uuid = UUID.fromString(clanMember);
+                                        String offlinePlayer = Bukkit.getOfflinePlayer(uuid).getName();
+                                        clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-info-members-offline") + "\n").replace(CLAN_MEMBER, offlinePlayer));
+                                    }
+                                }
 
-                    } else {
-                        player.sendMessage(ColorUtils.translateColorCodes("&3You are not in a clan!"));
+                            }
+                        }
+                        if (clanAllies.size() > 0){
+                            clanInfo.append(" ");
+                            clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-info-allies-header")));
+                            for (String clanAlly : clanAllies){
+                                if (clanAlly != null){
+                                    Player allyOwner = Bukkit.getPlayer(clanAlly);
+                                    if (allyOwner != null){
+                                        Clan allyClan = ClansStorageUtil.findClanByOwner(allyOwner);
+                                        String clanAllyName = allyClan.getClanFinalName();
+                                        clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-ally-members").replace(ALLY_CLAN, clanAllyName)));
+                                    }else {
+                                        UUID uuid = UUID.fromString(clanAlly);
+                                        OfflinePlayer offlineOwnerPlayer = Bukkit.getOfflinePlayer(uuid);
+                                        Clan offlineAllyClan = ClansStorageUtil.findClanByOfflineOwner(offlineOwnerPlayer);
+                                        String offlineAllyName = offlineAllyClan.getClanFinalName();
+                                        clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-ally-members").replace(ALLY_CLAN, offlineAllyName)));
+                                    }
+                                }
+                            }
+                        }
+                        clanInfo.append(" ");
+                        clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-info-footer")));
+                        player.sendMessage(clanInfo.toString());
+                    }else {
+                        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("not-in-clan")));
                     }
                     return true;
                 }
+
+//----------------------------------------------------------------------------------------------------------------------
                 if (args[0].equalsIgnoreCase("leave")) {
                     if (ClansStorageUtil.findClanByOwner(player) != null) {
-                        player.sendMessage(ColorUtils.translateColorCodes("&3You are the owner of a clan, use &6/clan disband&3."));
+                        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("failed-clan-owner")));
+                        return true;
                     }
                     Clan targetClan = ClansStorageUtil.findClanByPlayer(player);
                     if (targetClan != null) {
-                        if (targetClan.removeClanMember(player.getUniqueId())) {
-                            String leaveMessage = ColorUtils.translateColorCodes("&3You have left &6{0}.").replace("{0}", targetClan.getClanName());
+                        if (targetClan.removeClanMember(player.getUniqueId().toString())) {
+                            String leaveMessage = ColorUtils.translateColorCodes(messagesConfig.getString("clan-leave-successful")).replace(CLAN_PLACEHOLDER, targetClan.getClanFinalName());
                             player.sendMessage(leaveMessage);
                         } else {
-                            player.sendMessage(ColorUtils.translateColorCodes("&3Failed to leave clan, please try again later."));
+                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-leave-failed")));
                         }
                     }
                     return true;
-                } else {
-                    player.sendMessage(ColorUtils.translateColorCodes("&3Unrecognised argument please use &6/clan&3."));
+                }
+
+//----------------------------------------------------------------------------------------------------------------------
+                if (args[0].equalsIgnoreCase("ally")){
+                    if (args.length > 2){
+                        if (args[1].equalsIgnoreCase("add")){
+                            if (args[2].length() > 1){
+                                if (ClansStorageUtil.isClanOwner(player)){
+                                    if (ClansStorageUtil.findClanByOwner(player) != null) {
+                                        Player allyClanOwner = Bukkit.getPlayer(args[2]);
+                                        if (allyClanOwner != null){
+                                            if (ClansStorageUtil.findClanByOwner(allyClanOwner) != null){
+                                                if (ClansStorageUtil.findClanByOwner(player) != ClansStorageUtil.findClanByOwner(allyClanOwner)){
+                                                    if (ClansStorageUtil.findClanByOwner(player).getClanMembers().size() >= clansConfig.getInt("max-clan-allies")){
+                                                        Integer maxSize = clansConfig.getInt("max-clan-allies");
+                                                        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-ally-max-amount-reached")).replace("%LIMIT%", maxSize.toString()));
+                                                        return true;
+                                                    }
+                                                    ClansStorageUtil.addClanAlly(player, allyClanOwner);
+                                                    Clan allyClan = ClansStorageUtil.findClanByOwner(allyClanOwner);
+                                                    player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("added-clan-to-your-allies").replace(ALLY_CLAN, allyClan.getClanFinalName())));
+                                                    if (allyClanOwner.isOnline()){
+                                                        allyClanOwner.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-added-to-other-allies").replace(CLAN_OWNER, player.getName())));
+                                                    }else {
+                                                        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("failed-to-add-clan-to-allies").replace(ALLY_OWNER, args[2])));
+                                                    }
+                                                }else {
+                                                    player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("failed-cannot-ally-your-own-clan")));
+                                                }
+                                            }else {
+                                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("failed-player-not-clan-owner").replace(ALLY_OWNER, args[2])));
+                                            }
+                                        }else {
+                                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("ally-clan-add-owner-offline").replace(ALLY_OWNER, args[2])));
+                                        }
+                                    }
+                                }else {
+                                    player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-must-be-owner")));
+                                }
+                            }else {
+                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("incorrect-clan-ally-command-usage")));
+                            }
+                        }else if (args[1].equalsIgnoreCase("remove")){
+                            if (args[2].length() > 1){
+                                if (ClansStorageUtil.isClanOwner(player)){
+                                    if (ClansStorageUtil.findClanByOwner(player) != null){
+                                        Player allyClanOwner = Bukkit.getPlayer(args[2]);
+                                        if (allyClanOwner != null){
+                                            if (ClansStorageUtil.findClanByOwner(allyClanOwner) != null){
+                                                Clan allyClan = ClansStorageUtil.findClanByOwner(allyClanOwner);
+                                                List<String> alliedClans = ClansStorageUtil.findClanByOwner(player).getClanAllies();
+                                                if (alliedClans.contains(args[2])){
+                                                    ClansStorageUtil.removeClanAlly(player, allyClanOwner);
+                                                    player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("removed-clan-from-your-allies").replace(ALLY_CLAN, allyClan.getClanFinalName())));
+                                                    if (allyClanOwner.isOnline()){
+                                                        allyClanOwner.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-removed-from-other-allies").replace(CLAN_OWNER, player.getName())));
+                                                    }
+                                                }else {
+                                                    player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("failed-to-remove-clan-from-allies").replace(ALLY_OWNER, args[2])));
+                                                }
+                                            }else {
+                                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("failed-player-not-clan-owner").replace(ALLY_OWNER, args[2])));
+                                            }
+                                        }else {
+                                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("ally-clan-remove-owner-offline").replace(ALLY_OWNER, args[2])));
+                                        }
+                                    }
+                                }else {
+                                    player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-must-be-owner")));
+                                }
+                            }else {
+                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("incorrect-clan-ally-command-usage")));
+                            }
+                        }
+                    }else {
+                        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("incorrect-clan-ally-command-usage")));
+                    }
+                }
+
+//----------------------------------------------------------------------------------------------------------------------
+                else {
+                    player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("incorrect-command-usage")));
                 }
             }
-
         }
 
+//----------------------------------------------------------------------------------------------------------------------
         if (sender instanceof ConsoleCommandSender) {
-            logger.warning(ColorUtils.translateColorCodes("&4Sorry, that command can only be run by a player!"));
+            logger.warning(ColorUtils.translateColorCodes(messagesConfig.getString("player-only-command")));
         }
-
         // If the player (or console) uses our command correct, we can return true
         return true;
     }
-
 }

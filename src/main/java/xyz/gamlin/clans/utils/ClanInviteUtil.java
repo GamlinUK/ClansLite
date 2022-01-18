@@ -4,57 +4,50 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import xyz.gamlin.clans.models.ClanInvite;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.UUID;
+import java.util.*;
 
 public class ClanInviteUtil {
 
-    private static ArrayList<ClanInvite> clansInvites = new ArrayList<>();
+    private static Map<UUID, ClanInvite> invitesList = new HashMap<>();
     
-    public static ClanInvite createInvite(UUID inviter, UUID invitee) {
-
-        // Remove expired invites
+    public static ClanInvite createInvite(String inviterUUID, String inviteeUUID){
+        UUID uuid = UUID.fromString(inviterUUID);
         clearExpiredInvites();
-
-        // If a clan invite is already pending
-        if (searchInvitee(invitee)) {
-            return null;
+        if (!invitesList.containsKey(uuid)){
+            invitesList.put(uuid, new ClanInvite(inviterUUID, inviteeUUID));
+            return invitesList.get(uuid);
         }
-
-        ClanInvite clanInvite = new ClanInvite(inviter, invitee);
-        clansInvites.add(clanInvite);
-
-        return clanInvite;
+        return null;
     }
-    
-    public static boolean searchInvitee(UUID invitee) {
-        for (ClanInvite invite : clansInvites) {
-            if (invite.getInvitee().equals(invitee)) {
+
+    public static boolean searchInvitee(String inviteeUUID){
+        for (ClanInvite invite : invitesList.values()){
+            if (invite.getInvitee().equals(inviteeUUID)){
                 return true;
             }
         }
         return false;
     }
 
-    public static void clearExpiredInvites() {
+    public static void clearExpiredInvites(){
         int expiryTime = 25 * 1000;
         Date currentTime = new Date();
-        clansInvites.removeIf(invite -> (currentTime.getTime() - invite.getInviteTime().getTime()) > expiryTime);
-    }
-
-    public static Player getInviteOwner(UUID invitee) {
-        for (ClanInvite invite : clansInvites) {
-            if (invite.getInvitee() == invitee) {
-                return Bukkit.getPlayer(invite.getInviter());
+        for (ClanInvite clanInvite : invitesList.values()){
+            if (currentTime.getTime() - clanInvite.getInviteTime().getTime() > expiryTime){
+                invitesList.remove(clanInvite);
             }
         }
+    }
 
+    public static Set<Map.Entry<UUID, ClanInvite>> getInvites(){
+        return invitesList.entrySet();
+    }
+
+    public static Player getInviteOwner(String inviteeUUID){
+        UUID uuid = UUID.fromString(inviteeUUID);
+        if (invitesList.containsKey(uuid)){
+            return Bukkit.getPlayer(uuid);
+        }
         return null;
     }
-
-    public void removeInvite(UUID invitee) {
-        clansInvites.removeIf(invite -> invite.getInvitee().equals(invitee));
-    }
-
 }

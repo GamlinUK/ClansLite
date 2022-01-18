@@ -1,6 +1,7 @@
 package xyz.gamlin.clans.utils;
 
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 import xyz.gamlin.clans.Clans;
 
 import java.io.IOException;
@@ -9,6 +10,7 @@ import java.util.logging.Logger;
 public class TaskTimerUtils {
 
     static Logger logger = Clans.getPlugin().getLogger();
+    private static final FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
 
     public static Integer taskID1;
     public static Integer taskID2;
@@ -21,9 +23,9 @@ public class TaskTimerUtils {
                 if (time == 1){
                     try {
                         ClansStorageUtil.saveClans();
-                        logger.info("&6ClansLite: &aSaved all Clans to file!");
+                        logger.info(ColorUtils.translateColorCodes(messagesConfig.getString("auto-save-complete")));
                     } catch (IOException e) {
-                        logger.severe("&6ClansLite: &4Failed to save clans.json to file!");
+                        logger.severe(ColorUtils.translateColorCodes(messagesConfig.getString("auto-save-failed")));
                         e.printStackTrace();
                     }
                     runClansAutoSaveTwo();
@@ -45,9 +47,9 @@ public class TaskTimerUtils {
                 if (time == 1){
                     try {
                         ClansStorageUtil.saveClans();
-                        logger.info("&6ClansLite: &aSaved all Clans to file!");
+                        logger.info(ColorUtils.translateColorCodes(messagesConfig.getString("auto-save-complete")));
                     } catch (IOException e) {
-                        logger.severe("&6ClansLite: &4Failed to save clans.json to file!");
+                        logger.severe(ColorUtils.translateColorCodes(messagesConfig.getString("auto-save-failed")));
                         e.printStackTrace();
                     }
                     runClansAutoSaveOne();

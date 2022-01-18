@@ -1,83 +1,113 @@
 package xyz.gamlin.clans.utils;
 
-import com.google.gson.Gson;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import xyz.gamlin.clans.Clans;
 import xyz.gamlin.clans.models.Clan;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.UUID;
+import java.io.IOException;
+import java.util.*;
 
 public class ClansStorageUtil {
 
-    private static ArrayList<Clan> clans = new ArrayList<>();
+    private static Map<UUID, Clan> clansList = new HashMap<>();
 
-    public static Clan createClan(Player player, String clanName) {
-        if (findClanByPlayer(player) != null) {
-            return null;
-        }
-        if (findClanByName(clanName) != null) {
-            return null;
-        }
+    private static final FileConfiguration clansStorage = Clans.getPlugin().clansFileManager.getClansConfig();
+    private static final FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
 
-        Clan clan = new Clan(player.getUniqueId(), clanName);
-        clans.add(clan);
-        try {
-            saveClans();
-        } catch (IOException e) {
-            e.printStackTrace();
+    public static void saveClans() throws IOException {
+        for (Map.Entry<UUID, Clan> entry : clansList.entrySet()){
+            clansStorage.set("clans.data." + entry.getKey() + ".clanOwner", entry.getValue().getClanOwner());
+            clansStorage.set("clans.data." + entry.getKey() + ".clanFinalName", entry.getValue().getClanFinalName());
+            clansStorage.set("clans.data." + entry.getKey() + ".clanPrefix", entry.getValue().getClanPrefix());
+            clansStorage.set("clans.data." + entry.getKey() + ".clanMembers", entry.getValue().getClanMembers());
+            clansStorage.set("clans.data." + entry.getKey() + ".clanAllies", entry.getValue().getClanAllies());
         }
-        return clan;
+        Clans.getPlugin().clansFileManager.saveClansConfig();
     }
 
-    public static boolean deleteClan(Player player) {
-        for (Clan clan : clans) {
-            if (clan.getClanOwner().equals(player.getUniqueId())) {
-                clans.remove(clan);
-                return true;
-            }
-        }
-        try {
-            saveClans();
-        } catch (IOException e) {
-            e.printStackTrace();
+    public static void restoreClans() throws IOException {
+        clansStorage.getConfigurationSection("clans.data").getKeys(false).forEach(key ->{
+            UUID uuid = UUID.fromString(key);
+            String clanFinalName = clansStorage.getString("clans.data." + key + ".clanFinalName");
+            String clanPrefix = clansStorage.getString("clans.data." + key + ".clanPrefix");
+            List<String> clanMembersConfigSection = clansStorage.getStringList("clans.data." + key + ".clanMembers");
+            List<String> clanAlliesConfigSection = clansStorage.getStringList("clans.data." + key + ".clanAllies");
+            ArrayList<String> clanMembers = new ArrayList<>(clanMembersConfigSection);
+            ArrayList<String> clanAllies = new ArrayList<>(clanAlliesConfigSection);
+            Clan clan = new Clan(key, clanFinalName);
+            clan.setClanPrefix(clanPrefix);
+            clan.setClanMembers(clanMembers);
+            clan.setClanAllies(clanAllies);
+            clansList.put(uuid, clan);
+        });
+    }
+
+    public static void createClan(Player player, String clanName){
+        UUID ownerUUID = player.getUniqueId();
+        String ownerUuidString = player.getUniqueId().toString();
+        clansList.put(ownerUUID, new Clan(ownerUuidString, clanName));
+    }
+
+    public static boolean isClanExisting(Player player){
+        UUID uuid = player.getUniqueId();
+        if (clansList.containsKey(uuid)){
+            return true;
         }
         return false;
     }
 
-    public static boolean addClanMember(Clan clan, Player player) {
-        if (clan.addClanMember(player.getUniqueId())) {
-            try {
-                saveClans();
-            } catch (IOException e) {
-                e.printStackTrace();
+    public static boolean deleteClan(Player player) throws IOException{
+        UUID uuid = player.getUniqueId();
+        String key = uuid.toString();
+        if (findClanByOwner(player) != null){
+            if (isClanOwner(player)){
+             clansList.remove(uuid);
+             clansStorage.set("clans.data." + key, null);
+             Clans.getPlugin().clansFileManager.saveClansConfig();
             }
-
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
-    public static Clan findClanByOwner(Player player) {
-        for (Clan clan : clans) {
-            if (clan.getClanOwner().equals(player.getUniqueId())) {
-                return clan;
+    public static boolean isClanOwner(Player player){
+        UUID uuid = player.getUniqueId();
+        String ownerUUID = uuid.toString();
+        Clan clan = clansList.get(uuid);
+        if (clan != null){
+            if (clan.getClanOwner() == null){
+                return false;
+            }else {
+                if (clan.getClanOwner().equals(ownerUUID)){
+                    return true;
+                }
             }
         }
-        return null;
+        return false;
     }
 
-    public static Clan findClanByPlayer(Player player) {
-        for (Clan clan : clans) {
+    public static Clan findClanByOwner(Player player){
+        UUID uuid = player.getUniqueId();
+        Clan clan = clansList.get(uuid);
+        return clan;
+    }
+
+    public static Clan findClanByOfflineOwner(OfflinePlayer offlinePlayer){
+        UUID uuid = offlinePlayer.getUniqueId();
+        Clan clan = clansList.get(uuid);
+        return clan;
+    }
+
+    public static Clan findClanByPlayer(Player player){
+        for (Clan clan : clansList.values()){
             if (findClanByOwner(player) != null) {
                 return clan;
             }
             if (clan.getClanMembers() != null) {
-                for (UUID member : clan.getClanMembers()) {
-                    if (member.equals(player.getUniqueId())) {
+                for (String member : clan.getClanMembers()) {
+                    if (member.equals(player.getUniqueId().toString())) {
                         return clan;
                     }
                 }
@@ -86,76 +116,44 @@ public class ClansStorageUtil {
         return null;
     }
 
-    public static Clan findClanByName(String name) {
-        for (Clan clan : clans) {
-            if (clan.getClanName().equals(name)) {
-                return clan;
-            }
+    public static void updatePrefix(Player player, String prefix){
+        UUID uuid = player.getUniqueId();
+        if (!isClanOwner(player)){
+            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-must-be-owner")));
+            return;
         }
-        return null;
+        Clan clan = clansList.get(uuid);
+        clan.setClanPrefix(prefix);
     }
 
-    public static boolean updatePrefix(Player player, String newPrefix) {
-        Clan playerClan = findClanByOwner(player);
-        if (playerClan != null) {
-            playerClan.setClanPrefix(newPrefix);
-            try {
-                saveClans();
-                return true;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return false;
+    public static boolean addClanMember(Clan clan, Player player){
+        UUID uuid = player.getUniqueId();
+        String memberUUID = uuid.toString();
+        clan.addClanMember(memberUUID);
+        return true;
     }
 
-    public static void saveClans() throws IOException {
-        Gson gson = new Gson();
-        File file = new File(Clans.getPlugin().getDataFolder().getAbsolutePath() + "/clans.json");
-        file.getParentFile().mkdir();
-        file.createNewFile();
-        Writer writer = new FileWriter(file, false);
-        gson.toJson(clans, writer);
-        writer.flush();
-        writer.close();
+    public static Set<Map.Entry<UUID, Clan>> getClans(){
+        return clansList.entrySet();
     }
 
-    public static ArrayList<Clan> getClansRaw() {
-        return clans;
+    public static Set<UUID> getRawClansList(){
+        return clansList.keySet();
     }
 
-    public static ArrayList getClans() {
-        ArrayList clanData = new ArrayList();
-        for (Clan clan : clans) {
-            String clanName = clan.getClanName();
-            ArrayList<UUID> clanSize = clan.getClanMembers();
-            String clanSizeString = "";
-            String clanMembers = String.valueOf(clanSize.size() + 1);
-            if (clanSize == null) {
-                clanSizeString = ColorUtils.translateColorCodes("{0} &3member").replace("{0}", "1");
-            } else {
-                clanSizeString = ColorUtils.translateColorCodes("{0} &3members").replace("{0}", clanMembers);
-            }
-            String clanInfo = ColorUtils.translateColorCodes("&6{0} &3 - {1}").replace("{0}", clanName).replace("{1}", clanSizeString);
-            clanData.add(clanInfo);
-        }
-        return clanData;
+    public static void addClanAlly(Player clanOwner, Player allyClanOwner){
+        UUID ownerUUID = clanOwner.getUniqueId();
+        UUID uuid = allyClanOwner.getUniqueId();
+        String allyUUID = uuid.toString();
+        Clan clan = clansList.get(ownerUUID);
+        clan.addClanAlly(allyUUID);
     }
 
-    public static Boolean playerIsInClan(Player player) {
-        return findClanByPlayer(player) != null;
+    public static void removeClanAlly(Player clanOwner, Player allyClanOwner){
+        UUID ownerUUID = clanOwner.getUniqueId();
+        UUID uuid = allyClanOwner.getUniqueId();
+        String allyUUID = uuid.toString();
+        Clan clan = clansList.get(ownerUUID);
+        clan.removeClanAlly(allyUUID);
     }
-
-    public static void loadClans() throws IOException {
-        Gson gson = new Gson();
-        File file = new File(Clans.getPlugin().getDataFolder().getAbsolutePath() + "/clans.json");
-        if (file.exists()) {
-            Reader reader = new FileReader(file);
-            Clan[] n = gson.fromJson(reader, Clan[].class);
-            clans = new ArrayList<>(Arrays.asList(n));
-        }
-
-    }
-
 }
