@@ -39,7 +39,7 @@ public class ClanAdmin implements CommandExecutor {
                     Clans.getPlugin().messagesFileManager.reloadMessagesConfig();
                     sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("plugin-reload-successful")));
                 }
-            } else {
+            }else {
                 sender.sendMessage(ColorUtils.translateColorCodes(
                         "&6ClansLite usage:&3" +
                                 "\n/clan save" +
