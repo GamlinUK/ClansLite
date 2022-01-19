@@ -43,6 +43,6 @@ The two available placeholders are:
 * `%clansLite_clanName%`
 * `%clansLite_clanPrefix%`
 
-To be able to use these The latest release of `PlaceholderAPI` MUST be installed!  Without it, only the above `{CLAN}` will be available.
+To be able to use these The latest release of [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/) MUST be installed!  Without it, only the above `{CLAN}` will be available.
 
 ###This plugin is in a Beta stage and caution should be used when using it on production servers, please report any issues in GitHub and feel free to join my [discord](https://discord.gg/ZECTYBw5qr).
