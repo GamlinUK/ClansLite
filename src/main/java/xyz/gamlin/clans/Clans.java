@@ -5,6 +5,7 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.gamlin.clans.commands.ClanAdmin;
 import xyz.gamlin.clans.commands.ClanCommand;
+import xyz.gamlin.clans.expansions.PlayerClanExpansion;
 import xyz.gamlin.clans.files.ClansFileManager;
 import xyz.gamlin.clans.files.MessagesFileManager;
 import xyz.gamlin.clans.listeners.ClanChat;
@@ -81,6 +82,20 @@ public final class Clans extends JavaPlugin {
 
         //Register the plugin events
         this.getServer().getPluginManager().registerEvents(new ClanChat(), this);
+
+        //Register PlaceHolderAPI hooks
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null){
+            new PlayerClanExpansion(this).register();
+            logger.info(ColorUtils.translateColorCodes("-------------------------------------------"));
+            logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3PlaceholderAPI found!"));
+            logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3External placeholders enabled!"));
+            logger.info(ColorUtils.translateColorCodes("-------------------------------------------"));
+        }else {
+            logger.warning(ColorUtils.translateColorCodes("-------------------------------------------"));
+            logger.warning(ColorUtils.translateColorCodes("&6ClansLite: &cPlaceholderAPI not found!"));
+            logger.warning(ColorUtils.translateColorCodes("&6ClansLite: &cExternal placeholders disabled!"));
+            logger.warning(ColorUtils.translateColorCodes("-------------------------------------------"));
+        }
 
         //Plugin startup message
         logger.info(ColorUtils.translateColorCodes("-------------------------------------------"));

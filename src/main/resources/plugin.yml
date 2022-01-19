@@ -6,6 +6,7 @@ prefix: ClansLite
 authors: [ Gamlin, Loving11ish ]
 description: A simple clans plugin for Minecraft.
 website: https://gamlin.xyz
+softdepend: [PlaceholderAPI]
 commands:
   clan:
     description: Create, delete and manage clans!

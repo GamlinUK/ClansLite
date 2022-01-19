@@ -116,6 +116,22 @@ public class ClansStorageUtil {
         return null;
     }
 
+    public static Clan findClanByOfflinePlayer(OfflinePlayer player){
+        for (Clan clan : clansList.values()){
+            if (findClanByOfflineOwner(player) != null){
+                return clan;
+            }
+            if (clan.getClanMembers() != null){
+                for (String member : clan.getClanMembers()){
+                    if (member.equals(player.getUniqueId().toString())){
+                        return clan;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
     public static void updatePrefix(Player player, String prefix){
         UUID uuid = player.getUniqueId();
         if (!isClanOwner(player)){
