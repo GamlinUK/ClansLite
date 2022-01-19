@@ -31,6 +31,7 @@ ClansLite comes with 2 permissions:
 
 ## Config
 The max clan size (by default is 8), can be managed in the `plugins/ClansLite/config.yml` file.
+
 The max clan allies (by default is 4), can be managed in the `plugins/ClansLite/config.yml` file.
 
 ## Chat prefix
