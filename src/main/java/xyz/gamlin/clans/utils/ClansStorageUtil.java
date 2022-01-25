@@ -23,6 +23,7 @@ public class ClansStorageUtil {
             clansStorage.set("clans.data." + entry.getKey() + ".clanPrefix", entry.getValue().getClanPrefix());
             clansStorage.set("clans.data." + entry.getKey() + ".clanMembers", entry.getValue().getClanMembers());
             clansStorage.set("clans.data." + entry.getKey() + ".clanAllies", entry.getValue().getClanAllies());
+            clansStorage.set("clans.data." + entry.getKey() + ".friendlyFire", entry.getValue().isFriendlyFireAllowed());
         }
         Clans.getPlugin().clansFileManager.saveClansConfig();
     }
@@ -36,10 +37,12 @@ public class ClansStorageUtil {
             List<String> clanAlliesConfigSection = clansStorage.getStringList("clans.data." + key + ".clanAllies");
             ArrayList<String> clanMembers = new ArrayList<>(clanMembersConfigSection);
             ArrayList<String> clanAllies = new ArrayList<>(clanAlliesConfigSection);
+            boolean friendlyFire = clansStorage.getBoolean("clans.data." + key + ".friendlyFire");
             Clan clan = new Clan(key, clanFinalName);
             clan.setClanPrefix(clanPrefix);
             clan.setClanMembers(clanMembers);
             clan.setClanAllies(clanAllies);
+            clan.setFriendlyFireAllowed(friendlyFire);
             clansList.put(uuid, clan);
         });
     }

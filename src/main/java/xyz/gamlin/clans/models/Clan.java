@@ -9,6 +9,7 @@ public class Clan {
     private String clanPrefix;
     private ArrayList<String> clanMembers;
     private ArrayList<String> clanAllies;
+    private boolean friendlyFire;
 
 
     public Clan(String clanOwner, String clanName) {
@@ -17,15 +18,11 @@ public class Clan {
         clanPrefix = clanFinalName;
         clanMembers = new ArrayList<>();
         clanAllies = new ArrayList<>();
+        friendlyFire = true;
     }
 
     public String getClanOwner() {
         return clanFinalOwner;
-    }
-
-    @Deprecated
-    public void setClanOwner(String clanOwner) {
-        clanFinalOwner = clanOwner;
     }
 
     public String getClanFinalName() {
@@ -74,5 +71,13 @@ public class Clan {
 
     public void setClanAllies(ArrayList<String> clanAlliesList) {
         clanAllies = clanAlliesList;
+    }
+
+    public boolean isFriendlyFireAllowed() {
+        return friendlyFire;
+    }
+
+    public void setFriendlyFireAllowed(boolean friendlyFire) {
+        this.friendlyFire = friendlyFire;
     }
 }

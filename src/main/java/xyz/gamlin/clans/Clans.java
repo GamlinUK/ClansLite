@@ -9,6 +9,7 @@ import xyz.gamlin.clans.expansions.PlayerClanExpansion;
 import xyz.gamlin.clans.files.ClansFileManager;
 import xyz.gamlin.clans.files.MessagesFileManager;
 import xyz.gamlin.clans.listeners.ClanChat;
+import xyz.gamlin.clans.listeners.PlayerDamage;
 import xyz.gamlin.clans.utils.ClansStorageUtil;
 import xyz.gamlin.clans.utils.ColorUtils;
 import xyz.gamlin.clans.utils.TaskTimerUtils;
@@ -82,6 +83,7 @@ public final class Clans extends JavaPlugin {
 
         //Register the plugin events
         this.getServer().getPluginManager().registerEvents(new ClanChat(), this);
+        this.getServer().getPluginManager().registerEvents(new PlayerDamage(), this);
 
         //Register PlaceHolderAPI hooks
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null){

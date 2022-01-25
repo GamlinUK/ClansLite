@@ -42,8 +42,8 @@ public class ClanAdmin implements CommandExecutor {
             }else {
                 sender.sendMessage(ColorUtils.translateColorCodes(
                         "&6ClansLite usage:&3" +
-                                "\n/clan save" +
-                                "\n/clan reload"
+                                "\n/clanadmin save" +
+                                "\n/clanadmin reload"
                 ));
             }
         }
@@ -67,6 +67,12 @@ public class ClanAdmin implements CommandExecutor {
                     Clans.getPlugin().messagesFileManager.reloadMessagesConfig();
                     logger.info(ColorUtils.translateColorCodes(messagesConfig.getString("plugin-reload-successful")));
                 }
+            }else {
+                sender.sendMessage(ColorUtils.translateColorCodes(
+                        "&6ClansLite usage:&3" +
+                                "\n/clanadmin save" +
+                                "\n/clanadmin reload"
+                ));
             }
         }
         return true;

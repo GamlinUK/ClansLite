@@ -28,7 +28,7 @@ public class PlayerClanExpansion extends PlaceholderExpansion {
 
     @Override
     public @NotNull String getVersion() {
-        return "1.0.0";
+        return "1.0.2";
     }
 
     @Override
@@ -40,7 +40,7 @@ public class PlayerClanExpansion extends PlaceholderExpansion {
     public String onRequest(OfflinePlayer player, String params) {
         Clan clanOwner = ClansStorageUtil.findClanByOfflineOwner(player);
         Clan clanMember = ClansStorageUtil.findClanByOfflinePlayer(player);
-        if(params.equalsIgnoreCase("clanName")){
+        if (params.equalsIgnoreCase("clanName")){
             if (clanOwner != null){
                 return ColorUtils.translateColorCodes(clanOwner.getClanFinalName() + "&r ");
             }else if (clanMember != null){
@@ -49,11 +49,20 @@ public class PlayerClanExpansion extends PlaceholderExpansion {
                 return "";
             }
         }
-        if(params.equalsIgnoreCase("clanPrefix")) {
+        if (params.equalsIgnoreCase("clanPrefix")){
             if (clanOwner != null){
                 return ColorUtils.translateColorCodes(clanOwner.getClanPrefix() + "&r ");
             }else if (clanMember != null){
                 return ColorUtils.translateColorCodes(clanMember.getClanPrefix() + "&r ");
+            }else {
+                return "";
+            }
+        }
+        if (params.equalsIgnoreCase("friendlyFire")){
+            if (clanOwner != null){
+                return String.valueOf(clanOwner.isFriendlyFireAllowed());
+            }else if (clanMember != null){
+                return String.valueOf(clanMember.isFriendlyFireAllowed());
             }else {
                 return "";
             }

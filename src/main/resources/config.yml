@@ -10,3 +10,8 @@
 # Clans config for ${version}
 max-clan-size: 8
 max-clan-allies: 4
+
+#Clan protections
+protections:
+  pvp:
+    pvp-command-enabled: true

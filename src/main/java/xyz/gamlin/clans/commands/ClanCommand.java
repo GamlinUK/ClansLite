@@ -47,7 +47,8 @@ public class ClanCommand implements CommandExecutor {
                                 "\n/clan info" +
                                 "\n/clan list" +
                                 "\n/clan prefix <prefix>" +
-                                "\n/clan ally [add|remove] <clan-owner>"
+                                "\n/clan ally [add|remove] <clan-owner>" +
+                                "\n/clan pvp"
                 ));
             }else {
 
@@ -309,8 +310,14 @@ public class ClanCommand implements CommandExecutor {
                             }
                         }
                         clanInfo.append(" ");
+                        if (clanByOwner.isFriendlyFireAllowed()){
+                            clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-pvp-status-enabled")));
+                        }else {
+                            clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-pvp-status-disabled")));
+                        }
                         clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-info-footer")));
                         player.sendMessage(clanInfo.toString());
+
                     }else if (clanByPlayer != null){
                         ArrayList<String> clanMembers = clanByPlayer.getClanMembers();
                         ArrayList<String> clanAllies = clanByPlayer.getClanAllies();
@@ -364,6 +371,11 @@ public class ClanCommand implements CommandExecutor {
                             }
                         }
                         clanInfo.append(" ");
+                        if (clanByPlayer.isFriendlyFireAllowed()){
+                            clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-pvp-status-enabled")));
+                        }else {
+                            clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-pvp-status-disabled")));
+                        }
                         clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-info-footer")));
                         player.sendMessage(clanInfo.toString());
                     }else {
@@ -464,6 +476,28 @@ public class ClanCommand implements CommandExecutor {
                         }
                     }else {
                         player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("incorrect-clan-ally-command-usage")));
+                    }
+                }
+
+//----------------------------------------------------------------------------------------------------------------------
+                if (args[0].equalsIgnoreCase("pvp")){
+                    if (clansConfig.getBoolean("protections.pvp.pvp-command-enabled")){
+                        if (ClansStorageUtil.isClanOwner(player)){
+                            if (ClansStorageUtil.findClanByOwner(player) != null){
+                                Clan clan = ClansStorageUtil.findClanByOwner(player);
+                                if (clan.isFriendlyFireAllowed()){
+                                    clan.setFriendlyFireAllowed(false);
+                                    player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("disabled-friendly-fire")));
+                                }else {
+                                    clan.setFriendlyFireAllowed(true);
+                                    player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("enabled-friendly-fire")));
+                                }
+                            }else {
+                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("failed-not-in-clan")));
+                            }
+                        }else {
+                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-must-be-owner")));
+                        }
                     }
                 }
 
