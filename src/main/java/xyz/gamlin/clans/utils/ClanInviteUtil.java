@@ -2,11 +2,15 @@ package xyz.gamlin.clans.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import xyz.gamlin.clans.Clans;
 import xyz.gamlin.clans.models.ClanInvite;
 
 import java.util.*;
+import java.util.logging.Logger;
 
 public class ClanInviteUtil {
+
+    private static final Logger logger = Clans.getPlugin().getLogger();
 
     private static Map<UUID, ClanInvite> invitesList = new HashMap<>();
     
@@ -44,9 +48,14 @@ public class ClanInviteUtil {
     }
 
     public static Player getInviteOwner(String inviteeUUID){
-        UUID uuid = UUID.fromString(inviteeUUID);
-        if (invitesList.containsKey(uuid)){
-            return Bukkit.getPlayer(uuid);
+        if (inviteeUUID.length() < 37){
+            UUID uuid = UUID.fromString(inviteeUUID);
+            if (invitesList.containsKey(uuid)){
+                return Bukkit.getPlayer(uuid);
+            }
+        }else {
+            logger.warning(ColorUtils.translateColorCodes("&6ClansLite: &4An error occurred whilst getting an Invite Owner."));
+            logger.warning(ColorUtils.translateColorCodes("&6ClansLite: &4Error: &3The provided UUID is too long."));
         }
         return null;
     }
