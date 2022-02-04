@@ -3,6 +3,8 @@ ClansLite is a light-weight clans plugin for Minecraft servers running Spigot or
 
 ClansLite does not support any grief prevention tools such as land claiming or securing containers within your clan.
 
+ClansLitte DOES offer the ability to disable friendly fire within your clan!
+
 ## /clan command
 Aliases: `/clans`, `/c`  
   
@@ -14,12 +16,17 @@ The `/clan` command is the main command of the plugin, with `/clan` you can do t
 * `/clan info` - Will display information about your current clan
 * `/clan list` - Will list all clans in the server
 * `/clan prefix <prefix>` - Will change the prefix for your clan in chat
-* `/clan ally [add|remove] <ally-owner>` - Will either add or remove an allied clan to yours.
+* `/clan ally [add|remove] <ally-owner>` - Will either add or remove an allied clan to yours
+* `/clan pvp` - Will toggle the friendly fire status for your clan.
 
 ## /clanadmin command
 Aliases: `/ca`  
 
-The `/clanadmin` command is purely for server admins only. 2 arguments are implemented which are `/clanadmin save` - which will save all current clan info to the `clans.yml` data file.  `/clanadmin reload` - This reloads the plugins `config.yml` & the `messages.yml` files from disk.
+The `/clanadmin` command is purely for server admins only. 
+
+2 arguments are implemented which are: 
+* `/clanadmin save` - which will save all current clan info to the `clans.yml` data file.  
+* `/clanadmin reload` - This reloads the plugins `config.yml` & the `messages.yml` files from disk.
 
 ## Permissions
 ClansLite comes with 2 permissions:
@@ -38,11 +45,14 @@ The max clan allies (by default is 4), can be managed in the `plugins/ClansLite/
 ClansLite exposes a variable of `{CLAN}` to use in Essentials Chat or similar.
 
 ## PlaceholderAPI
-ClansLite exposes two external placeholders using `PlaceholderAPI` to enable the fetching of a players clan name or the clan prefix.
+ClansLite exposes three external placeholders using `PlaceholderAPI` to enable the fetching of a players clan name or the clan prefix.
 The two available placeholders are:
 * `%clansLite_clanName%`
 * `%clansLite_clanPrefix%`
+* `%clansLite_friendlyFire%`
 
 To be able to use these The latest release of [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/) MUST be installed!  Without it, only the above `{CLAN}` will be available.
 
-###This plugin is in a Beta stage and caution should be used when using it on production servers, please report any issues in GitHub and feel free to join my [discord](https://discord.gg/ZECTYBw5qr).
+###Please report any issues in GitHub and feel free to join my [discord](https://discord.gg/ZECTYBw5qr).
+
+###Thank you for using my plugin!
