@@ -28,7 +28,7 @@ public class PlayerClanExpansion extends PlaceholderExpansion {
 
     @Override
     public @NotNull String getVersion() {
-        return "1.0.2";
+        return "1.0.1-BETA";
     }
 
     @Override
@@ -41,6 +41,7 @@ public class PlayerClanExpansion extends PlaceholderExpansion {
         Clan clanOwner = ClansStorageUtil.findClanByOfflineOwner(player);
         Clan clanMember = ClansStorageUtil.findClanByOfflinePlayer(player);
         if (params.equalsIgnoreCase("clanName")){
+            //%clansLite_clanName%
             if (clanOwner != null){
                 return ColorUtils.translateColorCodes(clanOwner.getClanFinalName() + "&r ");
             }else if (clanMember != null){
@@ -49,7 +50,9 @@ public class PlayerClanExpansion extends PlaceholderExpansion {
                 return "";
             }
         }
+
         if (params.equalsIgnoreCase("clanPrefix")){
+            //%clansLite_clanPrefix%
             if (clanOwner != null){
                 return ColorUtils.translateColorCodes(clanOwner.getClanPrefix() + "&r ");
             }else if (clanMember != null){
@@ -58,11 +61,24 @@ public class PlayerClanExpansion extends PlaceholderExpansion {
                 return "";
             }
         }
+
         if (params.equalsIgnoreCase("friendlyFire")){
+            //%clansLite_friendlyFire%
             if (clanOwner != null){
                 return String.valueOf(clanOwner.isFriendlyFireAllowed());
             }else if (clanMember != null){
                 return String.valueOf(clanMember.isFriendlyFireAllowed());
+            }else {
+                return "";
+            }
+        }
+
+        if (params.equalsIgnoreCase("clanHomeSet")){
+            //%clansLite_clanHomeSet%
+            if (clanOwner != null){
+                return String.valueOf(ClansStorageUtil.isHomeSet(clanOwner));
+            }else if (clanMember != null){
+                return String.valueOf(ClansStorageUtil.isHomeSet(clanMember));
             }else {
                 return "";
             }

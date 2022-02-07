@@ -58,7 +58,7 @@ must-be-owner-to-change-prefix: "&3You are not an owner of a clan!"
 
 #Clan List Messages
 no-clans-to-list: "&3No clans found!\n&3Create one using &b/clan create <name>&3!"
-clans-list-header: "&7----- &6ClansList &7-----&r\n&3&lCurrent clans:\n"
+clans-list-header: "&7----- &6ClansList &7-----&r\n&3&lCurrent clans:&r\n"
 clans-list-footer: "\n&7-----"
 
 #Clan Info Messages
@@ -72,6 +72,8 @@ clan-info-allies-header: "\n\n&3Allied Clans:"
 clan-ally-members: "\n&a%ALLYCLAN%\n"
 clan-pvp-status-enabled: "\n\n&3Friendly Fire: &a&oENABLED"
 clan-pvp-status-disabled: "\n\n&3Friendly Fire: &c&oDISABLED"
+clan-home-set-true: "\n\n&3Home Set: &a&oTRUE"
+clan-home-set-false: "\n\n&3Home Set: &c&oFALSE"
 clan-info-footer: "\n&7-----"
 not-in-clan: "&3You are not in a clan!"
 
@@ -95,8 +97,16 @@ disabled-friendly-fire: "&3You successfully &cdisabled &3friendly fire.\n&3Your 
 failed-not-in-clan: "&3You need to be in a clan first! Use &6/clan &3for details how."
 friendly-fire-is-disabled: "&3Your clan has friendly fire disabled."
 
+#Clan Homes
+successfully-set-clan-home: "&3You &aSuccessfully &3set the clan home to your current location!"
+cool-down-timer-wait: "&3Sorry, you can't use that again for another &6%TIMELEFT%&r &3seconds."
+successfully-teleported-to-home: "&3You teleported to your clan's home."
+failed-no-home-set: "&3Your clan does not have a home set!"
+failed-tp-not-in-clan: "&3You need to be in a clan first! Use &6/clan &3for details how."
+
 #General Plugin Messages
 clan-must-be-owner: "&3You must be the clan owner to do this."
+function-disabled: "&3Sorry, that has been disabled. :("
 plugin-reload-successful: "&6ClansLite: &aThe configs have been reloaded!"
 incorrect-command-usage: "&3Unrecognised argument please use &6/clan&3."
 player-only-command: "&4Sorry, that command can only be run by a player!"
@@ -108,3 +118,14 @@ auto-save-failed: "&6ClansLite: &4Failed to save clans.yml to file!"
 clans-save-error-1: "&6ClansLite: &4Failed to save clans.yml to file!"
 clans-save-error-2: "&6ClansLite: &4Check the console for errors!"
 clans-update-error: "&6ClansLite: &4Failed to update clans.yml file!\n&6ClansLite: &4Check the console for errors!"
+
+#Update Notification
+update-check-failure: "&6ClansLite: &4Unable to check for updates! - &c"
+update-available:
+  1: "&4*-------------------------------------------*"
+  2: "&6ClansLite: &cA new version is available!"
+  3: "&4*-------------------------------------------*"
+no-update-avaialbe:
+  1: "&a*-------------------------------------------*"
+  2: "&6ClansLite: &aPlugin is up to date!"
+  3: "&a*-------------------------------------------*"

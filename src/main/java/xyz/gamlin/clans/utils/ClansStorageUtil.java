@@ -24,6 +24,14 @@ public class ClansStorageUtil {
             clansStorage.set("clans.data." + entry.getKey() + ".clanMembers", entry.getValue().getClanMembers());
             clansStorage.set("clans.data." + entry.getKey() + ".clanAllies", entry.getValue().getClanAllies());
             clansStorage.set("clans.data." + entry.getKey() + ".friendlyFire", entry.getValue().isFriendlyFireAllowed());
+            if (entry.getValue().getClanHomeWorld() != null){
+                clansStorage.set("clans.data." + entry.getKey() + ".clanHome.worldName", entry.getValue().getClanHomeWorld());
+                clansStorage.set("clans.data." + entry.getKey() + ".clanHome.x", entry.getValue().getClanHomeX());
+                clansStorage.set("clans.data." + entry.getKey() + ".clanHome.y", entry.getValue().getClanHomeY());
+                clansStorage.set("clans.data." + entry.getKey() + ".clanHome.z", entry.getValue().getClanHomeZ());
+                clansStorage.set("clans.data." + entry.getKey() + ".clanHome.yaw", entry.getValue().getClanHomeYaw());
+                clansStorage.set("clans.data." + entry.getKey() + ".clanHome.pitch", entry.getValue().getClanHomePitch());
+            }
         }
         Clans.getPlugin().clansFileManager.saveClansConfig();
     }
@@ -38,11 +46,23 @@ public class ClansStorageUtil {
             ArrayList<String> clanMembers = new ArrayList<>(clanMembersConfigSection);
             ArrayList<String> clanAllies = new ArrayList<>(clanAlliesConfigSection);
             boolean friendlyFire = clansStorage.getBoolean("clans.data." + key + ".friendlyFire");
+            String clanHomeWorld = clansStorage.getString("clans.data." + key + ".clanHome.worldName");
+            double clanHomeX = clansStorage.getDouble("clans.data." + key + ".clanHome.x");
+            double clanHomeY = clansStorage.getDouble("clans.data." + key + ".clanHome.y");
+            double clanHomeZ = clansStorage.getDouble("clans.data." + key + ".clanHome.z");
+            float clanHomeYaw = (float) clansStorage.getDouble("clans.data." + key + ".clanHome.yaw");
+            float clanHomePitch = (float) clansStorage.getDouble("clans.data." + key + ".clanHome.pitch");
             Clan clan = new Clan(key, clanFinalName);
             clan.setClanPrefix(clanPrefix);
             clan.setClanMembers(clanMembers);
             clan.setClanAllies(clanAllies);
             clan.setFriendlyFireAllowed(friendlyFire);
+            clan.setClanHomeWorld(clanHomeWorld);
+            clan.setClanHomeX(clanHomeX);
+            clan.setClanHomeY(clanHomeY);
+            clan.setClanHomeZ(clanHomeZ);
+            clan.setClanHomeYaw(clanHomeYaw);
+            clan.setClanHomePitch(clanHomePitch);
             clansList.put(uuid, clan);
         });
     }
@@ -174,5 +194,12 @@ public class ClansStorageUtil {
         String allyUUID = uuid.toString();
         Clan clan = clansList.get(ownerUUID);
         clan.removeClanAlly(allyUUID);
+    }
+
+    public static boolean isHomeSet(Clan clan){
+        if (clan.getClanHomeWorld() != null){
+            return true;
+        }
+        return false;
     }
 }
