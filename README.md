@@ -30,7 +30,7 @@ The `/clanadmin` command is purely for server admins only.
 * `/clanadmin reload` - This reloads the plugins `config.yml` & the `messages.yml` files from disk.
 
 ## Permissions
-ClansLite comes with 2 permissions:
+ClansLite comes with 4 permissions:
 * `clanslite.*`
 * `clanslite.clan`
 * `clanslite.admin`
