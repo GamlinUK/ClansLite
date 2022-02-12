@@ -9,7 +9,13 @@ public class Clan {
     private String clanPrefix;
     private ArrayList<String> clanMembers;
     private ArrayList<String> clanAllies;
-
+    private boolean friendlyFire;
+    private String clanHomeWorld;
+    private double clanHomeX;
+    private double clanHomeY;
+    private double clanHomeZ;
+    private float clanHomeYaw;
+    private float clanHomePitch;
 
     public Clan(String clanOwner, String clanName) {
         clanFinalOwner = clanOwner;
@@ -17,21 +23,19 @@ public class Clan {
         clanPrefix = clanFinalName;
         clanMembers = new ArrayList<>();
         clanAllies = new ArrayList<>();
+        friendlyFire = true;
+        clanHomeWorld = null;
     }
 
     public String getClanOwner() {
         return clanFinalOwner;
     }
 
-    @Deprecated
-    public void setClanOwner(String clanOwner) {
-        clanFinalOwner = clanOwner;
-    }
-
     public String getClanFinalName() {
         return clanFinalName;
     }
 
+    @Deprecated
     public void setClanFinalName(String newClanFinalName) {
         clanFinalName = newClanFinalName;
     }
@@ -74,5 +78,61 @@ public class Clan {
 
     public void setClanAllies(ArrayList<String> clanAlliesList) {
         clanAllies = clanAlliesList;
+    }
+
+    public boolean isFriendlyFireAllowed() {
+        return friendlyFire;
+    }
+
+    public void setFriendlyFireAllowed(boolean friendlyFire) {
+        this.friendlyFire = friendlyFire;
+    }
+
+    public String getClanHomeWorld() {
+        return clanHomeWorld;
+    }
+
+    public void setClanHomeWorld(String clanHomeWorld) {
+        this.clanHomeWorld = clanHomeWorld;
+    }
+
+    public double getClanHomeX() {
+        return clanHomeX;
+    }
+
+    public void setClanHomeX(double clanHomeX) {
+        this.clanHomeX = clanHomeX;
+    }
+
+    public double getClanHomeY() {
+        return clanHomeY;
+    }
+
+    public void setClanHomeY(double clanHomeY) {
+        this.clanHomeY = clanHomeY;
+    }
+
+    public double getClanHomeZ() {
+        return clanHomeZ;
+    }
+
+    public void setClanHomeZ(double clanHomeZ) {
+        this.clanHomeZ = clanHomeZ;
+    }
+
+    public float getClanHomeYaw() {
+        return clanHomeYaw;
+    }
+
+    public void setClanHomeYaw(float clanHomeYaw) {
+        this.clanHomeYaw = clanHomeYaw;
+    }
+
+    public float getClanHomePitch() {
+        return clanHomePitch;
+    }
+
+    public void setClanHomePitch(float clanHomePitch) {
+        this.clanHomePitch = clanHomePitch;
     }
 }

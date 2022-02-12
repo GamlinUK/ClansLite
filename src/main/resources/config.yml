@@ -8,5 +8,28 @@
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # Clans config for ${version}
+#Set the maximum amount of members that can join a players clan. [Default value: 8]
 max-clan-size: 8
+#Set the maximum amount of allied clans that can a clan can have. [Default value: 4]
 max-clan-allies: 4
+
+#Clan protections
+protections:
+  pvp:
+    #Globally enable the clan friendly fire system. [Default value: true]
+    pvp-command-enabled: true
+
+#Clan home system
+clan-home:
+  #Enable the '/clan [sethome|home]' system. [Default value: true]
+  enabled: true
+  cool-down:
+    #Enable the cool down on the '/clan home' command to prevent tp spamming (RECOMMENDED). [Default value: true]
+    enabled: true
+    #Cool-down time in seconds. [Default value: 60 = 1 minute]
+    time: 60
+
+#ClansLite update system
+plugin-update-notifications:
+  #Do you want to enable in game plugin update notifications? (Permission:'clanslite.update'). [Default value: true]
+  enabled: true

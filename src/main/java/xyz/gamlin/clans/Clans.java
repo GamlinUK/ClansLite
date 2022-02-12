@@ -9,6 +9,9 @@ import xyz.gamlin.clans.expansions.PlayerClanExpansion;
 import xyz.gamlin.clans.files.ClansFileManager;
 import xyz.gamlin.clans.files.MessagesFileManager;
 import xyz.gamlin.clans.listeners.ClanChat;
+import xyz.gamlin.clans.listeners.PlayerDamage;
+import xyz.gamlin.clans.updateSystem.JoinEvent;
+import xyz.gamlin.clans.updateSystem.UpdateChecker;
 import xyz.gamlin.clans.utils.ClansStorageUtil;
 import xyz.gamlin.clans.utils.ColorUtils;
 import xyz.gamlin.clans.utils.TaskTimerUtils;
@@ -82,6 +85,8 @@ public final class Clans extends JavaPlugin {
 
         //Register the plugin events
         this.getServer().getPluginManager().registerEvents(new ClanChat(), this);
+        this.getServer().getPluginManager().registerEvents(new PlayerDamage(), this);
+        this.getServer().getPluginManager().registerEvents(new JoinEvent(), this);
 
         //Register PlaceHolderAPI hooks
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null){
@@ -104,6 +109,19 @@ public final class Clans extends JavaPlugin {
         logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3has been loaded successfully"));
         logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Plugin Version: &d&l" + pluginVersion));
         logger.info(ColorUtils.translateColorCodes("-------------------------------------------"));
+
+        //Check for available updates
+        new UpdateChecker(this, 97163).getVersion(version -> {
+            if (this.getDescription().getVersion().equalsIgnoreCase(version)) {
+                logger.info(ColorUtils.translateColorCodes(messagesFileManager.getMessagesConfig().getString("no-update-available.1")));
+                logger.info(ColorUtils.translateColorCodes(messagesFileManager.getMessagesConfig().getString("no-update-available.2")));
+                logger.info(ColorUtils.translateColorCodes(messagesFileManager.getMessagesConfig().getString("no-update-available.3")));
+            }else {
+                logger.warning(ColorUtils.translateColorCodes(messagesFileManager.getMessagesConfig().getString("update-available.1")));
+                logger.warning(ColorUtils.translateColorCodes(messagesFileManager.getMessagesConfig().getString("update-available.2")));
+                logger.warning(ColorUtils.translateColorCodes(messagesFileManager.getMessagesConfig().getString("update-available.3")));
+            }
+        });
 
         //Start auto save task
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {

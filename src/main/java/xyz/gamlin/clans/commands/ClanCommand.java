@@ -1,7 +1,9 @@
 package xyz.gamlin.clans.commands;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -31,6 +33,9 @@ public class ClanCommand implements CommandExecutor {
     private static final String CLAN_MEMBER = "%MEMBER%";
     private static final String ALLY_CLAN = "%ALLYCLAN%";
     private static final String ALLY_OWNER = "%ALLYOWNER%";
+    private static final String TIME_LEFT = "%TIMELEFT%";
+
+    HashMap<UUID, Long> homeCoolDownTimer = new HashMap<>();
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -47,7 +52,9 @@ public class ClanCommand implements CommandExecutor {
                                 "\n/clan info" +
                                 "\n/clan list" +
                                 "\n/clan prefix <prefix>" +
-                                "\n/clan ally [add|remove] <clan-owner>"
+                                "\n/clan ally [add|remove] <clan-owner>" +
+                                "\n/clan pvp" +
+                                "\n/clan [sethome|home]"
                 ));
             }else {
 
@@ -309,8 +316,20 @@ public class ClanCommand implements CommandExecutor {
                             }
                         }
                         clanInfo.append(" ");
+                        if (clanByOwner.isFriendlyFireAllowed()){
+                            clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-pvp-status-enabled")));
+                        }else {
+                            clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-pvp-status-disabled")));
+                        }
+                        if (ClansStorageUtil.isHomeSet(clanByOwner)){
+                            clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-home-set-true")));
+                        }else {
+                            clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-home-set-false")));
+                        }
+                        clanInfo.append(" ");
                         clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-info-footer")));
                         player.sendMessage(clanInfo.toString());
+
                     }else if (clanByPlayer != null){
                         ArrayList<String> clanMembers = clanByPlayer.getClanMembers();
                         ArrayList<String> clanAllies = clanByPlayer.getClanAllies();
@@ -362,6 +381,17 @@ public class ClanCommand implements CommandExecutor {
                                     }
                                 }
                             }
+                        }
+                        clanInfo.append(" ");
+                        if (clanByPlayer.isFriendlyFireAllowed()){
+                            clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-pvp-status-enabled")));
+                        }else {
+                            clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-pvp-status-disabled")));
+                        }
+                        if (ClansStorageUtil.isHomeSet(clanByPlayer)){
+                            clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-home-set-true")));
+                        }else {
+                            clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-home-set-false")));
                         }
                         clanInfo.append(" ");
                         clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-info-footer")));
@@ -430,6 +460,7 @@ public class ClanCommand implements CommandExecutor {
                             }else {
                                 player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("incorrect-clan-ally-command-usage")));
                             }
+                            return true;
                         }else if (args[1].equalsIgnoreCase("remove")){
                             if (args[2].length() > 1){
                                 if (ClansStorageUtil.isClanOwner(player)){
@@ -462,9 +493,142 @@ public class ClanCommand implements CommandExecutor {
                                 player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("incorrect-clan-ally-command-usage")));
                             }
                         }
+                        return true;
                     }else {
                         player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("incorrect-clan-ally-command-usage")));
                     }
+                    return true;
+                }
+
+//----------------------------------------------------------------------------------------------------------------------
+                if (args[0].equalsIgnoreCase("pvp")){
+                    if (clansConfig.getBoolean("protections.pvp.pvp-command-enabled")){
+                        if (ClansStorageUtil.isClanOwner(player)){
+                            if (ClansStorageUtil.findClanByOwner(player) != null){
+                                Clan clan = ClansStorageUtil.findClanByOwner(player);
+                                if (clan.isFriendlyFireAllowed()){
+                                    clan.setFriendlyFireAllowed(false);
+                                    player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("disabled-friendly-fire")));
+                                }else {
+                                    clan.setFriendlyFireAllowed(true);
+                                    player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("enabled-friendly-fire")));
+                                }
+                            }else {
+                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("failed-not-in-clan")));
+                            }
+                        }else {
+                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-must-be-owner")));
+                        }
+                    }else {
+                        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("function-disabled")));
+                    }
+                    return true;
+                }
+
+//----------------------------------------------------------------------------------------------------------------------
+                if (args[0].equalsIgnoreCase("sethome")){
+                    if (clansConfig.getBoolean("clan-home.enabled")){
+                        if (ClansStorageUtil.isClanOwner(player)){
+                            if (ClansStorageUtil.findClanByOwner(player) != null){
+                                Clan clan = ClansStorageUtil.findClanByOwner(player);
+                                clan.setClanHomeWorld(player.getLocation().getWorld().getName());
+                                clan.setClanHomeX(player.getLocation().getX());
+                                clan.setClanHomeY(player.getLocation().getY());
+                                clan.setClanHomeZ(player.getLocation().getZ());
+                                clan.setClanHomeYaw(player.getLocation().getYaw());
+                                clan.setClanHomePitch(player.getLocation().getPitch());
+                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("successfully-set-clan-home")));
+                            }
+                        }else {
+                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-must-be-owner")));
+                        }
+                    }else {
+                        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("function-disabled")));
+                    }
+                    return true;
+                }
+
+//----------------------------------------------------------------------------------------------------------------------
+                if (args[0].equalsIgnoreCase("home")){
+                    if (clansConfig.getBoolean("clan-home.enabled")){
+                        UUID uuid = player.getUniqueId();
+                        if (ClansStorageUtil.findClanByOwner(player) != null){
+                            Clan clanByOwner = ClansStorageUtil.findClanByOwner(player);
+                            if (clanByOwner.getClanHomeWorld() != null){
+                                World world = Bukkit.getWorld(clanByOwner.getClanHomeWorld());
+                                double x = clanByOwner.getClanHomeX();
+                                double y = clanByOwner.getClanHomeY() + 0.2;
+                                double z = clanByOwner.getClanHomeZ();
+                                float yaw = clanByOwner.getClanHomeYaw();
+                                float pitch = clanByOwner.getClanHomePitch();
+                                if (clansConfig.getBoolean("clan-home.cool-down.enabled")){
+                                    if (homeCoolDownTimer.containsKey(uuid)){
+                                        if (homeCoolDownTimer.get(uuid) > System.currentTimeMillis()){
+                                            Long timeLeft = (homeCoolDownTimer.get(uuid) - System.currentTimeMillis()) / 1000;
+                                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("cool-down-timer-wait")
+                                                    .replace(TIME_LEFT, timeLeft.toString())));
+                                        }else {
+                                            homeCoolDownTimer.put(uuid, System.currentTimeMillis() + (clansConfig.getLong("clan-home.cool-down.time") * 1000));
+                                            Location location = new Location(world, x, y, z, yaw, pitch);
+                                            player.teleport(location);
+                                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("successfully-teleported-to-home")));
+                                        }
+                                    }else {
+                                        homeCoolDownTimer.put(uuid, System.currentTimeMillis() + (clansConfig.getLong("clan-home.cool-down.time") * 1000));
+                                        Location location = new Location(world, x, y, z, yaw, pitch);
+                                        player.teleport(location);
+                                        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("successfully-teleported-to-home")));
+                                    }
+                                }else {
+                                    Location location = new Location(world, x, y, z, yaw, pitch);
+                                    player.teleport(location);
+                                    player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("successfully-teleported-to-home")));
+                                }
+                            }else {
+                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("failed-no-home-set")));
+                            }
+                        }else if (ClansStorageUtil.findClanByPlayer(player) != null){
+                            Clan clanByPlayer = ClansStorageUtil.findClanByPlayer(player);
+                            if (clanByPlayer.getClanHomeWorld() != null){
+                                World world = Bukkit.getWorld(clanByPlayer.getClanHomeWorld());
+                                double x = clanByPlayer.getClanHomeX();
+                                double y = clanByPlayer.getClanHomeY() + 0.2;
+                                double z = clanByPlayer.getClanHomeZ();
+                                float yaw = clanByPlayer.getClanHomeYaw();
+                                float pitch = clanByPlayer.getClanHomePitch();
+                                if (clansConfig.getBoolean("clan-home.cool-down.enabled")){
+                                    if (homeCoolDownTimer.containsKey(uuid)){
+                                        if (homeCoolDownTimer.get(uuid) > System.currentTimeMillis()){
+                                            Long timeLeft = (homeCoolDownTimer.get(uuid) - System.currentTimeMillis()) / 1000;
+                                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("cool-down-timer-wait")
+                                                    .replace(TIME_LEFT, timeLeft.toString())));
+                                        }else {
+                                            homeCoolDownTimer.put(uuid, System.currentTimeMillis() + (clansConfig.getLong("clan-home.cool-down.time") * 1000));
+                                            Location location = new Location(world, x, y, z, yaw, pitch);
+                                            player.teleport(location);
+                                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("successfully-teleported-to-home")));
+                                        }
+                                    }else {
+                                        homeCoolDownTimer.put(uuid, System.currentTimeMillis() + (clansConfig.getLong("clan-home.cool-down.time") * 1000));
+                                        Location location = new Location(world, x, y, z, yaw, pitch);
+                                        player.teleport(location);
+                                        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("successfully-teleported-to-home")));
+                                    }
+                                }else {
+                                    Location location = new Location(world, x, y, z, yaw, pitch);
+                                    player.teleport(location);
+                                    player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("successfully-teleported-to-home")));
+                                }
+                            }else {
+                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("failed-no-home-set")));
+                            }
+                        }else {
+                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("failed-tp-not-in-clan")));
+                        }
+                    }else {
+                        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("function-disabled")));
+                    }
+                    return true;
                 }
 
 //----------------------------------------------------------------------------------------------------------------------
