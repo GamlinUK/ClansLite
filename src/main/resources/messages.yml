@@ -117,6 +117,8 @@ auto-save-complete: "&6ClansLite: &aSaved all Clans to file!"
 auto-save-failed: "&6ClansLite: &4Failed to save clans.yml to file!"
 clans-save-error-1: "&6ClansLite: &4Failed to save clans.yml to file!"
 clans-save-error-2: "&6ClansLite: &4Check the console for errors!"
+clans-load-error-1: "&6ClansLite: &4Failed to load data from clans.yml!"
+clans-load-error-2: "&6ClansLite: &4See console for errors!"
 clans-update-error: "&6ClansLite: &4Failed to update clans.yml file!\n&6ClansLite: &4Check the console for errors!"
 
 #Update Notification
