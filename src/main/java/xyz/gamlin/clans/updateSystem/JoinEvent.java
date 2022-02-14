@@ -18,7 +18,7 @@ public class JoinEvent implements Listener {
         Player player = event.getPlayer();
         if (player.hasPermission("clanslite.update")||player.hasPermission("clanslite.*")||player.isOp()) {
             if (clansConfig.getBoolean("plugin-update-notifications.enabled")){
-                new UpdateChecker(Clans.getPlugin(), 85571).getVersion(version -> {
+                new UpdateChecker(Clans.getPlugin(), 97163).getVersion(version -> {
                     try {
                         if (!(Clans.getPlugin().getDescription().getVersion().equalsIgnoreCase(version))) {
                             player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("update-available.1")));
