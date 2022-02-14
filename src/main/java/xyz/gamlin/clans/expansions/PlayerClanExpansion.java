@@ -28,7 +28,7 @@ public class PlayerClanExpansion extends PlaceholderExpansion {
 
     @Override
     public @NotNull String getVersion() {
-        return "1.1.1";
+        return "1.1.2";
     }
 
     @Override

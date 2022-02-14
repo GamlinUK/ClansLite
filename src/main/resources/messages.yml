@@ -125,7 +125,7 @@ update-available:
   1: "&4*-------------------------------------------*"
   2: "&6ClansLite: &cA new version is available!"
   3: "&4*-------------------------------------------*"
-no-update-avaialbe:
+no-update-available:
   1: "&a*-------------------------------------------*"
   2: "&6ClansLite: &aPlugin is up to date!"
   3: "&a*-------------------------------------------*"
