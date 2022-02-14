@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import xyz.gamlin.clans.Clans;
 import xyz.gamlin.clans.utils.ClansStorageUtil;
 import xyz.gamlin.clans.utils.ColorUtils;
+import xyz.gamlin.clans.utils.ClanInviteUtil;
 
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -39,6 +40,7 @@ public class ClanAdmin implements CommandExecutor {
                     Clans.getPlugin().messagesFileManager.reloadMessagesConfig();
                     sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("plugin-reload-successful")));
                 }
+
             }else {
                 sender.sendMessage(ColorUtils.translateColorCodes(
                         "&6ClansLite usage:&3" +

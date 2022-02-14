@@ -59,4 +59,5 @@ public class ClanInviteUtil {
         }
         return null;
     }
+
 }
