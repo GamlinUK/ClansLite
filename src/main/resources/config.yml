@@ -18,6 +18,8 @@ protections:
   pvp:
     #Globally enable the clan friendly fire system. [Default value: true]
     pvp-command-enabled: true
+    #Enable the ability for a player to bypass the pvp protection using 'clanslite.bypass.pvp'. [Default value: true]
+    enable-bypass-permission: true
 
 #Clan home system
 clan-home:

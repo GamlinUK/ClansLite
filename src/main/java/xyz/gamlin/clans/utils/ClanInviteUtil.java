@@ -43,6 +43,13 @@ public class ClanInviteUtil {
         }
     }
 
+    public static void removeInvite(String inviteeUUID){
+        UUID uuid = UUID.fromString(inviteeUUID);
+        if (invitesList.containsKey(uuid)){
+            invitesList.remove(uuid);
+        }
+    }
+
     public static Set<Map.Entry<UUID, ClanInvite>> getInvites(){
         return invitesList.entrySet();
     }
