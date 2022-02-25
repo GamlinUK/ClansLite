@@ -41,12 +41,19 @@ ClansLite comes with `8` permissions:
 * `clanslite.bypass.pvp`
 
 `clanslite.*` is a permission to allow access to ALL functions regardless of operator status.
+
 `clanslite.clan` is by default given to everyone so they can all create, edit and manage a clan.  
+
 `clanslite.admin` is by default given to server operators.
+
 `clanslite.update` is the permission node to allow a player to see in game notifications if there is a plugin update available.
+
 `clanslite.bypass` is the permission node to allow a player to bypass all protections and cooldowns.
+
 `clanslite.bypass.*` is the permission node to allow a player to bypass all protections and cooldowns.
+
 `clanslite.bypass.homecooldown` is the permission node to allow a player to bypass the home command cooldown.
+
 `clanslite.bypass.pvp` is the permission node to allow a player to bypass the friendly fire protections.
 
 ## Config
