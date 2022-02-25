@@ -51,6 +51,7 @@ ClansLite exposes a variable of `{CLAN}` to use in Essentials Chat or similar.
 
 ## PlaceholderAPI
 ClansLite exposes `4` external placeholders using `PlaceholderAPI` to enable the fetching of a players clan name or the clan prefix or if the clan has friendly fire enabled or if the clan has a home set.
+
 The four available placeholders are:
 * `%clansLite_clanName%`
 * `%clansLite_clanPrefix%`
