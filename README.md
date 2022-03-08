@@ -6,7 +6,7 @@ ClansLite does not support any grief prevention tools such as land claiming or s
 ClansLite DOES however offer the ability to disable friendly fire within your clan!
 
 ## /clan command
-Aliases: `/clans`, `/c`  
+Aliases: `/clans`, `/c`, `cl`  
   
 The `/clan` command is the main command of the plugin, with `/clan` you can do the following:
 * `/clan create <name>` - Creates A new clan if not already in one
@@ -21,7 +21,7 @@ The `/clan` command is the main command of the plugin, with `/clan` you can do t
 * `/clan [sethome|home]` - Will set a clan home location or teleport you or you clan members to this location.
 
 ## /clanadmin command
-Aliases: `/ca`  
+Aliases: `/ca`, `cla`
 
 The `/clanadmin` command is purely for server admins only. 
 
@@ -30,16 +30,31 @@ The `/clanadmin` command is purely for server admins only.
 * `/clanadmin reload` - This reloads the plugins `config.yml` & the `messages.yml` files from disk.
 
 ## Permissions
-ClansLite comes with 4 permissions:
+ClansLite comes with `8` permissions:
 * `clanslite.*`
 * `clanslite.clan`
 * `clanslite.admin`
 * `clanslite.update`
+* `clanslite.bypass`
+* `clanslite.bypass.*`
+* `clanslite.bypass.homecooldown`
+* `clanslite.bypass.pvp`
 
 `clanslite.*` is a permission to allow access to ALL functions regardless of operator status.
+
 `clanslite.clan` is by default given to everyone so they can all create, edit and manage a clan.  
+
 `clanslite.admin` is by default given to server operators.
+
 `clanslite.update` is the permission node to allow a player to see in game notifications if there is a plugin update available.
+
+`clanslite.bypass` is the permission node to allow a player to bypass all protections and cooldowns.
+
+`clanslite.bypass.*` is the permission node to allow a player to bypass all protections and cooldowns.
+
+`clanslite.bypass.homecooldown` is the permission node to allow a player to bypass the home command cooldown.
+
+`clanslite.bypass.pvp` is the permission node to allow a player to bypass the friendly fire protections.
 
 ## Config
 The max clan size (by default is 8), can be managed in the `plugins/ClansLite/config.yml` file.
