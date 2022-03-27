@@ -14,6 +14,8 @@ public class TaskTimerUtils {
 
     public static Integer taskID1;
     public static Integer taskID2;
+    public static Integer taskID3;
+    public static Integer taskID4;
 
     public static void runClansAutoSaveOne(){
         taskID1 = Bukkit.getScheduler().scheduleSyncRepeatingTask(Clans.getPlugin(Clans.class), new Runnable() {
@@ -61,5 +63,49 @@ public class TaskTimerUtils {
                 }
             }
         },0, 20);
+    }
+
+    public static void runClanInviteClearOne(){
+        taskID3 = Bukkit.getScheduler().scheduleSyncRepeatingTask(Clans.getPlugin(Clans.class), new Runnable() {
+            Integer time = 900;
+            @Override
+            public void run() {
+                if (time == 1){
+                    try {
+                        ClanInviteUtil.emptyInviteList();
+                        logger.info(ColorUtils.translateColorCodes(messagesConfig.getString("auto-invite-wipe-complete")));
+                    }catch (UnsupportedOperationException exception){
+                        logger.info(ColorUtils.translateColorCodes(messagesConfig.getString("invite-wipe-failed")));
+                    }
+                    runClanInviteClearTwo();
+                    Bukkit.getScheduler().cancelTask(taskID3);
+                    return;
+                }else {
+                    time --;
+                }
+            }
+        }, 0, 20);
+    }
+
+    public static void runClanInviteClearTwo(){
+        taskID4 = Bukkit.getScheduler().scheduleSyncRepeatingTask(Clans.getPlugin(Clans.class), new Runnable() {
+            Integer time = 900;
+            @Override
+            public void run() {
+                if (time == 1){
+                    try {
+                        ClanInviteUtil.emptyInviteList();
+                        logger.info(ColorUtils.translateColorCodes(messagesConfig.getString("auto-invite-wipe-complete")));
+                    }catch (UnsupportedOperationException exception){
+                        logger.info(ColorUtils.translateColorCodes(messagesConfig.getString("invite-wipe-failed")));
+                    }
+                    runClanInviteClearOne();
+                    Bukkit.getScheduler().cancelTask(taskID4);
+                    return;
+                }else {
+                    time --;
+                }
+            }
+        }, 0, 20);
     }
 }
