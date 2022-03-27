@@ -37,6 +37,7 @@ public class ClansStorageUtil {
     }
 
     public static void restoreClans() throws IOException {
+        clansList.clear();
         clansStorage.getConfigurationSection("clans.data").getKeys(false).forEach(key ->{
             UUID uuid = UUID.fromString(key);
             String clanFinalName = clansStorage.getString("clans.data." + key + ".clanFinalName");

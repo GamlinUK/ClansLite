@@ -34,6 +34,15 @@ public class PlayerDamage implements Listener {
                     if (attackingClanMembers.contains(hurtUUID) || attackingClan.getClanOwner().equals(hurtUUID)){
                         if (config.getBoolean("protections.pvp.pvp-command-enabled")){
                             if (!attackingClan.isFriendlyFireAllowed()){
+                                if (config.getBoolean("protections.pvp.enable-bypass-permission")){
+                                    if (attackingPlayer.hasPermission("clanslite.bypass.pvp")
+                                            ||attackingPlayer.hasPermission("clanslite.bypass.*")
+                                            ||attackingPlayer.hasPermission("clanslite.bypass")
+                                            ||attackingPlayer.hasPermission("clanslite.*")
+                                            ||attackingPlayer.isOp()){
+                                        return;
+                                    }
+                                }
                                 event.setCancelled(true);
                                 attackingPlayer.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("friendly-fire-is-disabled")));
                             }
@@ -49,6 +58,15 @@ public class PlayerDamage implements Listener {
                         if (attackingMembers.contains(hurtUUID) || attackingClanByPlayer.getClanOwner().equals(hurtUUID)){
                             if (config.getBoolean("protections.pvp.pvp-command-enabled")){
                                 if (!attackingClanByPlayer.isFriendlyFireAllowed()){
+                                    if (config.getBoolean("protections.pvp.enable-bypass-permission")){
+                                        if (attackingPlayer.hasPermission("clanslite.bypass.pvp")
+                                                ||attackingPlayer.hasPermission("clanslite.bypass.*")
+                                                ||attackingPlayer.hasPermission("clanslite.bypass")
+                                                ||attackingPlayer.hasPermission("clanslite.*")
+                                                ||attackingPlayer.isOp()){
+                                            return;
+                                        }
+                                    }
                                     event.setCancelled(true);
                                     attackingPlayer.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("friendly-fire-is-disabled")));
                                 }

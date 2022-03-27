@@ -36,7 +36,20 @@ public class ClanAdmin implements CommandExecutor {
                 }
                 if (args[0].equalsIgnoreCase("reload")) {
                     Clans.getPlugin().reloadConfig();
-                    Clans.getPlugin().clansFileManager.reloadClansConfig();
+                    try {
+                        ClansStorageUtil.saveClans();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clans-save-error-1")));
+                        sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clans-save-error-2")));
+                    }
+                    try {
+                        ClansStorageUtil.restoreClans();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clans-load-error-1")));
+                        sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clans-load-error-2")));
+                    }
                     Clans.getPlugin().messagesFileManager.reloadMessagesConfig();
                     sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("plugin-reload-successful")));
                 }
@@ -65,7 +78,21 @@ public class ClanAdmin implements CommandExecutor {
                 }
                 if (args[0].equalsIgnoreCase("reload")) {
                     Clans.getPlugin().reloadConfig();
-                    Clans.getPlugin().clansFileManager.reloadClansConfig();
+                    try {
+                        ClansStorageUtil.saveClans();
+                    } catch (IOException e) {
+                        logger.severe(ColorUtils.translateColorCodes(messagesConfig.getString("clans-save-error-1")));
+                        logger.severe(ColorUtils.translateColorCodes(messagesConfig.getString("clans-save-error-2")));
+                        e.printStackTrace();
+                    }
+                    try {
+                        ClansStorageUtil.restoreClans();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        logger.severe(ColorUtils.translateColorCodes(messagesConfig.getString("clans-load-error-1")));
+                        logger.severe(ColorUtils.translateColorCodes(messagesConfig.getString("clans-load-error-2")));
+                        e.printStackTrace();
+                    }
                     Clans.getPlugin().messagesFileManager.reloadMessagesConfig();
                     logger.info(ColorUtils.translateColorCodes(messagesConfig.getString("plugin-reload-successful")));
                 }

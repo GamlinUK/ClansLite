@@ -1,6 +1,7 @@
 package xyz.gamlin.clans.utils;
 
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import xyz.gamlin.clans.Clans;
 import xyz.gamlin.clans.models.ClanInvite;
@@ -9,6 +10,8 @@ import java.util.*;
 import java.util.logging.Logger;
 
 public class ClanInviteUtil {
+
+    private static final FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
 
     private static final Logger logger = Clans.getPlugin().getLogger();
 
@@ -40,6 +43,17 @@ public class ClanInviteUtil {
             if (currentTime.getTime() - clanInvite.getInviteTime().getTime() > expiryTime){
                 invitesList.remove(clanInvite);
             }
+        }
+    }
+
+    public static void emptyInviteList() throws UnsupportedOperationException{
+        invitesList.clear();
+    }
+
+    public static void removeInvite(String inviteeUUID){
+        UUID uuid = UUID.fromString(inviteeUUID);
+        if (invitesList.containsKey(uuid)){
+            invitesList.remove(uuid);
         }
     }
 

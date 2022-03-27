@@ -105,7 +105,7 @@ public final class Clans extends JavaPlugin {
         //Plugin startup message
         logger.info(ColorUtils.translateColorCodes("-------------------------------------------"));
         logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Plugin created by: &b&lGamlin"));
-        logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Plugin contributors: &b&lLoving11ish"));
+        logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Plugin maintained by: &b&lLoving11ish"));
         logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3has been loaded successfully"));
         logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Plugin Version: &d&l" + pluginVersion));
         logger.info(ColorUtils.translateColorCodes("-------------------------------------------"));
@@ -131,13 +131,25 @@ public final class Clans extends JavaPlugin {
                 logger.info(ColorUtils.translateColorCodes(messagesFileManager.getMessagesConfig().getString("auto-save-started")));
             }
         },100L);
+
+        //Start auto invite clear task
+        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+            @Override
+            public void run() {
+                TaskTimerUtils.runClanInviteClearOne();
+                logger.info(ColorUtils.translateColorCodes(messagesFileManager.getMessagesConfig().getString("auto-invite-wipe-started")));
+            }
+        },100L);
     }
 
     @Override
     public void onDisable() {
         //Plugin shutdown logic
 
-        //Safely stop the auto save tasks if running
+        //Safely stop the background tasks if running
+        logger.info(ColorUtils.translateColorCodes("-------------------------------------------"));
+        logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Plugin created by: &b&lGamlin"));
+        logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Plugin maintained by: &b&lLoving11ish"));
         try {
             if (Bukkit.getScheduler().isCurrentlyRunning(TaskTimerUtils.taskID1)||Bukkit.getScheduler().isQueued(TaskTimerUtils.taskID1)){
                 Bukkit.getScheduler().cancelTask(TaskTimerUtils.taskID1);
@@ -145,10 +157,13 @@ public final class Clans extends JavaPlugin {
             if (Bukkit.getScheduler().isCurrentlyRunning(TaskTimerUtils.taskID2)||Bukkit.getScheduler().isQueued(TaskTimerUtils.taskID2)){
                 Bukkit.getScheduler().cancelTask(TaskTimerUtils.taskID2);
             }
+            if (Bukkit.getScheduler().isCurrentlyRunning(TaskTimerUtils.taskID3)||Bukkit.getScheduler().isQueued(TaskTimerUtils.taskID3)){
+                Bukkit.getScheduler().cancelTask(TaskTimerUtils.taskID3);
+            }
+            if (Bukkit.getScheduler().isCurrentlyRunning(TaskTimerUtils.taskID4)||Bukkit.getScheduler().isQueued(TaskTimerUtils.taskID4)){
+                Bukkit.getScheduler().cancelTask(TaskTimerUtils.taskID4);
+            }
         }catch (Exception e){
-            logger.info(ColorUtils.translateColorCodes("-------------------------------------------"));
-            logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Plugin created by: &b&lGamlin"));
-            logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Plugin contributors: &b&lLoving11ish"));
             logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Background tasks have disabled successfully!"));
         }
 

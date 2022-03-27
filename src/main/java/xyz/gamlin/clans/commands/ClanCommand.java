@@ -204,6 +204,7 @@ public class ClanCommand implements CommandExecutor {
                         Clan clan = ClansStorageUtil.findClanByOwner(ClanInviteUtil.getInviteOwner(inviterUUIDString.toString()));
                         if (clan != null) {
                             if (ClansStorageUtil.addClanMember(clan, player)) {
+                                ClanInviteUtil.removeInvite(player.getUniqueId().toString());
                                 String joinMessage = ColorUtils.translateColorCodes(messagesConfig.getString("clan-join-successful")).replace(CLAN_PLACEHOLDER, clan.getClanFinalName());
                                 player.sendMessage(joinMessage);
                             } else {
@@ -563,12 +564,19 @@ public class ClanCommand implements CommandExecutor {
                                 float pitch = clanByOwner.getClanHomePitch();
                                 if (clansConfig.getBoolean("clan-home.cool-down.enabled")){
                                     if (homeCoolDownTimer.containsKey(uuid)){
-                                        if (homeCoolDownTimer.get(uuid) > System.currentTimeMillis()){
-                                            Long timeLeft = (homeCoolDownTimer.get(uuid) - System.currentTimeMillis()) / 1000;
-                                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("cool-down-timer-wait")
-                                                    .replace(TIME_LEFT, timeLeft.toString())));
+                                        if (!(player.hasPermission("clanslite.bypass.homecooldown")||player.hasPermission("clanslite.bypass.*")
+                                                ||player.hasPermission("clanslite.bypass")||player.hasPermission("clanslite.*")||player.isOp())){
+                                            if (homeCoolDownTimer.get(uuid) > System.currentTimeMillis()){
+                                                Long timeLeft = (homeCoolDownTimer.get(uuid) - System.currentTimeMillis()) / 1000;
+                                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("cool-down-timer-wait")
+                                                        .replace(TIME_LEFT, timeLeft.toString())));
+                                            }else {
+                                                homeCoolDownTimer.put(uuid, System.currentTimeMillis() + (clansConfig.getLong("clan-home.cool-down.time") * 1000));
+                                                Location location = new Location(world, x, y, z, yaw, pitch);
+                                                player.teleport(location);
+                                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("successfully-teleported-to-home")));
+                                            }
                                         }else {
-                                            homeCoolDownTimer.put(uuid, System.currentTimeMillis() + (clansConfig.getLong("clan-home.cool-down.time") * 1000));
                                             Location location = new Location(world, x, y, z, yaw, pitch);
                                             player.teleport(location);
                                             player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("successfully-teleported-to-home")));
@@ -598,12 +606,19 @@ public class ClanCommand implements CommandExecutor {
                                 float pitch = clanByPlayer.getClanHomePitch();
                                 if (clansConfig.getBoolean("clan-home.cool-down.enabled")){
                                     if (homeCoolDownTimer.containsKey(uuid)){
-                                        if (homeCoolDownTimer.get(uuid) > System.currentTimeMillis()){
-                                            Long timeLeft = (homeCoolDownTimer.get(uuid) - System.currentTimeMillis()) / 1000;
-                                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("cool-down-timer-wait")
-                                                    .replace(TIME_LEFT, timeLeft.toString())));
+                                        if (!(player.hasPermission("clanslite.bypass.homecooldown")||player.hasPermission("clanslite.bypass.*")
+                                                ||player.hasPermission("clanslite.bypass")||player.hasPermission("clanslite.*")||player.isOp())){
+                                            if (homeCoolDownTimer.get(uuid) > System.currentTimeMillis()){
+                                                Long timeLeft = (homeCoolDownTimer.get(uuid) - System.currentTimeMillis()) / 1000;
+                                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("cool-down-timer-wait")
+                                                        .replace(TIME_LEFT, timeLeft.toString())));
+                                            }else {
+                                                homeCoolDownTimer.put(uuid, System.currentTimeMillis() + (clansConfig.getLong("clan-home.cool-down.time") * 1000));
+                                                Location location = new Location(world, x, y, z, yaw, pitch);
+                                                player.teleport(location);
+                                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("successfully-teleported-to-home")));
+                                            }
                                         }else {
-                                            homeCoolDownTimer.put(uuid, System.currentTimeMillis() + (clansConfig.getLong("clan-home.cool-down.time") * 1000));
                                             Location location = new Location(world, x, y, z, yaw, pitch);
                                             player.teleport(location);
                                             player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("successfully-teleported-to-home")));
