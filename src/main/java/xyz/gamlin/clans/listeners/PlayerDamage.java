@@ -46,6 +46,8 @@ public class PlayerDamage implements Listener {
                                 event.setCancelled(true);
                                 attackingPlayer.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("friendly-fire-is-disabled")));
                             }
+                        }else {
+                            event.setCancelled(false);
                         }
                     }
                 }
@@ -70,6 +72,8 @@ public class PlayerDamage implements Listener {
                                     event.setCancelled(true);
                                     attackingPlayer.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("friendly-fire-is-disabled")));
                                 }
+                            }else {
+                                event.setCancelled(false);
                             }
                         }
                     }

@@ -90,7 +90,7 @@ public final class Clans extends JavaPlugin {
 
         //Register PlaceHolderAPI hooks
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null){
-            new PlayerClanExpansion(this).register();
+            new PlayerClanExpansion().register();
             logger.info(ColorUtils.translateColorCodes("-------------------------------------------"));
             logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3PlaceholderAPI found!"));
             logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3External placeholders enabled!"));

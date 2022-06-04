@@ -18,6 +18,7 @@ public class ClanInvite {
         return inviter;
     }
 
+    @Deprecated
     public void setInviter(String inviter) {
         this.inviter = inviter;
     }
@@ -26,6 +27,7 @@ public class ClanInvite {
         return invitee;
     }
 
+    @Deprecated
     public void setInvitee(String invitee) {
         this.invitee = invitee;
     }

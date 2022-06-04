@@ -3,18 +3,11 @@ package xyz.gamlin.clans.expansions;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
-import xyz.gamlin.clans.Clans;
 import xyz.gamlin.clans.models.Clan;
 import xyz.gamlin.clans.utils.ClansStorageUtil;
 import xyz.gamlin.clans.utils.ColorUtils;
 
 public class PlayerClanExpansion extends PlaceholderExpansion {
-
-    private final Clans plugin;
-
-    public PlayerClanExpansion(Clans plugin) {
-        this.plugin = plugin;
-    }
 
     @Override
     public @NotNull String getIdentifier() {
@@ -23,12 +16,12 @@ public class PlayerClanExpansion extends PlaceholderExpansion {
 
     @Override
     public @NotNull String getAuthor() {
-        return "Gamlin & Loving11ish";
+        return "Loving11ish";
     }
 
     @Override
     public @NotNull String getVersion() {
-        return "1.1.6";
+        return "1.1.7";
     }
 
     @Override
@@ -79,6 +72,17 @@ public class PlayerClanExpansion extends PlaceholderExpansion {
                 return String.valueOf(ClansStorageUtil.isHomeSet(clanOwner));
             }else if (clanMember != null){
                 return String.valueOf(ClansStorageUtil.isHomeSet(clanMember));
+            }else {
+                return "";
+            }
+        }
+
+        if (params.equalsIgnoreCase("clanMembersSize")){
+            //%clansLite_clanMembersSize%
+            if (clanOwner != null){
+                return String.valueOf(clanOwner.getClanMembers().size());
+            }else if (clanMember != null){
+                return String.valueOf(clanMember.getClanMembers().size());
             }else {
                 return "";
             }

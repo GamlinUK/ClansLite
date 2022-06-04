@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 import xyz.gamlin.clans.Clans;
 import xyz.gamlin.clans.utils.ClansStorageUtil;
 import xyz.gamlin.clans.utils.ColorUtils;
-import xyz.gamlin.clans.utils.ClanInviteUtil;
 
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -53,12 +52,22 @@ public class ClanAdmin implements CommandExecutor {
                     Clans.getPlugin().messagesFileManager.reloadMessagesConfig();
                     sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("plugin-reload-successful")));
                 }
+                if (args[0].equalsIgnoreCase("about")) {
+                    sender.sendMessage(ColorUtils.translateColorCodes("&3~~~~~~~~~~ &6&nClansLite&r &3~~~~~~~~~~"));
+                    sender.sendMessage(ColorUtils.translateColorCodes("&3Version: &6" + Clans.getPlugin().getDescription().getVersion()));
+                    sender.sendMessage(ColorUtils.translateColorCodes("&3Authors: &6" + Clans.getPlugin().getDescription().getAuthors()));
+                    sender.sendMessage(ColorUtils.translateColorCodes("&3Description: &6" + Clans.getPlugin().getDescription().getDescription()));
+                    sender.sendMessage(ColorUtils.translateColorCodes("&3Website: "));
+                    sender.sendMessage(ColorUtils.translateColorCodes("&6" + Clans.getPlugin().getDescription().getWebsite()));
+                    sender.sendMessage(ColorUtils.translateColorCodes("&3~~~~~~~~~~ &6&nClansLite&r &3~~~~~~~~~~"));
+                }
 
             }else {
                 sender.sendMessage(ColorUtils.translateColorCodes(
                         "&6ClansLite usage:&3" +
                                 "\n/clanadmin save" +
-                                "\n/clanadmin reload"
+                                "\n/clanadmin reload" +
+                                "\n/clanadmin about"
                 ));
             }
         }
@@ -96,11 +105,21 @@ public class ClanAdmin implements CommandExecutor {
                     Clans.getPlugin().messagesFileManager.reloadMessagesConfig();
                     logger.info(ColorUtils.translateColorCodes(messagesConfig.getString("plugin-reload-successful")));
                 }
+                if (args[0].equalsIgnoreCase("about")) {
+                    logger.info(ColorUtils.translateColorCodes("&3~~~~~~~~~~ &6ClansLite &3~~~~~~~~~~"));
+                    logger.info(ColorUtils.translateColorCodes("&3Version: &6" + Clans.getPlugin().getDescription().getVersion()));
+                    logger.info(ColorUtils.translateColorCodes("&3Authors: &6" + Clans.getPlugin().getDescription().getAuthors()));
+                    logger.info(ColorUtils.translateColorCodes("&3Description: &6" + Clans.getPlugin().getDescription().getDescription()));
+                    logger.info(ColorUtils.translateColorCodes("&3Website: "));
+                    logger.info(ColorUtils.translateColorCodes("&6" + Clans.getPlugin().getDescription().getWebsite()));
+                    logger.info(ColorUtils.translateColorCodes("&3~~~~~~~~~~ &6ClansLite &3~~~~~~~~~~"));
+                }
             }else {
                 sender.sendMessage(ColorUtils.translateColorCodes(
                         "&6ClansLite usage:&3" +
                                 "\n/clanadmin save" +
-                                "\n/clanadmin reload"
+                                "\n/clanadmin reload" +
+                                "\n/clanadmin about"
                 ));
             }
         }

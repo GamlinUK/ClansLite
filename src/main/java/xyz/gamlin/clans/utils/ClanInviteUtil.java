@@ -1,7 +1,6 @@
 package xyz.gamlin.clans.utils;
 
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import xyz.gamlin.clans.Clans;
 import xyz.gamlin.clans.models.ClanInvite;
@@ -10,8 +9,6 @@ import java.util.*;
 import java.util.logging.Logger;
 
 public class ClanInviteUtil {
-
-    private static final FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
 
     private static final Logger logger = Clans.getPlugin().getLogger();
 
@@ -23,8 +20,9 @@ public class ClanInviteUtil {
         if (!invitesList.containsKey(uuid)){
             invitesList.put(uuid, new ClanInvite(inviterUUID, inviteeUUID));
             return invitesList.get(uuid);
+        }else {
+            return null;
         }
-        return null;
     }
 
     public static boolean searchInvitee(String inviteeUUID){

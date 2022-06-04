@@ -8,8 +8,22 @@
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 # Clans config for ${version}
-#Set the maximum amount of members that can join a players clan. [Default value: 8]
-max-clan-size: 8
+clan-size:
+  #Set the default maximum amount of members that can join a players clan. [Default value: 8]
+  default-max-clan-size: 8
+  #To allow the use of a tiered permission system for clan sizes instead of the global amount, use the system below.
+  tiered-clan-system:
+    #Enable the tiered system use. [Default value: false]
+    enabled: false
+    permission-group-list:
+      group-1: 4 #Perm: 'clanslite.maxclansize.group1' [This perm is given by default]
+      group-2: 8 #Perm: 'clanslite.maxclansize.group2'
+      group-3: 12 #Perm: 'clanslite.maxclansize.group3'
+      group-4: 16 #Perm: 'clanslite.maxclansize.group4'
+      group-5: 20 #Perm: 'clanslite.maxclansize.group5'
+      group-6: 24 #Perm: 'clanslite.maxclansize.group6'
+
+
 #Set the maximum amount of allied clans that can a clan can have. [Default value: 4]
 max-clan-allies: 4
 
