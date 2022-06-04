@@ -32,7 +32,7 @@ The `/clanadmin` command is purely for server admins only.
 * `/clanadmin about` - This give you an overview of the plugin's core information.
 
 ## Permissions
-ClansLite comes with `8` permissions:
+ClansLite comes with `14` permissions:
 * `clanslite.*`
 * `clanslite.clan`
 * `clanslite.admin`
