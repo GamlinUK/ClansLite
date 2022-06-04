@@ -1,5 +1,5 @@
 # ClansLite
-ClansLite is a light-weight clans plugin for Minecraft servers running Spigot or any of its forks!
+ClansLite is a light-weight clans plugin for Minecraft servers running Spigot and most of its forks!
 
 ClansLite does not support any grief prevention tools such as land claiming or securing containers within your clan.
 
@@ -11,6 +11,7 @@ Aliases: `/clans`, `/c`, `cl`
 The `/clan` command is the main command of the plugin, with `/clan` you can do the following:
 * `/clan create <name>` - Creates A new clan if not already in one
 * `/clan disband` - If you are the clan owner, this will destroy your clan
+* `/clan leave` - If you are in a clan, this will remove you from it
 * `/clan invite <player>` - Will invite a player to your clan if they are not already in one
 * `/clan kick <player>` - Will kick a player from your clan
 * `/clan info` - Will display information about your current clan
@@ -25,9 +26,10 @@ Aliases: `/ca`, `cla`
 
 The `/clanadmin` command is purely for server admins only. 
 
-2 arguments are implemented which are: 
+3 arguments are implemented which are: 
 * `/clanadmin save` - which will save all current clan info to the `clans.yml` data file.  
 * `/clanadmin reload` - This reloads the plugins `config.yml` & the `messages.yml` files from disk.
+* `/clanadmin about` - This give you an overview of the plugin's core information.
 
 ## Permissions
 ClansLite comes with `8` permissions:
@@ -39,6 +41,12 @@ ClansLite comes with `8` permissions:
 * `clanslite.bypass.*`
 * `clanslite.bypass.homecooldown`
 * `clanslite.bypass.pvp`
+* `clanslite.maxclansize.group1`
+* `clanslite.maxclansize.group2`
+* `clanslite.maxclansize.group3`
+* `clanslite.maxclansize.group4`
+* `clanslite.maxclansize.group5`
+* `clanslite.maxclansize.group6`
 
 `clanslite.*` is a permission to allow access to ALL functions regardless of operator status.
 
@@ -56,6 +64,18 @@ ClansLite comes with `8` permissions:
 
 `clanslite.bypass.pvp` is the permission node to allow a player to bypass the friendly fire protections.
 
+`clanslite.maxclansize.group1` is the permission node to allow only group 1 size of clan.
+
+`clanslite.maxclansize.group2` is the permission node to allow only group 2 size of clan.
+
+`clanslite.maxclansize.group3` is the permission node to allow only group 3 size of clan.
+
+`clanslite.maxclansize.group4` is the permission node to allow only group 4 size of clan.
+
+`clanslite.maxclansize.group5` is the permission node to allow only group 5 size of clan.
+
+`clanslite.maxclansize.group6` is the permission node to allow only group 6 size of clan.
+
 ## Config
 The max clan size (by default is 8), can be managed in the `plugins/ClansLite/config.yml` file.
 
@@ -65,13 +85,14 @@ The max clan allies (by default is 4), can be managed in the `plugins/ClansLite/
 ClansLite exposes a variable of `{CLAN}` to use in Essentials Chat or similar.
 
 ## PlaceholderAPI
-ClansLite exposes `4` external placeholders using `PlaceholderAPI` to enable the fetching of a players clan name or the clan prefix or if the clan has friendly fire enabled or if the clan has a home set.
+ClansLite exposes `5` external placeholders using `PlaceholderAPI` to enable the fetching of a players clan name or the clan prefix or if the clan has friendly fire enabled or if the clan has a home set.
 
 The four available placeholders are:
 * `%clansLite_clanName%`
 * `%clansLite_clanPrefix%`
 * `%clansLite_friendlyFire%`
 * `%clansLite_clanHomeSet%`
+* `%clansLite_clanMembersSize%`
 
 To be able to use these The latest release of [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/) MUST be installed!  Without it, only the above `{CLAN}` will be available.
 
