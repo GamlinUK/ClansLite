@@ -27,6 +27,9 @@ clan-size:
 #Set the maximum amount of allied clans that can a clan can have. [Default value: 4]
 max-clan-allies: 4
 
+#Set the maximum amount of enemy clans that can a clan can have. [Default value: 2]
+max-clan-enemies: 2
+
 #Clan protections
 protections:
   pvp:

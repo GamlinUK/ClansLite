@@ -23,6 +23,7 @@ public class ClansStorageUtil {
             clansStorage.set("clans.data." + entry.getKey() + ".clanPrefix", entry.getValue().getClanPrefix());
             clansStorage.set("clans.data." + entry.getKey() + ".clanMembers", entry.getValue().getClanMembers());
             clansStorage.set("clans.data." + entry.getKey() + ".clanAllies", entry.getValue().getClanAllies());
+            clansStorage.set("clans.data." + entry.getKey() + ".clanEnemies", entry.getValue().getClanEnemies());
             clansStorage.set("clans.data." + entry.getKey() + ".friendlyFire", entry.getValue().isFriendlyFireAllowed());
             if (entry.getValue().getClanHomeWorld() != null){
                 clansStorage.set("clans.data." + entry.getKey() + ".clanHome.worldName", entry.getValue().getClanHomeWorld());
@@ -44,8 +45,10 @@ public class ClansStorageUtil {
             String clanPrefix = clansStorage.getString("clans.data." + key + ".clanPrefix");
             List<String> clanMembersConfigSection = clansStorage.getStringList("clans.data." + key + ".clanMembers");
             List<String> clanAlliesConfigSection = clansStorage.getStringList("clans.data." + key + ".clanAllies");
+            List<String> clanEnemiesConfigSection = clansStorage.getStringList("clans.data." + key + ".clanEnemies");
             ArrayList<String> clanMembers = new ArrayList<>(clanMembersConfigSection);
             ArrayList<String> clanAllies = new ArrayList<>(clanAlliesConfigSection);
+            ArrayList<String> clanEnemies = new ArrayList<>(clanEnemiesConfigSection);
             boolean friendlyFire = clansStorage.getBoolean("clans.data." + key + ".friendlyFire");
             String clanHomeWorld = clansStorage.getString("clans.data." + key + ".clanHome.worldName");
             double clanHomeX = clansStorage.getDouble("clans.data." + key + ".clanHome.x");
@@ -57,6 +60,7 @@ public class ClansStorageUtil {
             clan.setClanPrefix(clanPrefix);
             clan.setClanMembers(clanMembers);
             clan.setClanAllies(clanAllies);
+            clan.setClanEnemies(clanEnemies);
             clan.setFriendlyFireAllowed(friendlyFire);
             clan.setClanHomeWorld(clanHomeWorld);
             clan.setClanHomeX(clanHomeX);
@@ -171,6 +175,22 @@ public class ClansStorageUtil {
         String memberUUID = uuid.toString();
         clan.addClanMember(memberUUID);
         return true;
+    }
+
+    public static void addClanEnemy(Player clanOwner, Player enemyClanOwner){
+        UUID ownerUUID = clanOwner.getUniqueId();
+        UUID enemyUUID = enemyClanOwner.getUniqueId();
+        String enemyOwnerUUID = enemyUUID.toString();
+        Clan clan = clansList.get(ownerUUID);
+        clan.addClanEnemy(enemyOwnerUUID);
+    }
+
+    public static void removeClanEnemy(Player clanOwner, Player enemyClanOwner){
+        UUID ownerUUID = clanOwner.getUniqueId();
+        UUID enemyUUID = enemyClanOwner.getUniqueId();
+        String enemyOwnerUUID = enemyUUID.toString();
+        Clan clan = clansList.get(ownerUUID);
+        clan.removeClanEnemy(enemyOwnerUUID);
     }
 
     public static Set<Map.Entry<UUID, Clan>> getClans(){

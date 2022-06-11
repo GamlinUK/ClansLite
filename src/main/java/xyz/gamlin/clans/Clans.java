@@ -37,7 +37,8 @@ public final class Clans extends JavaPlugin {
         //Server version compatibility check
         if (!(Bukkit.getServer().getVersion().contains("1.13")||Bukkit.getServer().getVersion().contains("1.14")||
                 Bukkit.getServer().getVersion().contains("1.15")||Bukkit.getServer().getVersion().contains("1.16")||
-                Bukkit.getServer().getVersion().contains("1.17")||Bukkit.getServer().getVersion().contains("1.18"))){
+                Bukkit.getServer().getVersion().contains("1.17")||Bukkit.getServer().getVersion().contains("1.18")||
+                Bukkit.getServer().getVersion().contains("1.19"))){
             logger.warning(ColorUtils.translateColorCodes("&4-------------------------------------------"));
             logger.warning(ColorUtils.translateColorCodes("&6ClansLite: &4This plugin is only supported on the Minecraft versions listed below:"));
             logger.warning(ColorUtils.translateColorCodes("&6ClansLite: &41.13.x"));
@@ -46,6 +47,7 @@ public final class Clans extends JavaPlugin {
             logger.warning(ColorUtils.translateColorCodes("&6ClansLite: &41.16.x"));
             logger.warning(ColorUtils.translateColorCodes("&6ClansLite: &41.17.x"));
             logger.warning(ColorUtils.translateColorCodes("&6ClansLite: &41.18.x"));
+            logger.warning(ColorUtils.translateColorCodes("&6ClansLite: &41.19.x"));
             logger.warning(ColorUtils.translateColorCodes("&6ClansLite: &4Is now disabling!"));
             logger.warning(ColorUtils.translateColorCodes("&4-------------------------------------------"));
             Bukkit.getPluginManager().disablePlugin(this);

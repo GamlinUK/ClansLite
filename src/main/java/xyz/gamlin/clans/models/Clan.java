@@ -9,6 +9,7 @@ public class Clan {
     private String clanPrefix;
     private ArrayList<String> clanMembers;
     private ArrayList<String> clanAllies;
+    private ArrayList<String> clanEnemies;
     private boolean friendlyFire;
     private String clanHomeWorld;
     private double clanHomeX;
@@ -23,48 +24,49 @@ public class Clan {
         clanPrefix = clanFinalName;
         clanMembers = new ArrayList<>();
         clanAllies = new ArrayList<>();
+        clanEnemies = new ArrayList<>();
         friendlyFire = true;
         clanHomeWorld = null;
     }
 
-    public String getClanOwner() {
+    public String getClanOwner(){
         return clanFinalOwner;
     }
 
-    public String getClanFinalName() {
+    public String getClanFinalName(){
         return clanFinalName;
     }
 
     @Deprecated
-    public void setClanFinalName(String newClanFinalName) {
+    public void setClanFinalName(String newClanFinalName){
         clanFinalName = newClanFinalName;
     }
 
-    public String getClanPrefix() {
+    public String getClanPrefix(){
         return clanPrefix;
     }
 
-    public void setClanPrefix(String newClanPrefix) {
+    public void setClanPrefix(String newClanPrefix){
         clanPrefix = newClanPrefix;
     }
 
-    public ArrayList<String> getClanMembers() {
+    public ArrayList<String> getClanMembers(){
         return clanMembers;
     }
 
-    public void setClanMembers(ArrayList<String> clanMembersList) {
+    public void setClanMembers(ArrayList<String> clanMembersList){
         clanMembers = clanMembersList;
     }
 
-    public void addClanMember(String clanMember) {
+    public void addClanMember(String clanMember){
         clanMembers.add(clanMember);
     }
 
-    public Boolean removeClanMember(String clanMember) {
+    public Boolean removeClanMember(String clanMember){
         return clanMembers.remove(clanMember);
     }
 
-    public ArrayList<String> getClanAllies() {
+    public ArrayList<String> getClanAllies(){
         return clanAllies;
     }
 
@@ -76,63 +78,79 @@ public class Clan {
         clanAllies.remove(allyUUID);
     }
 
-    public void setClanAllies(ArrayList<String> clanAlliesList) {
+    public void setClanAllies(ArrayList<String> clanAlliesList){
         clanAllies = clanAlliesList;
     }
 
-    public boolean isFriendlyFireAllowed() {
+    public void addClanEnemy(String enemy){
+        clanEnemies.add(enemy);
+    }
+
+    public void removeClanEnemy(String enemyUUID){
+        clanEnemies.remove(enemyUUID);
+    }
+
+    public void setClanEnemies(ArrayList<String> clanEnemiesList){
+        clanEnemies = clanEnemiesList;
+    }
+
+    public ArrayList<String> getClanEnemies(){
+        return clanEnemies;
+    }
+
+    public boolean isFriendlyFireAllowed(){
         return friendlyFire;
     }
 
-    public void setFriendlyFireAllowed(boolean friendlyFire) {
+    public void setFriendlyFireAllowed(boolean friendlyFire){
         this.friendlyFire = friendlyFire;
     }
 
-    public String getClanHomeWorld() {
+    public String getClanHomeWorld(){
         return clanHomeWorld;
     }
 
-    public void setClanHomeWorld(String clanHomeWorld) {
+    public void setClanHomeWorld(String clanHomeWorld){
         this.clanHomeWorld = clanHomeWorld;
     }
 
-    public double getClanHomeX() {
+    public double getClanHomeX(){
         return clanHomeX;
     }
 
-    public void setClanHomeX(double clanHomeX) {
+    public void setClanHomeX(double clanHomeX){
         this.clanHomeX = clanHomeX;
     }
 
-    public double getClanHomeY() {
+    public double getClanHomeY(){
         return clanHomeY;
     }
 
-    public void setClanHomeY(double clanHomeY) {
+    public void setClanHomeY(double clanHomeY){
         this.clanHomeY = clanHomeY;
     }
 
-    public double getClanHomeZ() {
+    public double getClanHomeZ(){
         return clanHomeZ;
     }
 
-    public void setClanHomeZ(double clanHomeZ) {
+    public void setClanHomeZ(double clanHomeZ){
         this.clanHomeZ = clanHomeZ;
     }
 
-    public float getClanHomeYaw() {
+    public float getClanHomeYaw(){
         return clanHomeYaw;
     }
 
-    public void setClanHomeYaw(float clanHomeYaw) {
+    public void setClanHomeYaw(float clanHomeYaw){
         this.clanHomeYaw = clanHomeYaw;
     }
 
-    public float getClanHomePitch() {
+    public float getClanHomePitch(){
         return clanHomePitch;
     }
 
-    public void setClanHomePitch(float clanHomePitch) {
+    public void setClanHomePitch(float clanHomePitch){
         this.clanHomePitch = clanHomePitch;
     }
 }

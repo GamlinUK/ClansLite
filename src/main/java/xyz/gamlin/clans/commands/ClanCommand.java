@@ -33,6 +33,8 @@ public class ClanCommand implements CommandExecutor {
     private static final String CLAN_MEMBER = "%MEMBER%";
     private static final String ALLY_CLAN = "%ALLYCLAN%";
     private static final String ALLY_OWNER = "%ALLYOWNER%";
+    private static final String ENEMY_CLAN = "%ENEMYCLAN%";
+    private static final String ENEMY_OWNER = "%ENEMYOWNER%";
     private static final String TIME_LEFT = "%TIMELEFT%";
 
     HashMap<UUID, Long> homeCoolDownTimer = new HashMap<>();
@@ -57,6 +59,7 @@ public class ClanCommand implements CommandExecutor {
                                 "\n/clan list" +
                                 "\n/clan prefix <prefix>" +
                                 "\n/clan ally [add|remove] <clan-owner>" +
+                                "\n/clan enemy [add|remove] <clan-owner>" +
                                 "\n/clan pvp" +
                                 "\n/clan [sethome|home]"
                 ));
@@ -146,40 +149,40 @@ public class ClanCommand implements CommandExecutor {
                                             return true;
                                         }
                                     }else {
-                                        if (player.hasPermission("clanslite.maxclansize.group1")){
-                                            if (clan.getClanMembers().size() >= clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-1")){
-                                                Integer g1MaxSize = clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-1");
-                                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-max-size-reached")).replace("%LIMIT%", g1MaxSize.toString()));
+                                        if (player.hasPermission("clanslite.maxclansize.group6")){
+                                            if (clan.getClanMembers().size() >= clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-6")){
+                                                Integer g6MaxSize = clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-6");
+                                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-max-size-reached")).replace("%LIMIT%", g6MaxSize.toString()));
                                                 return true;
                                             }
-                                        }else if (player.hasPermission("clanslite.maxclansize.group2")){
+                                        }else if (player.hasPermission("clanslite.maxclansize.group5")){
                                             if (clan.getClanMembers().size() >= clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-2")){
-                                                Integer g2MaxSize = clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-2");
-                                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-max-size-reached")).replace("%LIMIT%", g2MaxSize.toString()));
-                                                return true;
-                                            }
-                                        }else if (player.hasPermission("clanslite.maxclansize.group3")) {
-                                            if (clan.getClanMembers().size() >= clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-3")) {
-                                                Integer g3MaxSize = clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-3");
-                                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-max-size-reached")).replace("%LIMIT%", g3MaxSize.toString()));
-                                                return true;
-                                            }
-                                        }else if (player.hasPermission("clanslite.maxclansize.group4")) {
-                                            if (clan.getClanMembers().size() >= clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-4")) {
-                                                Integer g4MaxSize = clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-2");
-                                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-max-size-reached")).replace("%LIMIT%", g4MaxSize.toString()));
-                                                return true;
-                                            }
-                                        }else if (player.hasPermission("clanslite.maxclansize.group5")) {
-                                            if (clan.getClanMembers().size() >= clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-5")) {
                                                 Integer g5MaxSize = clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-5");
                                                 player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-max-size-reached")).replace("%LIMIT%", g5MaxSize.toString()));
                                                 return true;
                                             }
-                                        }else if (player.hasPermission("clanslite.maxclansize.group6")) {
-                                            if (clan.getClanMembers().size() >= clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-6")) {
-                                                Integer g6MaxSize = clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-6");
-                                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-max-size-reached")).replace("%LIMIT%", g6MaxSize.toString()));
+                                        }else if (player.hasPermission("clanslite.maxclansize.group4")) {
+                                            if (clan.getClanMembers().size() >= clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-4")) {
+                                                Integer g4MaxSize = clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-4");
+                                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-max-size-reached")).replace("%LIMIT%", g4MaxSize.toString()));
+                                                return true;
+                                            }
+                                        }else if (player.hasPermission("clanslite.maxclansize.group3")) {
+                                            if (clan.getClanMembers().size() >= clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-4")) {
+                                                Integer g3MaxSize = clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-3");
+                                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-max-size-reached")).replace("%LIMIT%", g3MaxSize.toString()));
+                                                return true;
+                                            }
+                                        }else if (player.hasPermission("clanslite.maxclansize.group2")) {
+                                            if (clan.getClanMembers().size() >= clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-2")) {
+                                                Integer g2MaxSize = clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-2");
+                                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-max-size-reached")).replace("%LIMIT%", g2MaxSize.toString()));
+                                                return true;
+                                            }
+                                        }else if (player.hasPermission("clanslite.maxclansize.group1")) {
+                                            if (clan.getClanMembers().size() >= clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-1")) {
+                                                Integer g1MaxSize = clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-1");
+                                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-max-size-reached")).replace("%LIMIT%", g1MaxSize.toString()));
                                                 return true;
                                             }
                                         }
@@ -269,17 +272,17 @@ public class ClanCommand implements CommandExecutor {
                         Clan clan = ClansStorageUtil.findClanByOwner(ClanInviteUtil.getInviteOwner(inviterUUIDString.toString()));
                         if (clan != null) {
                             if (ClansStorageUtil.addClanMember(clan, player)) {
-                                ClanInviteUtil.removeInvite(player.getUniqueId().toString());
+                                ClanInviteUtil.removeInvite(inviterUUIDString.toString());
                                 String joinMessage = ColorUtils.translateColorCodes(messagesConfig.getString("clan-join-successful")).replace(CLAN_PLACEHOLDER, clan.getClanFinalName());
                                 player.sendMessage(joinMessage);
-                            } else {
+                            }else {
                                 String failureMessage = ColorUtils.translateColorCodes(messagesConfig.getString("clan-join-failed")).replace(CLAN_PLACEHOLDER, clan.getClanFinalName());
                                 player.sendMessage(failureMessage);
                             }
-                        } else {
+                        }else {
                             player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-join-failed-no-valid-clan")));
                         }
-                    } else {
+                    }else {
                         player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-join-failed-no-invite")));
                     }
                     return true;
@@ -497,7 +500,7 @@ public class ClanCommand implements CommandExecutor {
                                         if (allyClanOwner != null){
                                             if (ClansStorageUtil.findClanByOwner(allyClanOwner) != null){
                                                 if (ClansStorageUtil.findClanByOwner(player) != ClansStorageUtil.findClanByOwner(allyClanOwner)){
-                                                    if (ClansStorageUtil.findClanByOwner(player).getClanMembers().size() >= clansConfig.getInt("max-clan-allies")){
+                                                    if (ClansStorageUtil.findClanByOwner(player).getClanAllies().size() >= clansConfig.getInt("max-clan-allies")){
                                                         Integer maxSize = clansConfig.getInt("max-clan-allies");
                                                         player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-ally-max-amount-reached")).replace("%LIMIT%", maxSize.toString()));
                                                         return true;
@@ -566,6 +569,139 @@ public class ClanCommand implements CommandExecutor {
                     return true;
                 }
 
+
+//----------------------------------------------------------------------------------------------------------------------
+                if (args[0].equalsIgnoreCase("enemy")){
+                    if (args.length > 2){
+                        if (args[1].equalsIgnoreCase("add")){
+                            if (args[2].length() > 1){
+                                if (ClansStorageUtil.isClanOwner(player)){
+                                    if (ClansStorageUtil.findClanByOwner(player) != null){
+                                        Player enemyClanOwner = Bukkit.getPlayer(args[2]);
+                                        if (enemyClanOwner != null){
+                                            if (ClansStorageUtil.findClanByOwner(enemyClanOwner) != null){
+                                                if (ClansStorageUtil.findClanByOwner(player) != ClansStorageUtil.findClanByOwner(enemyClanOwner)){
+                                                    if (ClansStorageUtil.findClanByOwner(player).getClanEnemies().size() >= clansConfig.getInt("max-clan-enemies")){
+                                                        Integer maxSize = clansConfig.getInt("max-clan-enemies");
+                                                        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-enemy-max-amount-reached")).replace("%LIMIT%", maxSize.toString()));
+                                                        return true;
+                                                    }
+                                                    ClansStorageUtil.addClanEnemy(player, enemyClanOwner);
+                                                    Clan enemyClan = ClansStorageUtil.findClanByOwner(enemyClanOwner);
+                                                    player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("added-clan-to-your-enemies").replace(ENEMY_CLAN, enemyClan.getClanFinalName())));
+                                                    String titleMain = ColorUtils.translateColorCodes(messagesConfig.getString("added-enemy-clan-to-your-enemies-title-1").replace(CLAN_OWNER, enemyClanOwner.getName()));
+                                                    String titleAux = ColorUtils.translateColorCodes(messagesConfig.getString("added-enemy-clan-to-your-enemies-title-2").replace(CLAN_OWNER, enemyClanOwner.getName()));
+                                                    player.sendTitle(titleMain, titleAux, 10, 70, 20);
+                                                    ArrayList<String> playerClanMembers = ClansStorageUtil.findClanByOwner(player).getClanMembers();
+                                                    for (String playerClanMember : playerClanMembers){
+                                                        if (playerClanMember != null){
+                                                            UUID memberUUID = UUID.fromString(playerClanMember);
+                                                            Player playerClanPlayer = Bukkit.getPlayer(memberUUID);
+                                                            if (playerClanPlayer != null){
+                                                                playerClanPlayer.sendTitle(titleMain, titleAux, 10, 70, 20);
+                                                            }
+                                                        }
+                                                    }
+                                                    if (enemyClanOwner.isOnline()){
+                                                        enemyClanOwner.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-added-to-other-enemies").replace(CLAN_OWNER, player.getName())));
+                                                        String titleMainEnemy = ColorUtils.translateColorCodes(messagesConfig.getString("clan-added-to-other-enemies-title-1").replace(CLAN_OWNER, player.getName()));
+                                                        String titleAuxEnemy = ColorUtils.translateColorCodes(messagesConfig.getString("clan-added-to-other-enemies-title-2").replace(CLAN_OWNER, player.getName()));
+                                                        enemyClanOwner.sendTitle(titleMainEnemy, titleAuxEnemy, 10, 70, 20);
+                                                        ArrayList<String> enemyClanMembers = enemyClan.getClanMembers();
+                                                        for (String enemyClanMember : enemyClanMembers){
+                                                            if (enemyClanMember != null) {
+                                                                UUID memberUUID = UUID.fromString(enemyClanMember);
+                                                                Player enemyClanPlayer = Bukkit.getPlayer(memberUUID);
+                                                                if (enemyClanPlayer != null) {
+                                                                    enemyClanPlayer.sendTitle(titleMainEnemy, titleAuxEnemy, 10, 70, 20);
+                                                                }
+                                                            }
+                                                        }
+                                                    }else {
+                                                        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("failed-to-add-clan-to-enemies").replace(ENEMY_OWNER, args[2])));
+                                                    }
+                                                }else {
+                                                    player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("failed-cannot-enemy-your-own-clan")));
+                                                }
+                                            }else {
+                                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("failed-enemy-player-not-clan-owner").replace(ENEMY_OWNER, args[2])));
+                                            }
+                                        }else {
+                                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("enemy-clan-add-owner-offline").replace(ENEMY_OWNER, args[2])));
+                                        }
+                                    }
+                                }else {
+                                    player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-must-be-owner")));
+                                }
+                            }else {
+                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("incorrect-clan-enemy-command-usage")));
+                            }
+                            return true;
+                        }else if (args[1].equalsIgnoreCase("remove")){
+                            if (args[2].length() > 1){
+                                if (ClansStorageUtil.isClanOwner(player)){
+                                    if (ClansStorageUtil.findClanByOwner(player) != null){
+                                        Player enemyClanOwner = Bukkit.getPlayer(args[2]);
+                                        if (enemyClanOwner != null){
+                                            if (ClansStorageUtil.findClanByOwner(enemyClanOwner) != null){
+                                                Clan enemyClan = ClansStorageUtil.findClanByOwner(enemyClanOwner);
+                                                List<String> enemyClans = ClansStorageUtil.findClanByOwner(player).getClanEnemies();
+                                                if (enemyClans.contains(args[2])){
+                                                    ClansStorageUtil.removeClanEnemy(player, enemyClanOwner);
+                                                    player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("removed-clan-from-your-enemies").replace(ENEMY_CLAN, enemyClan.getClanFinalName())));
+                                                    String titleMain = ColorUtils.translateColorCodes(messagesConfig.getString("removed-enemy-clan-from-your-enemies-title-1").replace(CLAN_OWNER, enemyClanOwner.getName()));
+                                                    String titleAux = ColorUtils.translateColorCodes(messagesConfig.getString("removed-enemy-clan-from-your-enemies-title-1").replace(CLAN_OWNER, enemyClanOwner.getName()));
+                                                    player.sendTitle(titleMain, titleAux, 10, 70, 20);
+                                                    ArrayList<String> playerClanMembers = ClansStorageUtil.findClanByOwner(player).getClanMembers();
+                                                    for (String playerClanMember : playerClanMembers){
+                                                        if (playerClanMember != null){
+                                                            UUID memberUUID = UUID.fromString(playerClanMember);
+                                                            Player playerClanPlayer = Bukkit.getPlayer(memberUUID);
+                                                            if (playerClanPlayer != null){
+                                                                playerClanPlayer.sendTitle(titleMain, titleAux, 10, 70, 20);
+                                                            }
+                                                        }
+                                                    }
+                                                    if (enemyClanOwner.isOnline()){
+                                                        enemyClanOwner.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-removed-from-other-enemies").replace(ENEMY_OWNER, player.getName())));
+                                                        String titleMainEnemy = ColorUtils.translateColorCodes(messagesConfig.getString("clan-removed-from-other-enemies-title-1").replace(CLAN_OWNER, player.getName()));
+                                                        String titleAuxEnemy = ColorUtils.translateColorCodes(messagesConfig.getString("clan-removed-from-other-enemies-title-2").replace(CLAN_OWNER, player.getName()));
+                                                        enemyClanOwner.sendTitle(titleMainEnemy, titleAuxEnemy, 10, 70, 20);
+                                                        ArrayList<String> enemyClanMembers = enemyClan.getClanMembers();
+                                                        for (String enemyClanMember : enemyClanMembers){
+                                                            if (enemyClanMember != null) {
+                                                                UUID memberUUID = UUID.fromString(enemyClanMember);
+                                                                Player enemyClanPlayer = Bukkit.getPlayer(memberUUID);
+                                                                if (enemyClanPlayer != null) {
+                                                                    enemyClanPlayer.sendTitle(titleMain, titleAux, 10, 70, 20);
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }else {
+                                                    player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("failed-to-remove-clan-from-enemies").replace(ENEMY_OWNER, args[2])));
+                                                }
+                                            }else {
+                                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("failed-enemy-player-not-clan-owner").replace(ENEMY_OWNER, args[2])));
+                                            }
+                                        }else {
+                                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("enemy-clan-remove-owner-offline").replace(ENEMY_OWNER, args[2])));
+                                        }
+                                    }
+                                }else {
+                                    player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-must-be-owner")));
+                                }
+                            }else {
+                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("incorrect-clan-enemy-command-usage")));
+                            }
+                        }
+                        return true;
+                    }else {
+                        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("incorrect-clan-enemy-command-usage")));
+                    }
+                }
+
+
 //----------------------------------------------------------------------------------------------------------------------
                 if (args[0].equalsIgnoreCase("pvp")){
                     if (clansConfig.getBoolean("protections.pvp.pvp-command-enabled")){
@@ -590,6 +726,7 @@ public class ClanCommand implements CommandExecutor {
                     }
                     return true;
                 }
+
 
 //----------------------------------------------------------------------------------------------------------------------
                 if (args[0].equalsIgnoreCase("sethome")){
