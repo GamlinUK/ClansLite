@@ -18,6 +18,7 @@ The `/clan` command is the main command of the plugin, with `/clan` you can do t
 * `/clan list` - Will list all clans in the server
 * `/clan prefix <prefix>` - Will change the prefix for your clan in chat
 * `/clan ally [add|remove] <ally-owner>` - Will either add or remove an allied clan to yours
+* `/clan enemy [add|remove] <ally-owner>` - Will either add or remove an enemy clan to yours
 * `/clan pvp` - Will toggle the friendly fire status for your clan
 * `/clan [sethome|home]` - Will set a clan home location or teleport you or you clan members to this location.
 
@@ -80,6 +81,8 @@ ClansLite comes with `14` permissions:
 The max clan size (by default is 8), can be managed in the `plugins/ClansLite/config.yml` file.
 
 The max clan allies (by default is 4), can be managed in the `plugins/ClansLite/config.yml` file.
+
+The max clan enemies (by default is 2), can be managed in the `plugins/ClansLite/config.yml` file.
 
 ## Chat prefix
 ClansLite exposes a variable of `{CLAN}` to use in Essentials Chat or similar.
