@@ -1,4 +1,3 @@
-ClansLite Spigot Plugin
 MIT License
 
 Copyright (c) 2022 Mark Loving
