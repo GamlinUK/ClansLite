@@ -25,7 +25,14 @@ public class ClanCommand implements CommandExecutor {
 
     Logger logger = Clans.getPlugin().getLogger();
 
+    public static Integer taskID1;
+
+    private static final FileConfiguration clansConfig = Clans.getPlugin().getConfig();
     private static final FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+
+    private static final int MIN_CHAR_LIMIT = clansConfig.getInt("clan-tags.min-character-limit");
+    private static final int MAX_CHAR_LIMIT = clansConfig.getInt("clan-tags.max-character-limit");
+
     private static final String CLAN_PLACEHOLDER = "%CLAN%";
     private static final String INVITED_PLAYER = "%INVITED%";
     private static final String PLAYER_TO_KICK = "%KICKEDPLAYER%";
@@ -37,15 +44,25 @@ public class ClanCommand implements CommandExecutor {
     private static final String ENEMY_OWNER = "%ENEMYOWNER%";
     private static final String TIME_LEFT = "%TIMELEFT%";
 
+    private static List<String> bannedTags;
+
     HashMap<UUID, Long> homeCoolDownTimer = new HashMap<>();
 
     Set<Map.Entry<UUID, Clan>> clans = ClansStorageUtil.getClans();
     ArrayList<String> clanNamesList = new ArrayList<>();
     ArrayList<String> clansPrefixList = new ArrayList<>();
 
+    public static void updateBannedTagsList(){
+        taskID1 = Bukkit.getScheduler().scheduleSyncDelayedTask(Clans.getPlugin(), new Runnable() {
+            @Override
+            public void run() {
+                bannedTags = clansConfig.getStringList("clan-tags.disallowed-tags");
+            }
+        }, 10);
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        FileConfiguration clansConfig = Clans.getPlugin().getConfig();
         if (sender instanceof Player) {
             Player player = ((Player) sender).getPlayer();
             if (args.length < 1) {
@@ -70,15 +87,21 @@ public class ClanCommand implements CommandExecutor {
                     clans.forEach((clans) ->
                             clanNamesList.add(clans.getValue().getClanFinalName()));
                     if (args.length >= 2) {
+                        if (bannedTags.contains(args[1])){
+                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-name-is-banned").replace(CLAN_PLACEHOLDER, args[1])));
+                            return true;
+                        }
                         if (clanNamesList.contains(args[1])){
                             player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-name-already-taken").replace(CLAN_PLACEHOLDER, args[1])));
                             return true;
                         }
-                        if (args[1].length() < 3) {
-                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-name-too-short")));
+                        if (args[1].length() < MIN_CHAR_LIMIT) {
+                            Integer minCharLimit = clansConfig.getInt("clan-tags.min-character-limit");
+                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-name-too-short").replace("%CHARMIN%", minCharLimit.toString())));
                             return true;
-                        } else if (args[1].length() > 32) {
-                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-name-too-long")));
+                        } else if (args[1].length() > MAX_CHAR_LIMIT) {
+                            Integer maxCharLimit = clansConfig.getInt("clan-tags.max-character-limit");
+                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-name-too-long").replace("%CHARMAX%", maxCharLimit.toString())));
                             return true;
                         }else {
                             StringBuilder stringBuilder = new StringBuilder();
@@ -211,6 +234,10 @@ public class ClanCommand implements CommandExecutor {
                     clans.forEach((clans) ->
                             clansPrefixList.add(clans.getValue().getClanPrefix()));
                     if (args.length == 2) {
+                        if (bannedTags.contains(args[1])){
+                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-prefix-is-banned").replace("%CLANPREFIX%", args[1])));
+                            return true;
+                        }
                         if (clansPrefixList.contains(args[1])){
                             player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-prefix-already-taken").replace("%CLANPREFIX%", args[1])));
                             return true;

@@ -90,6 +90,9 @@ public final class Clans extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new PlayerDamage(), this);
         this.getServer().getPluginManager().registerEvents(new JoinEvent(), this);
 
+        //Update banned tags list
+        ClanCommand.updateBannedTagsList();
+
         //Register PlaceHolderAPI hooks
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null){
             new PlayerClanExpansion().register();
@@ -106,7 +109,6 @@ public final class Clans extends JavaPlugin {
 
         //Plugin startup message
         logger.info(ColorUtils.translateColorCodes("-------------------------------------------"));
-        logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Plugin created by: &b&lGamlin"));
         logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Plugin maintained by: &b&lLoving11ish"));
         logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3has been loaded successfully"));
         logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Plugin Version: &d&l" + pluginVersion));
@@ -150,7 +152,6 @@ public final class Clans extends JavaPlugin {
 
         //Safely stop the background tasks if running
         logger.info(ColorUtils.translateColorCodes("-------------------------------------------"));
-        logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Plugin created by: &b&lGamlin"));
         logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Plugin maintained by: &b&lLoving11ish"));
         try {
             if (Bukkit.getScheduler().isCurrentlyRunning(TaskTimerUtils.taskID1)||Bukkit.getScheduler().isQueued(TaskTimerUtils.taskID1)){

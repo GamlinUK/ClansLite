@@ -49,6 +49,7 @@ public class ClanAdmin implements CommandExecutor {
                         sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clans-load-error-1")));
                         sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clans-load-error-2")));
                     }
+                    ClanCommand.updateBannedTagsList();
                     Clans.getPlugin().messagesFileManager.reloadMessagesConfig();
                     sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("plugin-reload-successful")));
                 }
@@ -102,6 +103,7 @@ public class ClanAdmin implements CommandExecutor {
                         logger.severe(ColorUtils.translateColorCodes(messagesConfig.getString("clans-load-error-2")));
                         e.printStackTrace();
                     }
+                    ClanCommand.updateBannedTagsList();
                     Clans.getPlugin().messagesFileManager.reloadMessagesConfig();
                     logger.info(ColorUtils.translateColorCodes(messagesConfig.getString("plugin-reload-successful")));
                 }

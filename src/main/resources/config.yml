@@ -7,7 +7,19 @@
 #                                   ----[Plugin Config File]----                                    #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-# Clans config for ${version}
+#ClansLite config for ${version}
+
+clan-tags:
+  #Set the minimum length of the clan prefix and name. [Default value: 3]
+  min-character-limit: 3
+  #Set the maximum length of the clan prefix and name. [Default value: 32]
+  max-character-limit: 32
+  #Set below names that are not allowed to be used in prefixes or names. [They ARE case & syntax sensitive]
+  disallowed-tags:
+    - "Gamers"
+    - "Rise"
+    - "Up"
+
 clan-size:
   #Set the default maximum amount of members that can join a players clan. [Default value: 8]
   default-max-clan-size: 8

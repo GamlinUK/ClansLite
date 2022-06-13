@@ -7,12 +7,14 @@
 #                                  ----[Plugin Messages File]----                                   #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#ClansLite messages config for ${version}
 
 #Clan Creation Messages
-clan-name-too-short: "&3Clan name too short - minimum length is &63 characters&3."
-clan-name-too-long: "&3Clan name too long - maximum length is &632 characters&3."
+clan-name-too-short: "&3Clan name too short - minimum length is &6%CHARMIN% &3characters."
+clan-name-too-long: "&3Clan name too long - maximum length is &6%CHARMAX% &3characters."
 clan-created-successfully: "&3Clan &6%CLAN% &3was Created!"
 clan-name-already-taken: "&3Sorry but &6%CLAN% &3is already taken.\n&3Please choose another!"
+clan-name-is-banned: "&3Sorry but &6%CLAN% &3is a &cBANNED &3name!\n&3Please choose another!"
 clan-creation-failed: "&3Clan &6%CLAN% &3was NOT created, please make sure you're not already in a clan!"
 
 #Clan Disbanded Messages
@@ -56,6 +58,7 @@ clan-prefix-too-long: "&3Clan prefix too long - maximum length is &632 &3charact
 clan-prefix-too-short: "&3Clan prefix too short - minimum length is &63 &3characters."
 clan-invalid-prefix: "&3Please provide a new prefix. Use &b/clan prefix <prefix>&3!"
 clan-prefix-already-taken: "&3Sorry but &6%CLANPREFIX% &3is already taken.\n&3Please choose another!"
+clan-prefix-is-banned: "&3Sorry but &6%CLANPREFIX% &3is a &cBANNED &3name!\n&3Please choose another!"
 must-be-owner-to-change-prefix: "&3You are not an owner of a clan!"
 
 #Clan List Messages

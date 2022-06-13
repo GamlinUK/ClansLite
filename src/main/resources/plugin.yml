@@ -3,7 +3,7 @@ version: '${project.version}'
 main: xyz.gamlin.clans.Clans
 api-version: 1.13
 prefix: ClansLite
-authors: [Loving11ish, Gamlin]
+authors: [Loving11ish]
 description: A simple clans plugin for Minecraft.
 website: https://www.spigotmc.org/resources/clanslite.97163/
 softdepend: [PlaceholderAPI]
