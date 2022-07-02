@@ -35,9 +35,9 @@ The `/clanadmin` command is purely for server admins only.
 ## /cc command
 Aliases: /clanchat, /clanc, /cchat, /chat
 
-The /cc command is for the sole purpose of utilising the per clan chat. The following syntax is accepted:
+The `/cc` command is for the sole purpose of utilising the per clan chat. The following syntax is accepted:
 
-/cc <message> - This will send a message to only the members of YOUR clan or the clan you are in.
+`/cc <message>` - This will send a message to only the members of YOUR clan or the clan you are in.
 
 ## Permissions
 ClansLite comes with `14` permissions:
