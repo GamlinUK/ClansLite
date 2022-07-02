@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 public class ClanAdmin implements CommandExecutor {
 
     Logger logger = Clans.getPlugin().getLogger();
-    private static final FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+    FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -36,7 +36,9 @@ public class ClanAdmin implements CommandExecutor {
                 if (args[0].equalsIgnoreCase("reload")) {
                     Clans.getPlugin().reloadConfig();
                     try {
-                        ClansStorageUtil.saveClans();
+                        if (!ClansStorageUtil.getRawClansList().isEmpty()){
+                            ClansStorageUtil.saveClans();
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
                         sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clans-save-error-1")));
@@ -89,7 +91,9 @@ public class ClanAdmin implements CommandExecutor {
                 if (args[0].equalsIgnoreCase("reload")) {
                     Clans.getPlugin().reloadConfig();
                     try {
-                        ClansStorageUtil.saveClans();
+                        if (!ClansStorageUtil.getRawClansList().isEmpty()){
+                            ClansStorageUtil.saveClans();
+                        }
                     } catch (IOException e) {
                         logger.severe(ColorUtils.translateColorCodes(messagesConfig.getString("clans-save-error-1")));
                         logger.severe(ColorUtils.translateColorCodes(messagesConfig.getString("clans-save-error-2")));

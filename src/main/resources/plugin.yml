@@ -23,6 +23,15 @@ commands:
     aliases:
       - ca
       - cla
+  cc:
+    description: Send a message to your clan members only
+    usage: "Usage: /cc <message>"
+    permission: clanslite.clan
+    aliases:
+      - clanchat
+      - clanc
+      - cchat
+      - chat
 permissions:
   clanslite.clan:
     default: true

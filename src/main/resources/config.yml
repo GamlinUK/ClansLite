@@ -19,6 +19,8 @@ clan-tags:
     - "Gamers"
     - "Rise"
     - "Up"
+  #Add a space after the clan prefix in chat. [Default value: true]
+  prefix-add-space-after: true
 
 clan-size:
   #Set the default maximum amount of members that can join a players clan. [Default value: 8]
@@ -35,6 +37,17 @@ clan-size:
       group-5: 20 #Perm: 'clanslite.maxclansize.group5'
       group-6: 24 #Perm: 'clanslite.maxclansize.group6'
 
+
+clan-chat:
+  #Enable the clan chat system. [Default value: true]
+  enabled: true
+  #Below is the prefix for the clan chat messages. [Default value: &6[&3CC&6]&r]
+  chat-prefix: "&6[&3CC&6]&r"
+  cool-down:
+    #Enable the cool down on the '/cc <message>' command to prevent chat spamming (RECOMMENDED). [Default value: true]
+    enabled: true
+    #Cool-down time in seconds. [Default value: 10 = 10 seconds]
+    time: 10
 
 #Set the maximum amount of allied clans that can a clan can have. [Default value: 4]
 max-clan-allies: 4

@@ -10,8 +10,8 @@ import xyz.gamlin.clans.utils.ColorUtils;
 
 public class JoinEvent implements Listener {
 
-    private static final FileConfiguration clansConfig = Clans.getPlugin().getConfig();
-    private static final FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+    FileConfiguration clansConfig = Clans.getPlugin().getConfig();
+    FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {

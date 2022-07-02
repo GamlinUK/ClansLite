@@ -1,7 +1,6 @@
 package xyz.gamlin.clans.utils;
 
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
 import xyz.gamlin.clans.Clans;
 
 import java.io.IOException;
@@ -10,7 +9,6 @@ import java.util.logging.Logger;
 public class TaskTimerUtils {
 
     static Logger logger = Clans.getPlugin().getLogger();
-    private static final FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
 
     public static Integer taskID1;
     public static Integer taskID2;
@@ -25,9 +23,9 @@ public class TaskTimerUtils {
                 if (time == 1){
                     try {
                         ClansStorageUtil.saveClans();
-                        logger.info(ColorUtils.translateColorCodes(messagesConfig.getString("auto-save-complete")));
+                        logger.info(ColorUtils.translateColorCodes(Clans.getPlugin().messagesFileManager.getMessagesConfig().getString("auto-save-complete")));
                     } catch (IOException e) {
-                        logger.severe(ColorUtils.translateColorCodes(messagesConfig.getString("auto-save-failed")));
+                        logger.severe(ColorUtils.translateColorCodes(Clans.getPlugin().messagesFileManager.getMessagesConfig().getString("auto-save-failed")));
                         e.printStackTrace();
                     }
                     runClansAutoSaveTwo();
@@ -49,9 +47,9 @@ public class TaskTimerUtils {
                 if (time == 1){
                     try {
                         ClansStorageUtil.saveClans();
-                        logger.info(ColorUtils.translateColorCodes(messagesConfig.getString("auto-save-complete")));
+                        logger.info(ColorUtils.translateColorCodes(Clans.getPlugin().messagesFileManager.getMessagesConfig().getString("auto-save-complete")));
                     } catch (IOException e) {
-                        logger.severe(ColorUtils.translateColorCodes(messagesConfig.getString("auto-save-failed")));
+                        logger.severe(ColorUtils.translateColorCodes(Clans.getPlugin().messagesFileManager.getMessagesConfig().getString("auto-save-failed")));
                         e.printStackTrace();
                     }
                     runClansAutoSaveOne();
@@ -73,9 +71,9 @@ public class TaskTimerUtils {
                 if (time == 1){
                     try {
                         ClanInviteUtil.emptyInviteList();
-                        logger.info(ColorUtils.translateColorCodes(messagesConfig.getString("auto-invite-wipe-complete")));
+                        logger.info(ColorUtils.translateColorCodes(Clans.getPlugin().messagesFileManager.getMessagesConfig().getString("auto-invite-wipe-complete")));
                     }catch (UnsupportedOperationException exception){
-                        logger.info(ColorUtils.translateColorCodes(messagesConfig.getString("invite-wipe-failed")));
+                        logger.info(ColorUtils.translateColorCodes(Clans.getPlugin().messagesFileManager.getMessagesConfig().getString("invite-wipe-failed")));
                     }
                     runClanInviteClearTwo();
                     Bukkit.getScheduler().cancelTask(taskID3);
@@ -95,9 +93,9 @@ public class TaskTimerUtils {
                 if (time == 1){
                     try {
                         ClanInviteUtil.emptyInviteList();
-                        logger.info(ColorUtils.translateColorCodes(messagesConfig.getString("auto-invite-wipe-complete")));
+                        logger.info(ColorUtils.translateColorCodes(Clans.getPlugin().messagesFileManager.getMessagesConfig().getString("auto-invite-wipe-complete")));
                     }catch (UnsupportedOperationException exception){
-                        logger.info(ColorUtils.translateColorCodes(messagesConfig.getString("invite-wipe-failed")));
+                        logger.info(ColorUtils.translateColorCodes(Clans.getPlugin().messagesFileManager.getMessagesConfig().getString("invite-wipe-failed")));
                     }
                     runClanInviteClearOne();
                     Bukkit.getScheduler().cancelTask(taskID4);

@@ -4,12 +4,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.gamlin.clans.commands.ClanAdmin;
+import xyz.gamlin.clans.commands.ClanChatCommand;
 import xyz.gamlin.clans.commands.ClanCommand;
 import xyz.gamlin.clans.expansions.PlayerClanExpansion;
 import xyz.gamlin.clans.files.ClansFileManager;
 import xyz.gamlin.clans.files.MessagesFileManager;
-import xyz.gamlin.clans.listeners.ClanChat;
-import xyz.gamlin.clans.listeners.PlayerDamage;
+import xyz.gamlin.clans.listeners.PlayerMessageEvent;
+import xyz.gamlin.clans.listeners.PlayerDamageEvent;
 import xyz.gamlin.clans.updateSystem.JoinEvent;
 import xyz.gamlin.clans.updateSystem.UpdateChecker;
 import xyz.gamlin.clans.utils.ClansStorageUtil;
@@ -84,10 +85,11 @@ public final class Clans extends JavaPlugin {
         //Register the plugin commands
         this.getCommand("clan").setExecutor(new ClanCommand());
         this.getCommand("clanadmin").setExecutor(new ClanAdmin());
+        this.getCommand("cc").setExecutor(new ClanChatCommand());
 
         //Register the plugin events
-        this.getServer().getPluginManager().registerEvents(new ClanChat(), this);
-        this.getServer().getPluginManager().registerEvents(new PlayerDamage(), this);
+        this.getServer().getPluginManager().registerEvents(new PlayerMessageEvent(), this);
+        this.getServer().getPluginManager().registerEvents(new PlayerDamageEvent(), this);
         this.getServer().getPluginManager().registerEvents(new JoinEvent(), this);
 
         //Update banned tags list

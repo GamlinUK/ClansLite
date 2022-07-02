@@ -13,10 +13,10 @@ import xyz.gamlin.clans.utils.ColorUtils;
 
 import java.util.*;
 
-public class PlayerDamage implements Listener {
+public class PlayerDamageEvent implements Listener {
 
-    private static final FileConfiguration config = Clans.getPlugin().getConfig();
-    private static final FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+    FileConfiguration config = Clans.getPlugin().getConfig();
+    FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
 
     @EventHandler (priority = EventPriority.HIGH)
     public void onPlayerHit(EntityDamageByEntityEvent event){

@@ -17,7 +17,7 @@ public class UpdateChecker {
 
     private Plugin plugin;
     private int resourceId;
-    private static final FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+    FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
     Logger logger = Clans.getPlugin().getLogger();
 
     public UpdateChecker(Plugin plugin, int resourceId) {

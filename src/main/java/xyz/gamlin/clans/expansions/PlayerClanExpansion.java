@@ -2,7 +2,9 @@ package xyz.gamlin.clans.expansions;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.NotNull;
+import xyz.gamlin.clans.Clans;
 import xyz.gamlin.clans.models.Clan;
 import xyz.gamlin.clans.utils.ClansStorageUtil;
 import xyz.gamlin.clans.utils.ColorUtils;
@@ -21,7 +23,7 @@ public class PlayerClanExpansion extends PlaceholderExpansion {
 
     @Override
     public @NotNull String getVersion() {
-        return "1.2.1";
+        return "1.2.2";
     }
 
     @Override
@@ -31,6 +33,7 @@ public class PlayerClanExpansion extends PlaceholderExpansion {
 
     @Override
     public String onRequest(OfflinePlayer player, String params) {
+        FileConfiguration configFile = Clans.getPlugin().getConfig();
         Clan clanOwner = ClansStorageUtil.findClanByOfflineOwner(player);
         Clan clanMember = ClansStorageUtil.findClanByOfflinePlayer(player);
         if (params.equalsIgnoreCase("clanName")){
@@ -47,9 +50,17 @@ public class PlayerClanExpansion extends PlaceholderExpansion {
         if (params.equalsIgnoreCase("clanPrefix")){
             //%clansLite_clanPrefix%
             if (clanOwner != null){
-                return ColorUtils.translateColorCodes(clanOwner.getClanPrefix() + "&r ");
+                if (configFile.getBoolean("clan-tags.prefix-add-space-after")){
+                    return ColorUtils.translateColorCodes(clanOwner.getClanPrefix() + "&r ");
+                }else {
+                    return ColorUtils.translateColorCodes(clanOwner.getClanPrefix() + "&r");
+                }
             }else if (clanMember != null){
-                return ColorUtils.translateColorCodes(clanMember.getClanPrefix() + "&r ");
+                if (configFile.getBoolean("clan-tags.prefix-add-space-after")){
+                    return ColorUtils.translateColorCodes(clanMember.getClanPrefix() + "&r ");
+                }else {
+                    return ColorUtils.translateColorCodes(clanMember.getClanPrefix() + "&r");
+                }
             }else {
                 return "";
             }
