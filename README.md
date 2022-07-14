@@ -32,6 +32,13 @@ The `/clanadmin` command is purely for server admins only.
 * `/clanadmin reload` - This reloads the plugins `config.yml` & the `messages.yml` files from disk.
 * `/clanadmin about` - This give you an overview of the plugin's core information.
 
+## /cc command
+Aliases: /clanchat, /clanc, /cchat, /chat
+
+The `/cc` command is for the sole purpose of utilising the per clan chat. The following syntax is accepted:
+
+`/cc <message>` - This will send a message to only the members of YOUR clan or the clan you are in.
+
 ## Permissions
 ClansLite comes with `14` permissions:
 * `clanslite.*`
@@ -41,6 +48,7 @@ ClansLite comes with `14` permissions:
 * `clanslite.bypass`
 * `clanslite.bypass.*`
 * `clanslite.bypass.homecooldown`
+* `clanslite.bypass.chatcooldown`
 * `clanslite.bypass.pvp`
 * `clanslite.maxclansize.group1`
 * `clanslite.maxclansize.group2`
@@ -62,6 +70,8 @@ ClansLite comes with `14` permissions:
 `clanslite.bypass.*` is the permission node to allow a player to bypass all protections and cooldowns.
 
 `clanslite.bypass.homecooldown` is the permission node to allow a player to bypass the home command cooldown.
+
+`clanslite.bypass.chatcooldown` - is the permission node to allow a player to bypass the clan chat command cooldown.
 
 `clanslite.bypass.pvp` is the permission node to allow a player to bypass the friendly fire protections.
 
