@@ -23,7 +23,7 @@ public class PlayerClanExpansion extends PlaceholderExpansion {
 
     @Override
     public @NotNull String getVersion() {
-        return "1.2.2";
+        return "1.2.3";
     }
 
     @Override
@@ -94,6 +94,28 @@ public class PlayerClanExpansion extends PlaceholderExpansion {
                 return String.valueOf(clanOwner.getClanMembers().size());
             }else if (clanMember != null){
                 return String.valueOf(clanMember.getClanMembers().size());
+            }else {
+                return "";
+            }
+        }
+
+        if (params.equalsIgnoreCase("clanAllySize")){
+            //%clansLite_clanAllySize%
+            if (clanOwner != null){
+                return String.valueOf(clanOwner.getClanAllies().size());
+            }else if (clanMember != null){
+                return String.valueOf(clanMember.getClanAllies().size());
+            }else {
+                return "";
+            }
+        }
+
+        if (params.equalsIgnoreCase("clanEnemySize")){
+            //%clansLite_clanEnemySize%
+            if (clanOwner != null){
+                return String.valueOf(clanOwner.getClanEnemies().size());
+            }else if (clanMember != null){
+                return String.valueOf(clanMember.getClanEnemies().size());
             }else {
                 return "";
             }

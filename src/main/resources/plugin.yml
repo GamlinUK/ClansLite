@@ -10,7 +10,7 @@ softdepend: [PlaceholderAPI]
 commands:
   clan:
     description: Create, delete and manage clans!
-    usage: "Usage: /clan [create|disband|invite|kick|info|list|prefix|ally|enemy|sethome|home]"
+    usage: "Usage: /clan [create|disband|invite|kick|info|list|prefix|ally|enemy|sethome|delhome|home]"
     permission: clanslite.clan
     aliases:
       - clans

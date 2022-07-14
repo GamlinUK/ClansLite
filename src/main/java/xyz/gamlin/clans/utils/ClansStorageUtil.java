@@ -223,4 +223,11 @@ public class ClansStorageUtil {
         }
         return false;
     }
+
+    public static void deleteHome(Clan clan){
+        String key = clan.getClanOwner();
+        clan.setClanHomeWorld(null);
+        clansStorage.set("clans.data." + key + ".clanHome", null);
+        Clans.getPlugin().clansFileManager.saveClansConfig();
+    }
 }

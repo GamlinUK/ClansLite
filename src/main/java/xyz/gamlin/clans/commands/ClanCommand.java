@@ -80,7 +80,7 @@ public class ClanCommand implements CommandExecutor {
                                     "\n/clan ally [add|remove] <clan-owner>" +
                                     "\n/clan enemy [add|remove] <clan-owner>" +
                                     "\n/clan pvp" +
-                                    "\n/clan [sethome|home]"
+                                    "\n/clan [sethome|delhome|home]"
                     ));
                     return true;
                 }else if (clansConfig.getBoolean("clan-home.enabled")){
@@ -95,7 +95,7 @@ public class ClanCommand implements CommandExecutor {
                                     "\n/clan prefix <prefix>" +
                                     "\n/clan ally [add|remove] <clan-owner>" +
                                     "\n/clan enemy [add|remove] <clan-owner>" +
-                                    "\n/clan [sethome|home]"
+                                    "\n/clan [sethome|delhome|home]"
                     ));
                     return true;
                 }else if (clansConfig.getBoolean("protections.pvp.pvp-command-enabled")){
@@ -292,7 +292,6 @@ public class ClanCommand implements CommandExecutor {
                         }
                         if (ClansStorageUtil.isClanOwner(player)){
                             if (args[1].length() >= 3 && args[1].length() <= 32) {
-                                // C/U prefix
                                 Clan playerClan = ClansStorageUtil.findClanByOwner(player);
                                 ClansStorageUtil.updatePrefix(player, args[1]);
                                 String prefixConfirmation = ColorUtils.translateColorCodes(messagesConfig.getString("clan-prefix-change-successful")).replace("%CLANPREFIX%", playerClan.getClanPrefix());
@@ -629,8 +628,13 @@ public class ClanCommand implements CommandExecutor {
                                                         player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("failed-cannot-ally-enemy-clan")));
                                                         return true;
                                                     }
-                                                    ClansStorageUtil.addClanAlly(player, allyClanOwner);
-                                                    player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("added-clan-to-your-allies").replace(ALLY_CLAN, allyClan.getClanFinalName())));
+                                                    if (clan.getClanAllies().contains(allyOwnerUUIDString)){
+                                                        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("failed-clan-already-your-ally")));
+                                                        return true;
+                                                    }else {
+                                                        ClansStorageUtil.addClanAlly(player, allyClanOwner);
+                                                        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("added-clan-to-your-allies").replace(ALLY_CLAN, allyClan.getClanFinalName())));
+                                                    }
                                                     if (allyClanOwner.isOnline()){
                                                         allyClanOwner.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-added-to-other-allies").replace(CLAN_OWNER, player.getName())));
                                                     }else {
@@ -718,18 +722,23 @@ public class ClanCommand implements CommandExecutor {
                                                         player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("failed-cannot-enemy-allied-clan")));
                                                         return true;
                                                     }
-                                                    ClansStorageUtil.addClanEnemy(player, enemyClanOwner);
-                                                    player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("added-clan-to-your-enemies").replace(ENEMY_CLAN, enemyClan.getClanFinalName())));
-                                                    String titleMain = ColorUtils.translateColorCodes(messagesConfig.getString("added-enemy-clan-to-your-enemies-title-1").replace(CLAN_OWNER, enemyClanOwner.getName()));
-                                                    String titleAux = ColorUtils.translateColorCodes(messagesConfig.getString("added-enemy-clan-to-your-enemies-title-2").replace(CLAN_OWNER, enemyClanOwner.getName()));
-                                                    player.sendTitle(titleMain, titleAux, 10, 70, 20);
-                                                    ArrayList<String> playerClanMembers = ClansStorageUtil.findClanByOwner(player).getClanMembers();
-                                                    for (String playerClanMember : playerClanMembers){
-                                                        if (playerClanMember != null){
-                                                            UUID memberUUID = UUID.fromString(playerClanMember);
-                                                            Player playerClanPlayer = Bukkit.getPlayer(memberUUID);
-                                                            if (playerClanPlayer != null){
-                                                                playerClanPlayer.sendTitle(titleMain, titleAux, 10, 70, 20);
+                                                    if (clan.getClanEnemies().contains(enemyOwnerUUIDString)){
+                                                        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("failed-clan-already-your-enemy")));
+                                                        return true;
+                                                    }else {
+                                                        ClansStorageUtil.addClanEnemy(player, enemyClanOwner);
+                                                        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("added-clan-to-your-enemies").replace(ENEMY_CLAN, enemyClan.getClanFinalName())));
+                                                        String titleMain = ColorUtils.translateColorCodes(messagesConfig.getString("added-enemy-clan-to-your-enemies-title-1").replace(CLAN_OWNER, enemyClanOwner.getName()));
+                                                        String titleAux = ColorUtils.translateColorCodes(messagesConfig.getString("added-enemy-clan-to-your-enemies-title-2").replace(CLAN_OWNER, enemyClanOwner.getName()));
+                                                        player.sendTitle(titleMain, titleAux, 10, 70, 20);
+                                                        ArrayList<String> playerClanMembers = ClansStorageUtil.findClanByOwner(player).getClanMembers();
+                                                        for (String playerClanMember : playerClanMembers){
+                                                            if (playerClanMember != null){
+                                                                UUID memberUUID = UUID.fromString(playerClanMember);
+                                                                Player playerClanPlayer = Bukkit.getPlayer(memberUUID);
+                                                                if (playerClanPlayer != null){
+                                                                    playerClanPlayer.sendTitle(titleMain, titleAux, 10, 70, 20);
+                                                                }
                                                             }
                                                         }
                                                     }
@@ -874,6 +883,26 @@ public class ClanCommand implements CommandExecutor {
                                 clan.setClanHomeYaw(player.getLocation().getYaw());
                                 clan.setClanHomePitch(player.getLocation().getPitch());
                                 player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("successfully-set-clan-home")));
+                            }
+                        }else {
+                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-must-be-owner")));
+                        }
+                    }else {
+                        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("function-disabled")));
+                    }
+                    return true;
+                }
+
+//----------------------------------------------------------------------------------------------------------------------
+                if (args[0].equalsIgnoreCase("delhome")){
+                    if (clansConfig.getBoolean("clan-home.enabled")){
+                        if (ClansStorageUtil.findClanByOwner(player) != null){
+                            Clan clanByOwner = ClansStorageUtil.findClanByOwner(player);
+                            if (ClansStorageUtil.isHomeSet(clanByOwner)){
+                                ClansStorageUtil.deleteHome(clanByOwner);
+                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("successfully-deleted-clan-home")));
+                            }else {
+                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("failed-no-home-set")));
                             }
                         }else {
                             player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-must-be-owner")));
