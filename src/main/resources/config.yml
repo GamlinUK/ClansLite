@@ -37,6 +37,17 @@ clan-size:
       group-5: 20 #Perm: 'clanslite.maxclansize.group5'
       group-6: 24 #Perm: 'clanslite.maxclansize.group6'
 
+clan-creation:
+  #Do you want a message to be sent to all players when a new clan is created? [Default value: true]
+  announce-to-all: true
+  #Do you want the message sent as a title instead of a chat message? [Default value: true]
+  send-as-title: true
+
+clan-join:
+  #Do you want a message to be sent to all players when a player joins a clan? [Default value: true]
+  announce-to-all: true
+  #Do you want the message sent as a title instead of a chat message? [Default value: false]
+  send-as-title: false
 
 clan-chat:
   #Enable the clan chat system. [Default value: true]

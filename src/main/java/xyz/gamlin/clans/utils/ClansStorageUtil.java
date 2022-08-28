@@ -56,6 +56,7 @@ public class ClansStorageUtil {
             double clanHomeZ = clansStorage.getDouble("clans.data." + key + ".clanHome.z");
             float clanHomeYaw = (float) clansStorage.getDouble("clans.data." + key + ".clanHome.yaw");
             float clanHomePitch = (float) clansStorage.getDouble("clans.data." + key + ".clanHome.pitch");
+
             Clan clan = new Clan(key, clanFinalName);
             clan.setClanPrefix(clanPrefix);
             clan.setClanMembers(clanMembers);
@@ -68,6 +69,7 @@ public class ClansStorageUtil {
             clan.setClanHomeZ(clanHomeZ);
             clan.setClanHomeYaw(clanHomeYaw);
             clan.setClanHomePitch(clanHomePitch);
+
             clansList.put(uuid, clan);
         });
     }

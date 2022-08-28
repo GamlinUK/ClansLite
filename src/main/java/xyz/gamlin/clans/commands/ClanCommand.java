@@ -33,6 +33,7 @@ public class ClanCommand implements CommandExecutor {
     int MIN_CHAR_LIMIT = clansConfig.getInt("clan-tags.min-character-limit");
     int MAX_CHAR_LIMIT = clansConfig.getInt("clan-tags.max-character-limit");
 
+    private static final String PLAYER_PLACEHOLDER = "%PLAYER%";
     private static final String CLAN_PLACEHOLDER = "%CLAN%";
     private static final String INVITED_PLAYER = "%INVITED%";
     private static final String PLAYER_TO_KICK = "%KICKEDPLAYER%";
@@ -161,10 +162,27 @@ public class ClanCommand implements CommandExecutor {
 
                             if (!ClansStorageUtil.isClanExisting(player)) {
                                 ClansStorageUtil.createClan(player, args[1]);
-                                String clanCreated = ColorUtils.translateColorCodes(messagesConfig.getString("clan-created-successfully")).replace(CLAN_PLACEHOLDER, args[1]);
+                                String clanCreated = ColorUtils.translateColorCodes(messagesConfig.getString("clan-created-successfully")).replace(CLAN_PLACEHOLDER, ColorUtils.translateColorCodes(args[1]));
                                 player.sendMessage(clanCreated);
+                                if (clansConfig.getBoolean("clan-creation.announce-to-all")){
+                                    if (clansConfig.getBoolean("clan-creation.send-as-title")){
+                                        for (Player onlinePlayers : Clans.connectedPlayers.keySet()){
+                                            onlinePlayers.sendTitle(ColorUtils.translateColorCodes(messagesConfig.getString("clan-created-broadcast-title-1")
+                                                    .replace(CLAN_OWNER, player.getName())
+                                                    .replace(CLAN_PLACEHOLDER, ColorUtils.translateColorCodes(args[1]))),
+                                                    ColorUtils.translateColorCodes(messagesConfig.getString("clan-created-broadcast-title-2")
+                                                            .replace(CLAN_OWNER, player.getName())
+                                                            .replace(CLAN_PLACEHOLDER, ColorUtils.translateColorCodes(args[1]))),
+                                                    30, 30, 30);
+                                        }
+                                    }else {
+                                        Bukkit.broadcastMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-created-broadcast-chat")
+                                                .replace(CLAN_OWNER, player.getName())
+                                                .replace(CLAN_PLACEHOLDER, ColorUtils.translateColorCodes(args[1]))));
+                                    }
+                                }
                             } else {
-                                String clanNotCreated = ColorUtils.translateColorCodes(messagesConfig.getString("clan-creation-failed")).replace(CLAN_PLACEHOLDER, args[1]);
+                                String clanNotCreated = ColorUtils.translateColorCodes(messagesConfig.getString("clan-creation-failed")).replace(CLAN_PLACEHOLDER, ColorUtils.translateColorCodes(args[1]));
                                 player.sendMessage(clanNotCreated);
                             }
                             clanNamesList.clear();
@@ -291,19 +309,21 @@ public class ClanCommand implements CommandExecutor {
                             return true;
                         }
                         if (ClansStorageUtil.isClanOwner(player)){
-                            if (args[1].length() >= 3 && args[1].length() <= 32) {
+                            if (args[1].length() >= MIN_CHAR_LIMIT && args[1].length() <= MAX_CHAR_LIMIT) {
                                 Clan playerClan = ClansStorageUtil.findClanByOwner(player);
                                 ClansStorageUtil.updatePrefix(player, args[1]);
                                 String prefixConfirmation = ColorUtils.translateColorCodes(messagesConfig.getString("clan-prefix-change-successful")).replace("%CLANPREFIX%", playerClan.getClanPrefix());
                                 sender.sendMessage(prefixConfirmation);
                                 clansPrefixList.clear();
                                 return true;
-                            } else if (args[1].length() > 32) {
-                                sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-prefix-too-long")));
+                            }else if (args[1].length() > MAX_CHAR_LIMIT) {
+                                Integer maxCharLimit = clansConfig.getInt("clan-tags.max-character-limit");
+                                sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-prefix-too-long").replace("%CHARMAX%", maxCharLimit.toString())));
                                 clansPrefixList.clear();
                                 return true;
-                            } else {
-                                sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-prefix-too-short")));
+                            }else {
+                                Integer minCharLimit = clansConfig.getInt("clan-tags.min-character-limit");
+                                sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-prefix-too-short").replace("%CHARMIN%", minCharLimit.toString())));
                                 clansPrefixList.clear();
                                 return true;
                             }
@@ -312,7 +332,7 @@ public class ClanCommand implements CommandExecutor {
                             clansPrefixList.clear();
                             return true;
                         }
-                    } else {
+                    }else {
                         sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invalid-prefix")));
                         clansPrefixList.clear();
                     }
@@ -349,6 +369,23 @@ public class ClanCommand implements CommandExecutor {
                                 ClanInviteUtil.removeInvite(inviterUUIDString.toString());
                                 String joinMessage = ColorUtils.translateColorCodes(messagesConfig.getString("clan-join-successful")).replace(CLAN_PLACEHOLDER, clan.getClanFinalName());
                                 player.sendMessage(joinMessage);
+                                if (clansConfig.getBoolean("clan-join.announce-to-all")){
+                                    if (clansConfig.getBoolean("clan-join.send-as-title")){
+                                        for (Player onlinePlayers : Clans.connectedPlayers.keySet()){
+                                            onlinePlayers.sendTitle(ColorUtils.translateColorCodes(messagesConfig.getString("clan-join-broadcast-title-1")
+                                                            .replace(PLAYER_PLACEHOLDER, player.getName())
+                                                            .replace(CLAN_PLACEHOLDER, ColorUtils.translateColorCodes(args[1]))),
+                                                    ColorUtils.translateColorCodes(messagesConfig.getString("clan-join-broadcast-title-2")
+                                                            .replace(PLAYER_PLACEHOLDER, player.getName())
+                                                            .replace(CLAN_PLACEHOLDER, ColorUtils.translateColorCodes(args[1]))),
+                                                    30, 30, 30);
+                                        }
+                                    }else {
+                                        Bukkit.broadcastMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-join-broadcast-chat")
+                                                .replace(PLAYER_PLACEHOLDER, player.getName())
+                                                .replace(CLAN_PLACEHOLDER, ColorUtils.translateColorCodes(args[1]))));
+                                    }
+                                }
                             }else {
                                 String failureMessage = ColorUtils.translateColorCodes(messagesConfig.getString("clan-join-failed")).replace(CLAN_PLACEHOLDER, clan.getClanFinalName());
                                 player.sendMessage(failureMessage);
@@ -423,7 +460,9 @@ public class ClanCommand implements CommandExecutor {
                             clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-info-owner-offline")).replace(OWNER, offlineOwner));
                         }
                         if (clanMembers.size() > 0) {
-                            clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-info-members-header")));
+                            Integer clanMembersSize = clanMembers.size();
+                            clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-info-members-header")
+                                    .replace("%NUMBER%", ColorUtils.translateColorCodes(clanMembersSize.toString()))));
                             for (String clanMember : clanMembers) {
                                 if (clanMember != null) {
                                     UUID memberUUID = UUID.fromString(clanMember);
@@ -511,7 +550,9 @@ public class ClanCommand implements CommandExecutor {
                             clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-info-owner-offline")).replace(OWNER, offlineOwner));
                         }
                         if (clanMembers.size() > 0) {
-                            clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-info-members-header")));
+                            Integer clanMembersSize = clanMembers.size();
+                            clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-info-members-header")
+                                    .replace("%NUMBER%", ColorUtils.translateColorCodes(clanMembersSize.toString()))));
                             for (String clanMember : clanMembers) {
                                 if (clanMember != null) {
                                     UUID memberUUID = UUID.fromString(clanMember);

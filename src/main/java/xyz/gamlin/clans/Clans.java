@@ -1,6 +1,7 @@
 package xyz.gamlin.clans;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.gamlin.clans.commands.ClanAdmin;
@@ -9,6 +10,8 @@ import xyz.gamlin.clans.commands.ClanCommand;
 import xyz.gamlin.clans.expansions.PlayerClanExpansion;
 import xyz.gamlin.clans.files.ClansFileManager;
 import xyz.gamlin.clans.files.MessagesFileManager;
+import xyz.gamlin.clans.listeners.PlayerConnectionEvent;
+import xyz.gamlin.clans.listeners.PlayerDisconnectEvent;
 import xyz.gamlin.clans.listeners.PlayerMessageEvent;
 import xyz.gamlin.clans.listeners.PlayerDamageEvent;
 import xyz.gamlin.clans.updateSystem.JoinEvent;
@@ -18,6 +21,7 @@ import xyz.gamlin.clans.utils.ColorUtils;
 import xyz.gamlin.clans.utils.TaskTimerUtils;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.logging.Logger;
 
 public final class Clans extends JavaPlugin {
@@ -29,6 +33,8 @@ public final class Clans extends JavaPlugin {
     private static Clans plugin;
     public MessagesFileManager messagesFileManager;
     public ClansFileManager clansFileManager;
+
+    public static HashMap<Player, String> connectedPlayers = new HashMap<>();
 
     @Override
     public void onEnable() {
@@ -88,6 +94,8 @@ public final class Clans extends JavaPlugin {
         this.getCommand("cc").setExecutor(new ClanChatCommand());
 
         //Register the plugin events
+        this.getServer().getPluginManager().registerEvents(new PlayerConnectionEvent(), this);
+        this.getServer().getPluginManager().registerEvents(new PlayerDisconnectEvent(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerMessageEvent(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerDamageEvent(), this);
         this.getServer().getPluginManager().registerEvents(new JoinEvent(), this);
@@ -111,7 +119,7 @@ public final class Clans extends JavaPlugin {
 
         //Plugin startup message
         logger.info(ColorUtils.translateColorCodes("-------------------------------------------"));
-        logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Plugin maintained by: &b&lLoving11ish"));
+        logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Plugin by: &b&lLoving11ish"));
         logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3has been loaded successfully"));
         logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Plugin Version: &d&l" + pluginVersion));
         logger.info(ColorUtils.translateColorCodes("-------------------------------------------"));
@@ -154,7 +162,7 @@ public final class Clans extends JavaPlugin {
 
         //Safely stop the background tasks if running
         logger.info(ColorUtils.translateColorCodes("-------------------------------------------"));
-        logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Plugin maintained by: &b&lLoving11ish"));
+        logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Plugin by: &b&lLoving11ish"));
         try {
             if (Bukkit.getScheduler().isCurrentlyRunning(TaskTimerUtils.taskID1)||Bukkit.getScheduler().isQueued(TaskTimerUtils.taskID1)){
                 Bukkit.getScheduler().cancelTask(TaskTimerUtils.taskID1);
