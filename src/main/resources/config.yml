@@ -9,6 +9,10 @@
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #ClansLite config for ${version}
 
+#Do you want to use the GUI system? [Default value: false]
+##CURRENTLY IN BETA##
+use-global-GUI-system: false
+
 clan-tags:
   #Set the minimum length of the clan prefix and name. [Default value: 3]
   min-character-limit: 3

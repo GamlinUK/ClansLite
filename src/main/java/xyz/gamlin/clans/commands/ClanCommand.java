@@ -11,6 +11,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import xyz.gamlin.clans.Clans;
+import xyz.gamlin.clans.menuSystem.paginatedMenu.ClanListGUI;
 import xyz.gamlin.clans.models.Clan;
 import xyz.gamlin.clans.models.ClanInvite;
 import xyz.gamlin.clans.utils.ClanInviteUtil;
@@ -68,6 +69,10 @@ public class ClanCommand implements CommandExecutor {
         if (sender instanceof Player) {
             Player player = ((Player) sender).getPlayer();
             if (args.length < 1) {
+                if (clansConfig.getBoolean("use-global-GUI-system")) {
+                    new ClanListGUI(Clans.getPlayerMenuUtility(player)).open();
+                    return true;
+                }
                 if (clansConfig.getBoolean("clan-home.enabled") && clansConfig.getBoolean("protections.pvp.pvp-command-enabled")){
                     sender.sendMessage(ColorUtils.translateColorCodes(
                             "&6ClansLite usage:&3" +
@@ -374,16 +379,16 @@ public class ClanCommand implements CommandExecutor {
                                         for (Player onlinePlayers : Clans.connectedPlayers.keySet()){
                                             onlinePlayers.sendTitle(ColorUtils.translateColorCodes(messagesConfig.getString("clan-join-broadcast-title-1")
                                                             .replace(PLAYER_PLACEHOLDER, player.getName())
-                                                            .replace(CLAN_PLACEHOLDER, ColorUtils.translateColorCodes(args[1]))),
+                                                            .replace(CLAN_PLACEHOLDER, ColorUtils.translateColorCodes(clan.getClanFinalName()))),
                                                     ColorUtils.translateColorCodes(messagesConfig.getString("clan-join-broadcast-title-2")
                                                             .replace(PLAYER_PLACEHOLDER, player.getName())
-                                                            .replace(CLAN_PLACEHOLDER, ColorUtils.translateColorCodes(args[1]))),
+                                                            .replace(CLAN_PLACEHOLDER, ColorUtils.translateColorCodes(clan.getClanFinalName()))),
                                                     30, 30, 30);
                                         }
                                     }else {
                                         Bukkit.broadcastMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-join-broadcast-chat")
                                                 .replace(PLAYER_PLACEHOLDER, player.getName())
-                                                .replace(CLAN_PLACEHOLDER, ColorUtils.translateColorCodes(args[1]))));
+                                                .replace(CLAN_PLACEHOLDER, ColorUtils.translateColorCodes(clan.getClanFinalName()))));
                                     }
                                 }
                             }else {

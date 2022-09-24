@@ -34,6 +34,9 @@ clan-invite-max-size-reached: "&3You have reached the clam members size limit &a
 clan-invite-successful: "&3You have invited &6%INVITED% &3to your clan!"
 clan-invite-failed: "&3Failed to send invite to &6%INVITED%&3, this player might already have an invitation!"
 clan-invited-player-invite-pending: "&3You have been invited to a clan by &6%CLANOWNER% &3- use /clan join"
+clan-invite-request: "&6%PLAYER% &3would like you to invite them to your clan.\n&3Use &6/clan invite %PLAYER% &3to send the invite."
+clan-invite-request-failed: "&3Failed to send request, check that the clan owner is online!"
+clan-invite-sent-successfully: "&3You have successfully sent a request to %CLANOWNER%"
 
 #Clan Join Messages
 clan-join-successful: "&3Successfully joined &6%CLAN%&3!"

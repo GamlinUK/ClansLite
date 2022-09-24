@@ -1,0 +1,25 @@
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#                                        ----[ClansLite]----                                        #
+#                                     ----[By Loving11ish]----                                      #
+#                                  ----[Contributors: Gamlin]----                                   #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#                                 ----[Plugin GUI Config File]----                                  #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#ClansLite gui config for ${version}
+
+#This is the options for the ClanList GUI
+clan-list:
+  #What name would you like the gui to have?
+  name: "&3Clans List"
+
+  #Message sent when your on the first page.
+  GUI-first-page: "&7You are on the first page."
+  #Message sent when your on the last page.
+  GUI-last-page: "&7You are on the last page."
+
+#This is the options for the ClanJoinRequest GUI
+clan-join:
+  #What name would you like the gui to have?
+  name: "&3Ask to join Clan?"

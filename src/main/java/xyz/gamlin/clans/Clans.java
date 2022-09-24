@@ -7,13 +7,15 @@ import org.bukkit.plugin.java.JavaPlugin;
 import xyz.gamlin.clans.commands.ClanAdmin;
 import xyz.gamlin.clans.commands.ClanChatCommand;
 import xyz.gamlin.clans.commands.ClanCommand;
+import xyz.gamlin.clans.commands.commandTabCompleters.ClanAdminTabCompleter;
+import xyz.gamlin.clans.commands.commandTabCompleters.ClanCommandTabCompleter;
 import xyz.gamlin.clans.expansions.PlayerClanExpansion;
+import xyz.gamlin.clans.files.ClanGUIFileManager;
 import xyz.gamlin.clans.files.ClansFileManager;
 import xyz.gamlin.clans.files.MessagesFileManager;
-import xyz.gamlin.clans.listeners.PlayerConnectionEvent;
-import xyz.gamlin.clans.listeners.PlayerDisconnectEvent;
-import xyz.gamlin.clans.listeners.PlayerMessageEvent;
-import xyz.gamlin.clans.listeners.PlayerDamageEvent;
+import xyz.gamlin.clans.listeners.*;
+import xyz.gamlin.clans.menuSystem.PlayerMenuUtility;
+import xyz.gamlin.clans.menuSystem.paginatedMenu.ClanListGUI;
 import xyz.gamlin.clans.updateSystem.JoinEvent;
 import xyz.gamlin.clans.updateSystem.UpdateChecker;
 import xyz.gamlin.clans.utils.ClansStorageUtil;
@@ -33,8 +35,10 @@ public final class Clans extends JavaPlugin {
     private static Clans plugin;
     public MessagesFileManager messagesFileManager;
     public ClansFileManager clansFileManager;
+    public ClanGUIFileManager clanGUIFileManager;
 
     public static HashMap<Player, String> connectedPlayers = new HashMap<>();
+    private static final HashMap<Player, PlayerMenuUtility> playerMenuUtilityMap = new HashMap<>();
 
     @Override
     public void onEnable() {
@@ -58,6 +62,7 @@ public final class Clans extends JavaPlugin {
             logger.warning(ColorUtils.translateColorCodes("&6ClansLite: &4Is now disabling!"));
             logger.warning(ColorUtils.translateColorCodes("&4-------------------------------------------"));
             Bukkit.getPluginManager().disablePlugin(this);
+            return;
         }else {
             logger.info(ColorUtils.translateColorCodes("&a-------------------------------------------"));
             logger.info(ColorUtils.translateColorCodes("&6ClansLite: &aA supported Minecraft version has been detected"));
@@ -85,13 +90,22 @@ public final class Clans extends JavaPlugin {
                 logger.severe(ColorUtils.translateColorCodes("&6ClansLite: &4Disabling Plugin!"));
                 e.printStackTrace();
                 Bukkit.getPluginManager().disablePlugin(this);
+                return;
             }
         }
+
+        //Load clangui.yml
+        this.clanGUIFileManager = new ClanGUIFileManager();
+        clanGUIFileManager.ClanGUIFileManager(this);
 
         //Register the plugin commands
         this.getCommand("clan").setExecutor(new ClanCommand());
         this.getCommand("clanadmin").setExecutor(new ClanAdmin());
         this.getCommand("cc").setExecutor(new ClanChatCommand());
+
+        //Register the command tab completers
+        this.getCommand("clan").setTabCompleter(new ClanCommandTabCompleter());
+        this.getCommand("clanadmin").setTabCompleter(new ClanAdminTabCompleter());
 
         //Register the plugin events
         this.getServer().getPluginManager().registerEvents(new PlayerConnectionEvent(), this);
@@ -99,6 +113,7 @@ public final class Clans extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new PlayerMessageEvent(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerDamageEvent(), this);
         this.getServer().getPluginManager().registerEvents(new JoinEvent(), this);
+        this.getServer().getPluginManager().registerEvents(new MenuEvent(), this);
 
         //Update banned tags list
         ClanCommand.updateBannedTagsList();
@@ -176,6 +191,9 @@ public final class Clans extends JavaPlugin {
             if (Bukkit.getScheduler().isCurrentlyRunning(TaskTimerUtils.taskID4)||Bukkit.getScheduler().isQueued(TaskTimerUtils.taskID4)){
                 Bukkit.getScheduler().cancelTask(TaskTimerUtils.taskID4);
             }
+            if (Bukkit.getScheduler().isCurrentlyRunning(ClanListGUI.taskID5)||Bukkit.getScheduler().isQueued(ClanListGUI.taskID5)){
+                Bukkit.getScheduler().cancelTask(ClanListGUI.taskID5);
+            }
         }catch (Exception e){
             logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Background tasks have disabled successfully!"));
         }
@@ -197,6 +215,17 @@ public final class Clans extends JavaPlugin {
         logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Has been shutdown successfully"));
         logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Goodbye!"));
         logger.info(ColorUtils.translateColorCodes("-------------------------------------------"));
+    }
+
+    public static PlayerMenuUtility getPlayerMenuUtility(Player player) {
+        PlayerMenuUtility playerMenuUtility;
+        if (!(playerMenuUtilityMap.containsKey(player))) {
+            playerMenuUtility = new PlayerMenuUtility(player);
+            playerMenuUtilityMap.put(player, playerMenuUtility);
+            return playerMenuUtility;
+        } else {
+            return playerMenuUtilityMap.get(player);
+        }
     }
 
     public static Clans getPlugin() {

@@ -203,6 +203,10 @@ public class ClansStorageUtil {
         return clansList.keySet();
     }
 
+    public static Collection<Clan> getClanList(){
+        return clansList.values();
+    }
+
     public static void addClanAlly(Player clanOwner, Player allyClanOwner){
         UUID ownerUUID = clanOwner.getUniqueId();
         UUID uuid = allyClanOwner.getUniqueId();
