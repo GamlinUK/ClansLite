@@ -6,7 +6,7 @@ prefix: ClansLite
 authors: [Loving11ish]
 description: A simple and lightweight Clans plugin for Minecraft.
 website: https://www.spigotmc.org/resources/clanslite.97163/
-softdepend: [PlaceholderAPI]
+softdepend: [PlaceholderAPI, floodgate]
 commands:
   clan:
     description: Create, delete and manage clans!

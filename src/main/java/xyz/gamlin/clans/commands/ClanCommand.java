@@ -17,6 +17,7 @@ import xyz.gamlin.clans.models.ClanInvite;
 import xyz.gamlin.clans.utils.ClanInviteUtil;
 import xyz.gamlin.clans.utils.ClansStorageUtil;
 import xyz.gamlin.clans.utils.ColorUtils;
+import xyz.gamlin.clans.utils.UsermapStorageUtil;
 
 import java.io.IOException;
 import java.util.*;
@@ -158,13 +159,6 @@ public class ClanCommand implements CommandExecutor {
                             player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-name-too-long").replace("%CHARMAX%", maxCharLimit.toString())));
                             return true;
                         }else {
-                            StringBuilder stringBuilder = new StringBuilder();
-
-                            for (int i = 1; i < (args.length - 1); i++) {
-                                stringBuilder.append(args[i]).append(" ");
-                            }
-                            stringBuilder.append(args[args.length - 1]);
-
                             if (!ClansStorageUtil.isClanExisting(player)) {
                                 ClansStorageUtil.createClan(player, args[1]);
                                 String clanCreated = ColorUtils.translateColorCodes(messagesConfig.getString("clan-created-successfully")).replace(CLAN_PLACEHOLDER, ColorUtils.translateColorCodes(args[1]));
@@ -282,14 +276,33 @@ public class ClanCommand implements CommandExecutor {
                                         }
                                     }
 
+                                    if (Clans.getFloodgateApi() != null){
+                                        if (Clans.bedrockPlayers.containsKey(invitedPlayer)){
+                                            String bedrockInvitedPlayerUUIDString = Clans.bedrockPlayers.get(invitedPlayer);
+                                            if (ClanInviteUtil.createInvite(player.getUniqueId().toString(), bedrockInvitedPlayerUUIDString) != null){
+                                                String confirmationString = ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-successful")).replace(INVITED_PLAYER, invitedPlayer.getName());
+                                                player.sendMessage(confirmationString);
+                                                String invitationString = ColorUtils.translateColorCodes(messagesConfig.getString("clan-invited-player-invite-pending")).replace("%CLANOWNER%", player.getName());
+                                                invitedPlayer.sendMessage(invitationString);
+                                                return true;
+                                            }
+                                        }else {
+                                            String failureString = ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-failed")).replace(INVITED_PLAYER, invitedPlayer.getName());
+                                            player.sendMessage(failureString);
+                                            return true;
+                                        }
+                                    }
+
                                     if (ClanInviteUtil.createInvite(player.getUniqueId().toString(), invitedPlayer.getUniqueId().toString()) != null) {
                                         String confirmationString = ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-successful")).replace(INVITED_PLAYER, invitedPlayer.getName());
                                         player.sendMessage(confirmationString);
                                         String invitationString = ColorUtils.translateColorCodes(messagesConfig.getString("clan-invited-player-invite-pending")).replace("%CLANOWNER%", player.getName());
                                         invitedPlayer.sendMessage(invitationString);
+                                        return true;
                                     } else {
                                         String failureString = ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-failed")).replace(INVITED_PLAYER, invitedPlayer.getName());
                                         player.sendMessage(failureString);
+                                        return true;
                                     }
                                 }
                             }
@@ -411,6 +424,7 @@ public class ClanCommand implements CommandExecutor {
                             Clan targetClan = ClansStorageUtil.findClanByOwner(player);
                             if (ClansStorageUtil.findClanByOwner(player) != null) {
                                 Player playerToKick = Bukkit.getPlayer(args[1]);
+                                OfflinePlayer offlinePlayerToKick = UsermapStorageUtil.getBukkitOfflinePlayerByName(args[1]);
                                 if (playerToKick != null) {
                                     if (!player.getName().equalsIgnoreCase(args[1])){
                                         Clan playerClan = ClansStorageUtil.findClanByPlayer(playerToKick);
@@ -430,9 +444,23 @@ public class ClanCommand implements CommandExecutor {
                                     }else {
                                         player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("failed-cannot-kick-yourself")));
                                     }
+                                }else if (offlinePlayerToKick != null){
+                                    if (!player.getName().equalsIgnoreCase(args[1])){
+                                        Clan offlinePlayerClan = ClansStorageUtil.findClanByOfflinePlayer(offlinePlayerToKick);
+                                        if (targetClan.equals(offlinePlayerClan)){
+                                            targetClan.removeClanMember(offlinePlayerToKick.getUniqueId().toString());
+                                            String playerKickedMessage = ColorUtils.translateColorCodes(messagesConfig.getString("clan-member-kick-successful")).replace(PLAYER_TO_KICK, args[1]);
+                                            player.sendMessage(playerKickedMessage);
+                                            return true;
+                                        }else {
+                                            String differentClanMessage = ColorUtils.translateColorCodes(messagesConfig.getString("targeted-player-is-not-in-your-clan")).replace(PLAYER_TO_KICK, args[1]);
+                                            player.sendMessage(differentClanMessage);
+                                        }
+                                    }else {
+                                        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("failed-cannot-kick-yourself")));
+                                    }
                                 }else {
-                                    String playerNotFound = ColorUtils.translateColorCodes(messagesConfig.getString("could-not-find-specified-player")).replace(PLAYER_TO_KICK, args[1]);
-                                    player.sendMessage(playerNotFound);
+                                    player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("could-not-find-specified-player").replace(PLAYER_TO_KICK, args[1])));
                                 }
                             }else {
                                 player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("must-be-owner-to-kick")));

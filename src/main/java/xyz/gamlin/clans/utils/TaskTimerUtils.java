@@ -23,7 +23,9 @@ public class TaskTimerUtils {
                 if (time == 1){
                     try {
                         ClansStorageUtil.saveClans();
-                        logger.info(ColorUtils.translateColorCodes(Clans.getPlugin().messagesFileManager.getMessagesConfig().getString("auto-save-complete")));
+                        if (Clans.getPlugin().getConfig().getBoolean("general.show-auto-save-task-message.enabled")){
+                            logger.info(ColorUtils.translateColorCodes(Clans.getPlugin().messagesFileManager.getMessagesConfig().getString("auto-save-complete")));
+                        }
                     } catch (IOException e) {
                         logger.severe(ColorUtils.translateColorCodes(Clans.getPlugin().messagesFileManager.getMessagesConfig().getString("auto-save-failed")));
                         e.printStackTrace();
@@ -47,7 +49,9 @@ public class TaskTimerUtils {
                 if (time == 1){
                     try {
                         ClansStorageUtil.saveClans();
-                        logger.info(ColorUtils.translateColorCodes(Clans.getPlugin().messagesFileManager.getMessagesConfig().getString("auto-save-complete")));
+                        if (Clans.getPlugin().getConfig().getBoolean("general.show-auto-save-task-message.enabled")){
+                            logger.info(ColorUtils.translateColorCodes(Clans.getPlugin().messagesFileManager.getMessagesConfig().getString("auto-save-complete")));
+                        }
                     } catch (IOException e) {
                         logger.severe(ColorUtils.translateColorCodes(Clans.getPlugin().messagesFileManager.getMessagesConfig().getString("auto-save-failed")));
                         e.printStackTrace();
@@ -71,7 +75,9 @@ public class TaskTimerUtils {
                 if (time == 1){
                     try {
                         ClanInviteUtil.emptyInviteList();
-                        logger.info(ColorUtils.translateColorCodes(Clans.getPlugin().messagesFileManager.getMessagesConfig().getString("auto-invite-wipe-complete")));
+                        if (Clans.getPlugin().getConfig().getBoolean("general.show-auto-invite-wipe-message.enabled")){
+                            logger.info(ColorUtils.translateColorCodes(Clans.getPlugin().messagesFileManager.getMessagesConfig().getString("auto-invite-wipe-complete")));
+                        }
                     }catch (UnsupportedOperationException exception){
                         logger.info(ColorUtils.translateColorCodes(Clans.getPlugin().messagesFileManager.getMessagesConfig().getString("invite-wipe-failed")));
                     }
@@ -93,7 +99,9 @@ public class TaskTimerUtils {
                 if (time == 1){
                     try {
                         ClanInviteUtil.emptyInviteList();
-                        logger.info(ColorUtils.translateColorCodes(Clans.getPlugin().messagesFileManager.getMessagesConfig().getString("auto-invite-wipe-complete")));
+                        if (Clans.getPlugin().getConfig().getBoolean("general.show-auto-invite-wipe-message.enabled")){
+                            logger.info(ColorUtils.translateColorCodes(Clans.getPlugin().messagesFileManager.getMessagesConfig().getString("auto-invite-wipe-complete")));
+                        }
                     }catch (UnsupportedOperationException exception){
                         logger.info(ColorUtils.translateColorCodes(Clans.getPlugin().messagesFileManager.getMessagesConfig().getString("invite-wipe-failed")));
                     }

@@ -102,6 +102,18 @@ public class ClansStorageUtil {
         return false;
     }
 
+    public static boolean deleteOfflineClan(OfflinePlayer offlinePlayer) throws IOException{
+        UUID uuid = offlinePlayer.getUniqueId();
+        String key = uuid.toString();
+        if (findClanByOfflineOwner(offlinePlayer) != null){
+            clansList.remove(uuid);
+            clansStorage.set("clans.data." + key, null);
+            Clans.getPlugin().clansFileManager.saveClansConfig();
+            return true;
+        }
+        return false;
+    }
+
     public static boolean isClanOwner(Player player){
         UUID uuid = player.getUniqueId();
         String ownerUUID = uuid.toString();
@@ -120,14 +132,12 @@ public class ClansStorageUtil {
 
     public static Clan findClanByOwner(Player player){
         UUID uuid = player.getUniqueId();
-        Clan clan = clansList.get(uuid);
-        return clan;
+        return clansList.get(uuid);
     }
 
     public static Clan findClanByOfflineOwner(OfflinePlayer offlinePlayer){
         UUID uuid = offlinePlayer.getUniqueId();
-        Clan clan = clansList.get(uuid);
-        return clan;
+        return clansList.get(uuid);
     }
 
     public static Clan findClanByPlayer(Player player){

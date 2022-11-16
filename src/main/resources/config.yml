@@ -9,9 +9,8 @@
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #ClansLite config for ${version}
 
-#Do you want to use the GUI system? [Default value: false]
-##CURRENTLY IN BETA##
-use-global-GUI-system: false
+#Do you want to use the GUI system? [Default value: true]
+use-global-GUI-system: true
 
 clan-tags:
   #Set the minimum length of the clan prefix and name. [Default value: 3]
@@ -27,7 +26,7 @@ clan-tags:
   prefix-add-space-after: true
 
 clan-size:
-  #Set the default maximum amount of members that can join a players clan. [Default value: 8]
+  #Set the default maximum amount of members that can join a players' clan. [Default value: 8]
   default-max-clan-size: 8
   #To allow the use of a tiered permission system for clan sizes instead of the global amount, use the system below.
   tiered-clan-system:
@@ -61,8 +60,8 @@ clan-chat:
   cool-down:
     #Enable the cool down on the '/cc <message>' command to prevent chat spamming (RECOMMENDED). [Default value: true]
     enabled: true
-    #Cool-down time in seconds. [Default value: 10 = 10 seconds]
-    time: 10
+    #Cool-down time in seconds. [Default value: 5 = 5 seconds]
+    time: 5
 
 #Set the maximum amount of allied clans that can a clan can have. [Default value: 4]
 max-clan-allies: 4
@@ -85,10 +84,19 @@ clan-home:
   cool-down:
     #Enable the cool down on the '/clan home' command to prevent tp spamming (RECOMMENDED). [Default value: true]
     enabled: true
-    #Cool-down time in seconds. [Default value: 60 = 1 minute]
-    time: 60
+    #Cool-down time in seconds. [Default value: 120 = 2 minutes]
+    time: 120
 
 #ClansLite update system
 plugin-update-notifications:
   #Do you want to enable in game plugin update notifications? (Permission:'clanslite.update'). [Default value: true]
   enabled: true
+
+#ClansLite general settings
+general:
+  show-auto-save-task-message:
+    #Do you want to see notifications in console when the auto-save task runs? [Default value: true]
+    enabled: true
+  show-auto-invite-wipe-message:
+    #Do you want to see notifications in console when the auto-invite-wipe task runs? [Default value: true]
+    enabled: true

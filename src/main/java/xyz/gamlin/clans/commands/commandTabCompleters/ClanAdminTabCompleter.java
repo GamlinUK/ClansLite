@@ -19,6 +19,7 @@ public class ClanAdminTabCompleter implements TabCompleter {
         if (arguments.isEmpty()){
             arguments.add("save");
             arguments.add("reload");
+            arguments.add("disband");
             arguments.add("about");
 
         }

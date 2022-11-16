@@ -23,6 +23,8 @@ clan-created-broadcast-title-2: "&3The new clan is called &6%CLAN%&3!"
 #Clan Disbanded Messages
 clan-successfully-disbanded: "&3Clan was disbanded!"
 clan-disband-failure: "&3Failed to disband clan - Please make sure you're the owner!"
+clan-admin-disband-failure: "&3Failed to disband clan - make sure that the provided player is a clan owner!"
+incorrect-disband-command-usage: "&3Unrecognised argument please use &6/clanadmin disband <clan-owner>&3."
 
 #Clan Invite Messages
 clan-invite-no-valid-player: "&3Please specify a player to invite!"
@@ -56,7 +58,7 @@ clan-leave-failed: "&3Failed to leave clan, please try again later."
 clan-member-kick-successful: "&3Player &6%KICKEDPLAYER%&3 was kicked from your clan."
 clan-kicked-player-message: "&3You were kicked from &6%CLAN%&3!"
 targeted-player-is-not-in-your-clan: "&3Player &6%KICKEDPLAYER%&3 is not in your clan."
-could-not-find-specified-player: "&3Could not find player &6%KICKEDPLAYER%&3. They may be offline."
+could-not-find-specified-player: "&3Could not find player &6%KICKEDPLAYER%&3. They may be have not joined before."
 must-be-owner-to-kick: "&3You are not an owner of a clan!"
 incorrect-kick-command-usage: "&3Unrecognised argument please use &6/clan kick <member>&3."
 failed-cannot-kick-yourself: "&3You cannot kick yourself, use &6/clan leave&3."
@@ -171,6 +173,8 @@ clans-load-error-1: "&6ClansLite: &4Failed to load data from clans.yml!"
 clans-load-error-2: "&6ClansLite: &4See console for errors!"
 clans-update-error-1: "&6ClansLite: &4Failed to update clans.yml file!"
 clans-update-error-2: "&6ClansLite: &4Check the console for errors!"
+clan-player-not-found-1: "&6ClansLite: &4Failed to find player by name of &6%PLAYER%&4!"
+clan-player-not-found-2: "&6ClansLite: &4Ensure that &6%PLAYER% &4has joined before!"
 
 #Update Notification
 update-check-failure: "&6ClansLite: &4Unable to check for updates! - &c"

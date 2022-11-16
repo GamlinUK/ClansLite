@@ -6,8 +6,10 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.NotNull;
 import xyz.gamlin.clans.Clans;
 import xyz.gamlin.clans.models.Clan;
+import xyz.gamlin.clans.models.ClanPlayer;
 import xyz.gamlin.clans.utils.ClansStorageUtil;
 import xyz.gamlin.clans.utils.ColorUtils;
+import xyz.gamlin.clans.utils.UsermapStorageUtil;
 
 public class PlayerClanExpansion extends PlaceholderExpansion {
 
@@ -23,7 +25,7 @@ public class PlayerClanExpansion extends PlaceholderExpansion {
 
     @Override
     public @NotNull String getVersion() {
-        return "1.3.0";
+        return "1.3.1";
     }
 
     @Override
@@ -36,6 +38,7 @@ public class PlayerClanExpansion extends PlaceholderExpansion {
         FileConfiguration configFile = Clans.getPlugin().getConfig();
         Clan clanOwner = ClansStorageUtil.findClanByOfflineOwner(player);
         Clan clanMember = ClansStorageUtil.findClanByOfflinePlayer(player);
+        ClanPlayer clanPlayer = UsermapStorageUtil.getClanPlayerByBukkitOfflinePlayer(player);
         if (params.equalsIgnoreCase("clanName")){
             //%clansLite_clanName%
             if (clanOwner != null){
@@ -116,6 +119,15 @@ public class PlayerClanExpansion extends PlaceholderExpansion {
                 return String.valueOf(clanOwner.getClanEnemies().size());
             }else if (clanMember != null){
                 return String.valueOf(clanMember.getClanEnemies().size());
+            }else {
+                return "";
+            }
+        }
+
+        if (params.equalsIgnoreCase("playerPointBalance")){
+            //%clansLite_playerPointBalance%
+            if (clanPlayer != null){
+                return String.valueOf(clanPlayer.getPointBalance());
             }else {
                 return "";
             }
