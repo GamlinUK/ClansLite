@@ -27,9 +27,10 @@ Aliases: `/ca`, `cla`
 
 The `/clanadmin` command is purely for server admins only. 
 
-3 arguments are implemented which are: 
+4 arguments are implemented which are: 
 * `/clanadmin save` - which will save all current clan info to the `clans.yml` data file.  
 * `/clanadmin reload` - This reloads the plugins `config.yml` & the `messages.yml` files from disk.
+* `/clanadmin disband <owner-name>` - This allows admins to delete any unauthorised clans.
 * `/clanadmin about` - This give you an overview of the plugin's core information.
 
 ## /cc command
@@ -98,7 +99,7 @@ The max clan enemies (by default is 2), can be managed in the `plugins/ClansLite
 ClansLite exposes a variable of `{CLAN}` to use in Essentials Chat or similar.
 
 ## PlaceholderAPI
-ClansLite exposes `5` external placeholders using `PlaceholderAPI` to enable the fetching of a players clan name or the clan prefix or if the clan has friendly fire enabled or if the clan has a home set.
+ClansLite exposes `8` external placeholders using `PlaceholderAPI` to enable the fetching of a players clan name or the clan prefix or if the clan has friendly fire enabled or if the clan has a home set.
 
 The four available placeholders are:
 * `%clansLite_clanName%`
@@ -106,9 +107,12 @@ The four available placeholders are:
 * `%clansLite_friendlyFire%`
 * `%clansLite_clanHomeSet%`
 * `%clansLite_clanMembersSize%`
+* `%clansLite_clanAllySize%`
+* `%clansLite_clanEnemySize%`
+* `%clansLite_playerPointBalance%`
 
 To be able to use these The latest release of [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/) MUST be installed!  Without it, only the above `{CLAN}` will be available.
 
-###Please report any issues in GitHub and feel free to join my [discord](https://discord.gg/ZECTYBw5qr).
+###Please report any issues in GitHub and feel free to join my [discord](https://discord.gg/crapticraft).
 
 ###Thank you for using my plugin!
