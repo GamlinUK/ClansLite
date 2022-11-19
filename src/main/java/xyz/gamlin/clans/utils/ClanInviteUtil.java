@@ -57,9 +57,10 @@ public class ClanInviteUtil {
         return invitesList.entrySet();
     }
 
-    public static Player getInviteOwner(String inviteeUUID){
-        if (inviteeUUID.length() > 36){
-            UUID uuid = UUID.fromString(inviteeUUID);
+    @Deprecated
+    public static Player getInviteOwner(String inviterUUID){
+        if (inviterUUID.length() > 36){
+            UUID uuid = UUID.fromString(inviterUUID);
             if (invitesList.containsKey(uuid)){
                 return Bukkit.getPlayer(uuid);
             }

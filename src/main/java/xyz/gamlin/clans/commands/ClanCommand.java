@@ -21,6 +21,7 @@ import xyz.gamlin.clans.utils.UsermapStorageUtil;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 
 public class ClanCommand implements CommandExecutor {
@@ -285,11 +286,23 @@ public class ClanCommand implements CommandExecutor {
                                                 String invitationString = ColorUtils.translateColorCodes(messagesConfig.getString("clan-invited-player-invite-pending")).replace("%CLANOWNER%", player.getName());
                                                 invitedPlayer.sendMessage(invitationString);
                                                 return true;
+                                            }else {
+                                                String failureString = ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-failed")).replace(INVITED_PLAYER, invitedPlayer.getName());
+                                                player.sendMessage(failureString);
+                                                return true;
                                             }
                                         }else {
-                                            String failureString = ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-failed")).replace(INVITED_PLAYER, invitedPlayer.getName());
-                                            player.sendMessage(failureString);
-                                            return true;
+                                            if (ClanInviteUtil.createInvite(player.getUniqueId().toString(), invitedPlayer.getUniqueId().toString()) != null) {
+                                                String confirmationString = ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-successful")).replace(INVITED_PLAYER, invitedPlayer.getName());
+                                                player.sendMessage(confirmationString);
+                                                String invitationString = ColorUtils.translateColorCodes(messagesConfig.getString("clan-invited-player-invite-pending")).replace("%CLANOWNER%", player.getName());
+                                                invitedPlayer.sendMessage(invitationString);
+                                                return true;
+                                            }else {
+                                                String failureString = ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-failed")).replace(INVITED_PLAYER, invitedPlayer.getName());
+                                                player.sendMessage(failureString);
+                                                return true;
+                                            }
                                         }
                                     }
 
@@ -376,15 +389,19 @@ public class ClanCommand implements CommandExecutor {
 
 //----------------------------------------------------------------------------------------------------------------------
                 if (args[0].equalsIgnoreCase("join")) {
-                    StringBuilder inviterUUIDString = new StringBuilder();
+                    AtomicReference<String> inviterUUIDString = new AtomicReference<>("");
                     Set<Map.Entry<UUID, ClanInvite>> clanInvitesList = ClanInviteUtil.getInvites();
                     if (ClanInviteUtil.searchInvitee(player.getUniqueId().toString())) {
+
                         clanInvitesList.forEach((invites) ->
-                                inviterUUIDString.append(invites.getValue().getInviter()));
-                        Clan clan = ClansStorageUtil.findClanByOwner(ClanInviteUtil.getInviteOwner(inviterUUIDString.toString()));
+                                inviterUUIDString.set(invites.getValue().getInviter()));
+
+                        logger.info(String.valueOf(inviterUUIDString.get()));
+                        Player inviterPlayer = Bukkit.getPlayer(UUID.fromString(inviterUUIDString.get()));
+                        Clan clan = ClansStorageUtil.findClanByOwner(inviterPlayer);
                         if (clan != null) {
                             if (ClansStorageUtil.addClanMember(clan, player)) {
-                                ClanInviteUtil.removeInvite(inviterUUIDString.toString());
+                                ClanInviteUtil.removeInvite(inviterUUIDString.get());
                                 String joinMessage = ColorUtils.translateColorCodes(messagesConfig.getString("clan-join-successful")).replace(CLAN_PLACEHOLDER, clan.getClanFinalName());
                                 player.sendMessage(joinMessage);
                                 if (clansConfig.getBoolean("clan-join.announce-to-all")){

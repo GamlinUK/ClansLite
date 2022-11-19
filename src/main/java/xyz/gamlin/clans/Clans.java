@@ -189,22 +189,26 @@ public final class Clans extends JavaPlugin {
         });
 
         //Start auto save task
-        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-            @Override
-            public void run() {
-                TaskTimerUtils.runClansAutoSaveOne();
-                logger.info(ColorUtils.translateColorCodes(messagesFileManager.getMessagesConfig().getString("auto-save-started")));
-            }
-        },100L);
+        if (getConfig().getBoolean("general.run-auto-save-task.enabled")){
+            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    TaskTimerUtils.runClansAutoSaveOne();
+                    logger.info(ColorUtils.translateColorCodes(messagesFileManager.getMessagesConfig().getString("auto-save-started")));
+                }
+            },100L);
+        }
 
         //Start auto invite clear task
-        Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-            @Override
-            public void run() {
-                TaskTimerUtils.runClanInviteClearOne();
-                logger.info(ColorUtils.translateColorCodes(messagesFileManager.getMessagesConfig().getString("auto-invite-wipe-started")));
-            }
-        },100L);
+        if (getConfig().getBoolean("general.run-auto-invite-wipe-task.enabled")){
+            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    TaskTimerUtils.runClanInviteClearOne();
+                    logger.info(ColorUtils.translateColorCodes(messagesFileManager.getMessagesConfig().getString("auto-invite-wipe-started")));
+                }
+            },100L);
+        }
     }
 
     @Override

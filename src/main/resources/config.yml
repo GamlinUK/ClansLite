@@ -94,6 +94,12 @@ plugin-update-notifications:
 
 #ClansLite general settings
 general:
+  run-auto-save-task:
+    #Do you want to enable the plugins ability to auto save the clans to disk? [Default value: true]
+    enabled: true
+  run-auto-invite-wipe-task:
+    #Do you want to enable the plugins ability to auto-wipe the invites list? [Default value: true]
+    enabled: true
   show-auto-save-task-message:
     #Do you want to see notifications in console when the auto-save task runs? [Default value: true]
     enabled: true
