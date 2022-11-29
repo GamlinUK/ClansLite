@@ -11,6 +11,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import xyz.gamlin.clans.Clans;
+import xyz.gamlin.clans.events.*;
 import xyz.gamlin.clans.menuSystem.paginatedMenu.ClanListGUI;
 import xyz.gamlin.clans.models.Clan;
 import xyz.gamlin.clans.models.ClanInvite;
@@ -161,9 +162,10 @@ public class ClanCommand implements CommandExecutor {
                             return true;
                         }else {
                             if (!ClansStorageUtil.isClanExisting(player)) {
-                                ClansStorageUtil.createClan(player, args[1]);
+                                Clan clan = ClansStorageUtil.createClan(player, args[1]);
                                 String clanCreated = ColorUtils.translateColorCodes(messagesConfig.getString("clan-created-successfully")).replace(CLAN_PLACEHOLDER, ColorUtils.translateColorCodes(args[1]));
                                 player.sendMessage(clanCreated);
+                                fireClanCreateEvent(player, clan);
                                 if (clansConfig.getBoolean("clan-creation.announce-to-all")){
                                     if (clansConfig.getBoolean("clan-creation.send-as-title")){
                                         for (Player onlinePlayers : Clans.connectedPlayers.keySet()){
@@ -724,6 +726,7 @@ public class ClanCommand implements CommandExecutor {
                                                         return true;
                                                     }else {
                                                         ClansStorageUtil.addClanAlly(player, allyClanOwner);
+                                                        fireClanAllyAddEvent(player, clan, allyClanOwner, allyClan);
                                                         player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("added-clan-to-your-allies").replace(ALLY_CLAN, allyClan.getClanFinalName())));
                                                     }
                                                     if (allyClanOwner.isOnline()){
@@ -761,6 +764,7 @@ public class ClanCommand implements CommandExecutor {
                                                 String allyClanOwnerString = allyClanOwnerUUID.toString();
                                                 if (alliedClans.contains(allyClanOwnerString)){
                                                     ClansStorageUtil.removeClanAlly(player, allyClanOwner);
+                                                    fireClanAllyRemoveEvent(player, allyClanOwner, allyClan);
                                                     player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("removed-clan-from-your-allies").replace(ALLY_CLAN, allyClan.getClanFinalName())));
                                                     if (allyClanOwner.isOnline()){
                                                         allyClanOwner.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-removed-from-other-allies").replace(CLAN_OWNER, player.getName())));
@@ -818,6 +822,7 @@ public class ClanCommand implements CommandExecutor {
                                                         return true;
                                                     }else {
                                                         ClansStorageUtil.addClanEnemy(player, enemyClanOwner);
+                                                        fireClanEnemyAddEvent(player, clan, enemyClanOwner, enemyClan);
                                                         player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("added-clan-to-your-enemies").replace(ENEMY_CLAN, enemyClan.getClanFinalName())));
                                                         String titleMain = ColorUtils.translateColorCodes(messagesConfig.getString("added-enemy-clan-to-your-enemies-title-1").replace(CLAN_OWNER, enemyClanOwner.getName()));
                                                         String titleAux = ColorUtils.translateColorCodes(messagesConfig.getString("added-enemy-clan-to-your-enemies-title-2").replace(CLAN_OWNER, enemyClanOwner.getName()));
@@ -881,6 +886,7 @@ public class ClanCommand implements CommandExecutor {
                                                 String enemyClanOwnerString = enemyClanOwnerUUID.toString();
                                                 if (enemyClans.contains(enemyClanOwnerString)){
                                                     ClansStorageUtil.removeClanEnemy(player, enemyClanOwner);
+                                                    fireClanEnemyRemoveEvent(player, enemyClanOwner, enemyClan);
                                                     player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("removed-clan-from-your-enemies").replace(ENEMY_CLAN, enemyClan.getClanFinalName())));
                                                     String titleMain = ColorUtils.translateColorCodes(messagesConfig.getString("removed-enemy-clan-from-your-enemies-title-1").replace(CLAN_OWNER, enemyClanOwner.getName()));
                                                     String titleAux = ColorUtils.translateColorCodes(messagesConfig.getString("removed-enemy-clan-from-your-enemies-title-1").replace(CLAN_OWNER, enemyClanOwner.getName()));
@@ -1115,4 +1121,30 @@ public class ClanCommand implements CommandExecutor {
         // If the player (or console) uses our command correct, we can return true
         return true;
     }
+
+    private static void fireClanEnemyRemoveEvent(Player player, Player enemyClanOwner, Clan enemyClan) {
+        ClanEnemyRemoveEvent clanEnemyRemoveEvent = new ClanEnemyRemoveEvent(player, ClansStorageUtil.findClanByPlayer(player), enemyClan, enemyClanOwner);
+        Bukkit.getPluginManager().callEvent(clanEnemyRemoveEvent);
+    }
+
+    private static void fireClanAllyRemoveEvent(Player player, Player allyClanOwner, Clan allyClan) {
+        ClanAllyRemoveEvent clanAllyRemoveEvent = new ClanAllyRemoveEvent(player, ClansStorageUtil.findClanByOwner(player), allyClan, allyClanOwner);
+        Bukkit.getPluginManager().callEvent(clanAllyRemoveEvent);
+    }
+
+    private static void fireClanAllyAddEvent(Player player, Clan clan, Player allyClanOwner, Clan allyClan) {
+        ClanAllyAddEvent clanAllyAddEvent = new ClanAllyAddEvent(player, clan, allyClan, allyClanOwner);
+        Bukkit.getPluginManager().callEvent(clanAllyAddEvent);
+    }
+
+    private static void fireClanCreateEvent(Player player, Clan clan) {
+        ClanCreateEvent clanCreateEvent = new ClanCreateEvent(player, clan);
+        Bukkit.getPluginManager().callEvent(clanCreateEvent);
+    }
+
+    private static void fireClanEnemyAddEvent(Player player, Clan clan, Player enemyClanOwner, Clan enemyClan) {
+        ClanEnemyAddEvent clanEnemyAddEvent = new ClanEnemyAddEvent(player, clan, enemyClan, enemyClanOwner);
+        Bukkit.getPluginManager().callEvent(clanEnemyAddEvent);
+    }
+
 }
