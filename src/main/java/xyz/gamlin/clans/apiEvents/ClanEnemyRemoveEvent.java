@@ -1,4 +1,4 @@
-package xyz.gamlin.clans.events;
+package xyz.gamlin.clans.apiEvents;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;

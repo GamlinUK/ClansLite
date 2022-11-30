@@ -11,7 +11,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import xyz.gamlin.clans.Clans;
-import xyz.gamlin.clans.events.*;
+import xyz.gamlin.clans.apiEvents.*;
 import xyz.gamlin.clans.menuSystem.paginatedMenu.ClanListGUI;
 import xyz.gamlin.clans.models.Clan;
 import xyz.gamlin.clans.models.ClanInvite;
@@ -763,8 +763,8 @@ public class ClanCommand implements CommandExecutor {
                                                 UUID allyClanOwnerUUID = allyClanOwner.getUniqueId();
                                                 String allyClanOwnerString = allyClanOwnerUUID.toString();
                                                 if (alliedClans.contains(allyClanOwnerString)){
-                                                    ClansStorageUtil.removeClanAlly(player, allyClanOwner);
                                                     fireClanAllyRemoveEvent(player, allyClanOwner, allyClan);
+                                                    ClansStorageUtil.removeClanAlly(player, allyClanOwner);
                                                     player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("removed-clan-from-your-allies").replace(ALLY_CLAN, allyClan.getClanFinalName())));
                                                     if (allyClanOwner.isOnline()){
                                                         allyClanOwner.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-removed-from-other-allies").replace(CLAN_OWNER, player.getName())));
@@ -885,8 +885,8 @@ public class ClanCommand implements CommandExecutor {
                                                 UUID enemyClanOwnerUUID = enemyClanOwner.getUniqueId();
                                                 String enemyClanOwnerString = enemyClanOwnerUUID.toString();
                                                 if (enemyClans.contains(enemyClanOwnerString)){
-                                                    ClansStorageUtil.removeClanEnemy(player, enemyClanOwner);
                                                     fireClanEnemyRemoveEvent(player, enemyClanOwner, enemyClan);
+                                                    ClansStorageUtil.removeClanEnemy(player, enemyClanOwner);
                                                     player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("removed-clan-from-your-enemies").replace(ENEMY_CLAN, enemyClan.getClanFinalName())));
                                                     String titleMain = ColorUtils.translateColorCodes(messagesConfig.getString("removed-enemy-clan-from-your-enemies-title-1").replace(CLAN_OWNER, enemyClanOwner.getName()));
                                                     String titleAux = ColorUtils.translateColorCodes(messagesConfig.getString("removed-enemy-clan-from-your-enemies-title-1").replace(CLAN_OWNER, enemyClanOwner.getName()));
