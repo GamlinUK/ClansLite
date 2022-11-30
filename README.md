@@ -1,3 +1,5 @@
+[![](https://jitpack.io/v/Loving11ish/ClansLite.svg)](https://jitpack.io/#Loving11ish/ClansLite)
+
 # ClansLite
 ClansLite is a light-weight clans plugin for Minecraft servers running Spigot and most of its forks!
 
