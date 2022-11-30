@@ -28,7 +28,7 @@ public class ClanCreateEvent extends Event {
         return createdBy;
     }
 
-    public Clan getClanName() {
+    public Clan getClan() {
         return clan;
     }
 
