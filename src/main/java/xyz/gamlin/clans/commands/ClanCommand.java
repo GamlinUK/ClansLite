@@ -11,6 +11,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import xyz.gamlin.clans.Clans;
+import xyz.gamlin.clans.events.*;
 import xyz.gamlin.clans.menuSystem.paginatedMenu.ClanListGUI;
 import xyz.gamlin.clans.models.Clan;
 import xyz.gamlin.clans.models.ClanInvite;
@@ -28,7 +29,7 @@ public class ClanCommand implements CommandExecutor {
 
     Logger logger = Clans.getPlugin().getLogger();
 
-    public static Integer taskID1;
+    public static int taskID1;
 
     FileConfiguration clansConfig = Clans.getPlugin().getConfig();
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
@@ -152,18 +153,19 @@ public class ClanCommand implements CommandExecutor {
                             return true;
                         }
                         if (args[1].length() < MIN_CHAR_LIMIT) {
-                            Integer minCharLimit = clansConfig.getInt("clan-tags.min-character-limit");
-                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-name-too-short").replace("%CHARMIN%", minCharLimit.toString())));
+                            int minCharLimit = clansConfig.getInt("clan-tags.min-character-limit");
+                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-name-too-short").replace("%CHARMIN%", Integer.toString(minCharLimit))));
                             return true;
                         } else if (args[1].length() > MAX_CHAR_LIMIT) {
-                            Integer maxCharLimit = clansConfig.getInt("clan-tags.max-character-limit");
-                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-name-too-long").replace("%CHARMAX%", maxCharLimit.toString())));
+                            int maxCharLimit = clansConfig.getInt("clan-tags.max-character-limit");
+                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-name-too-long").replace("%CHARMAX%", Integer.toString(maxCharLimit))));
                             return true;
                         }else {
                             if (!ClansStorageUtil.isClanExisting(player)) {
-                                ClansStorageUtil.createClan(player, args[1]);
+                                Clan clan = ClansStorageUtil.createClan(player, args[1]);
                                 String clanCreated = ColorUtils.translateColorCodes(messagesConfig.getString("clan-created-successfully")).replace(CLAN_PLACEHOLDER, ColorUtils.translateColorCodes(args[1]));
                                 player.sendMessage(clanCreated);
+                                fireClanCreateEvent(player, clan);
                                 if (clansConfig.getBoolean("clan-creation.announce-to-all")){
                                     if (clansConfig.getBoolean("clan-creation.send-as-title")){
                                         for (Player onlinePlayers : Clans.connectedPlayers.keySet()){
@@ -233,45 +235,45 @@ public class ClanCommand implements CommandExecutor {
                                     Clan clan = ClansStorageUtil.findClanByOwner(player);
                                     if (!clansConfig.getBoolean("clan-size.tiered-clan-system.enabled")){
                                         if (clan.getClanMembers().size() >= clansConfig.getInt("clan-size.default-max-clan-size")) {
-                                            Integer maxSize = clansConfig.getInt("clan-size.default-max-clan-size");
-                                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-max-size-reached")).replace("%LIMIT%", maxSize.toString()));
+                                            int maxSize = clansConfig.getInt("clan-size.default-max-clan-size");
+                                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-max-size-reached")).replace("%LIMIT%", String.valueOf(maxSize)));
                                             return true;
                                         }
                                     }else {
                                         if (player.hasPermission("clanslite.maxclansize.group6")){
                                             if (clan.getClanMembers().size() >= clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-6")){
-                                                Integer g6MaxSize = clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-6");
-                                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-max-size-reached")).replace("%LIMIT%", g6MaxSize.toString()));
+                                                int g6MaxSize = clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-6");
+                                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-max-size-reached")).replace("%LIMIT%", String.valueOf(g6MaxSize)));
                                                 return true;
                                             }
                                         }else if (player.hasPermission("clanslite.maxclansize.group5")){
                                             if (clan.getClanMembers().size() >= clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-2")){
-                                                Integer g5MaxSize = clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-5");
-                                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-max-size-reached")).replace("%LIMIT%", g5MaxSize.toString()));
+                                                int g5MaxSize = clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-5");
+                                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-max-size-reached")).replace("%LIMIT%", String.valueOf(g5MaxSize)));
                                                 return true;
                                             }
                                         }else if (player.hasPermission("clanslite.maxclansize.group4")) {
                                             if (clan.getClanMembers().size() >= clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-4")) {
-                                                Integer g4MaxSize = clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-4");
-                                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-max-size-reached")).replace("%LIMIT%", g4MaxSize.toString()));
+                                                int g4MaxSize = clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-4");
+                                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-max-size-reached")).replace("%LIMIT%", String.valueOf(g4MaxSize)));
                                                 return true;
                                             }
                                         }else if (player.hasPermission("clanslite.maxclansize.group3")) {
                                             if (clan.getClanMembers().size() >= clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-4")) {
-                                                Integer g3MaxSize = clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-3");
-                                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-max-size-reached")).replace("%LIMIT%", g3MaxSize.toString()));
+                                                int g3MaxSize = clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-3");
+                                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-max-size-reached")).replace("%LIMIT%", String.valueOf(g3MaxSize)));
                                                 return true;
                                             }
                                         }else if (player.hasPermission("clanslite.maxclansize.group2")) {
                                             if (clan.getClanMembers().size() >= clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-2")) {
-                                                Integer g2MaxSize = clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-2");
-                                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-max-size-reached")).replace("%LIMIT%", g2MaxSize.toString()));
+                                                int g2MaxSize = clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-2");
+                                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-max-size-reached")).replace("%LIMIT%", String.valueOf(g2MaxSize)));
                                                 return true;
                                             }
                                         }else if (player.hasPermission("clanslite.maxclansize.group1")) {
                                             if (clan.getClanMembers().size() >= clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-1")) {
-                                                Integer g1MaxSize = clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-1");
-                                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-max-size-reached")).replace("%LIMIT%", g1MaxSize.toString()));
+                                                int g1MaxSize = clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-1");
+                                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-max-size-reached")).replace("%LIMIT%", String.valueOf(g1MaxSize)));
                                                 return true;
                                             }
                                         }
@@ -348,13 +350,13 @@ public class ClanCommand implements CommandExecutor {
                                 clansPrefixList.clear();
                                 return true;
                             }else if (args[1].length() > MAX_CHAR_LIMIT) {
-                                Integer maxCharLimit = clansConfig.getInt("clan-tags.max-character-limit");
-                                sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-prefix-too-long").replace("%CHARMAX%", maxCharLimit.toString())));
+                                int maxCharLimit = clansConfig.getInt("clan-tags.max-character-limit");
+                                sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-prefix-too-long").replace("%CHARMAX%", String.valueOf(maxCharLimit))));
                                 clansPrefixList.clear();
                                 return true;
                             }else {
-                                Integer minCharLimit = clansConfig.getInt("clan-tags.min-character-limit");
-                                sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-prefix-too-short").replace("%CHARMIN%", minCharLimit.toString())));
+                                int minCharLimit = clansConfig.getInt("clan-tags.min-character-limit");
+                                sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-prefix-too-short").replace("%CHARMIN%", String.valueOf(minCharLimit))));
                                 clansPrefixList.clear();
                                 return true;
                             }
@@ -510,9 +512,9 @@ public class ClanCommand implements CommandExecutor {
                             clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-info-owner-offline")).replace(OWNER, offlineOwner));
                         }
                         if (clanMembers.size() > 0) {
-                            Integer clanMembersSize = clanMembers.size();
+                            int clanMembersSize = clanMembers.size();
                             clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-info-members-header")
-                                    .replace("%NUMBER%", ColorUtils.translateColorCodes(clanMembersSize.toString()))));
+                                    .replace("%NUMBER%", ColorUtils.translateColorCodes(String.valueOf(clanMembersSize)))));
                             for (String clanMember : clanMembers) {
                                 if (clanMember != null) {
                                     UUID memberUUID = UUID.fromString(clanMember);
@@ -600,9 +602,9 @@ public class ClanCommand implements CommandExecutor {
                             clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-info-owner-offline")).replace(OWNER, offlineOwner));
                         }
                         if (clanMembers.size() > 0) {
-                            Integer clanMembersSize = clanMembers.size();
+                            int clanMembersSize = clanMembers.size();
                             clanInfo.append(ColorUtils.translateColorCodes(messagesConfig.getString("clan-info-members-header")
-                                    .replace("%NUMBER%", ColorUtils.translateColorCodes(clanMembersSize.toString()))));
+                                    .replace("%NUMBER%", ColorUtils.translateColorCodes(String.valueOf(clanMembersSize)))));
                             for (String clanMember : clanMembers) {
                                 if (clanMember != null) {
                                     UUID memberUUID = UUID.fromString(clanMember);
@@ -711,8 +713,8 @@ public class ClanCommand implements CommandExecutor {
                                                     Clan allyClan = ClansStorageUtil.findClanByOwner(allyClanOwner);
                                                     String allyOwnerUUIDString = allyClan.getClanOwner();
                                                     if (ClansStorageUtil.findClanByOwner(player).getClanAllies().size() >= clansConfig.getInt("max-clan-allies")){
-                                                        Integer maxSize = clansConfig.getInt("max-clan-allies");
-                                                        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-ally-max-amount-reached")).replace("%LIMIT%", maxSize.toString()));
+                                                        int maxSize = clansConfig.getInt("max-clan-allies");
+                                                        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-ally-max-amount-reached")).replace("%LIMIT%", String.valueOf(maxSize)));
                                                         return true;
                                                     }
                                                     if (clan.getClanEnemies().contains(allyOwnerUUIDString)){
@@ -724,6 +726,7 @@ public class ClanCommand implements CommandExecutor {
                                                         return true;
                                                     }else {
                                                         ClansStorageUtil.addClanAlly(player, allyClanOwner);
+                                                        fireClanAllyAddEvent(player, clan, allyClanOwner, allyClan);
                                                         player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("added-clan-to-your-allies").replace(ALLY_CLAN, allyClan.getClanFinalName())));
                                                     }
                                                     if (allyClanOwner.isOnline()){
@@ -761,6 +764,7 @@ public class ClanCommand implements CommandExecutor {
                                                 String allyClanOwnerString = allyClanOwnerUUID.toString();
                                                 if (alliedClans.contains(allyClanOwnerString)){
                                                     ClansStorageUtil.removeClanAlly(player, allyClanOwner);
+                                                    fireClanAllyRemoveEvent(player, allyClanOwner, allyClan);
                                                     player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("removed-clan-from-your-allies").replace(ALLY_CLAN, allyClan.getClanFinalName())));
                                                     if (allyClanOwner.isOnline()){
                                                         allyClanOwner.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-removed-from-other-allies").replace(CLAN_OWNER, player.getName())));
@@ -805,8 +809,8 @@ public class ClanCommand implements CommandExecutor {
                                                     Clan enemyClan = ClansStorageUtil.findClanByOwner(enemyClanOwner);
                                                     String enemyOwnerUUIDString = enemyClan.getClanOwner();
                                                     if (ClansStorageUtil.findClanByOwner(player).getClanEnemies().size() >= clansConfig.getInt("max-clan-enemies")){
-                                                        Integer maxSize = clansConfig.getInt("max-clan-enemies");
-                                                        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-enemy-max-amount-reached")).replace("%LIMIT%", maxSize.toString()));
+                                                        int maxSize = clansConfig.getInt("max-clan-enemies");
+                                                        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-enemy-max-amount-reached")).replace("%LIMIT%", String.valueOf(maxSize)));
                                                         return true;
                                                     }
                                                     if (clan.getClanAllies().contains(enemyOwnerUUIDString)){
@@ -818,6 +822,7 @@ public class ClanCommand implements CommandExecutor {
                                                         return true;
                                                     }else {
                                                         ClansStorageUtil.addClanEnemy(player, enemyClanOwner);
+                                                        fireClanEnemyAddEvent(player, clan, enemyClanOwner, enemyClan);
                                                         player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("added-clan-to-your-enemies").replace(ENEMY_CLAN, enemyClan.getClanFinalName())));
                                                         String titleMain = ColorUtils.translateColorCodes(messagesConfig.getString("added-enemy-clan-to-your-enemies-title-1").replace(CLAN_OWNER, enemyClanOwner.getName()));
                                                         String titleAux = ColorUtils.translateColorCodes(messagesConfig.getString("added-enemy-clan-to-your-enemies-title-2").replace(CLAN_OWNER, enemyClanOwner.getName()));
@@ -881,6 +886,7 @@ public class ClanCommand implements CommandExecutor {
                                                 String enemyClanOwnerString = enemyClanOwnerUUID.toString();
                                                 if (enemyClans.contains(enemyClanOwnerString)){
                                                     ClansStorageUtil.removeClanEnemy(player, enemyClanOwner);
+                                                    fireClanEnemyRemoveEvent(player, enemyClanOwner, enemyClan);
                                                     player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("removed-clan-from-your-enemies").replace(ENEMY_CLAN, enemyClan.getClanFinalName())));
                                                     String titleMain = ColorUtils.translateColorCodes(messagesConfig.getString("removed-enemy-clan-from-your-enemies-title-1").replace(CLAN_OWNER, enemyClanOwner.getName()));
                                                     String titleAux = ColorUtils.translateColorCodes(messagesConfig.getString("removed-enemy-clan-from-your-enemies-title-1").replace(CLAN_OWNER, enemyClanOwner.getName()));
@@ -1115,4 +1121,30 @@ public class ClanCommand implements CommandExecutor {
         // If the player (or console) uses our command correct, we can return true
         return true;
     }
+
+    private static void fireClanEnemyRemoveEvent(Player player, Player enemyClanOwner, Clan enemyClan) {
+        ClanEnemyRemoveEvent clanEnemyRemoveEvent = new ClanEnemyRemoveEvent(player, ClansStorageUtil.findClanByPlayer(player), enemyClan, enemyClanOwner);
+        Bukkit.getPluginManager().callEvent(clanEnemyRemoveEvent);
+    }
+
+    private static void fireClanAllyRemoveEvent(Player player, Player allyClanOwner, Clan allyClan) {
+        ClanAllyRemoveEvent clanAllyRemoveEvent = new ClanAllyRemoveEvent(player, ClansStorageUtil.findClanByOwner(player), allyClan, allyClanOwner);
+        Bukkit.getPluginManager().callEvent(clanAllyRemoveEvent);
+    }
+
+    private static void fireClanAllyAddEvent(Player player, Clan clan, Player allyClanOwner, Clan allyClan) {
+        ClanAllyAddEvent clanAllyAddEvent = new ClanAllyAddEvent(player, clan, allyClan, allyClanOwner);
+        Bukkit.getPluginManager().callEvent(clanAllyAddEvent);
+    }
+
+    private static void fireClanCreateEvent(Player player, Clan clan) {
+        ClanCreateEvent clanCreateEvent = new ClanCreateEvent(player, clan);
+        Bukkit.getPluginManager().callEvent(clanCreateEvent);
+    }
+
+    private static void fireClanEnemyAddEvent(Player player, Clan clan, Player enemyClanOwner, Clan enemyClan) {
+        ClanEnemyAddEvent clanEnemyAddEvent = new ClanEnemyAddEvent(player, clan, enemyClan, enemyClanOwner);
+        Bukkit.getPluginManager().callEvent(clanEnemyAddEvent);
+    }
+
 }

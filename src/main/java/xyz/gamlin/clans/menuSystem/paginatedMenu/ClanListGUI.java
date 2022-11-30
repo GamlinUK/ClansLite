@@ -23,7 +23,7 @@ import static org.bukkit.Bukkit.getServer;
 
 public class ClanListGUI extends PaginatedMenu {
 
-    public static Integer taskID5;
+    public static int taskID5;
 
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
     FileConfiguration guiConfig = Clans.getPlugin().clanGUIFileManager.getClanGUIConfig();

@@ -10,14 +10,14 @@ public class TaskTimerUtils {
 
     static Logger logger = Clans.getPlugin().getLogger();
 
-    public static Integer taskID1;
-    public static Integer taskID2;
-    public static Integer taskID3;
-    public static Integer taskID4;
+    public static int taskID1;
+    public static int taskID2;
+    public static int taskID3;
+    public static int taskID4;
 
     public static void runClansAutoSaveOne(){
         taskID1 = Bukkit.getScheduler().scheduleSyncRepeatingTask(Clans.getPlugin(Clans.class), new Runnable() {
-            Integer time = 900;
+            int time = 900;
             @Override
             public void run() {
                 if (time == 1){
@@ -43,7 +43,7 @@ public class TaskTimerUtils {
 
     public static void runClansAutoSaveTwo(){
         taskID2 = Bukkit.getScheduler().scheduleSyncRepeatingTask(Clans.getPlugin(Clans.class), new Runnable() {
-            Integer time = 900;
+            int time = 900;
             @Override
             public void run() {
                 if (time == 1){
@@ -69,7 +69,7 @@ public class TaskTimerUtils {
 
     public static void runClanInviteClearOne(){
         taskID3 = Bukkit.getScheduler().scheduleSyncRepeatingTask(Clans.getPlugin(Clans.class), new Runnable() {
-            Integer time = 900;
+            int time = 900;
             @Override
             public void run() {
                 if (time == 1){
@@ -93,7 +93,7 @@ public class TaskTimerUtils {
 
     public static void runClanInviteClearTwo(){
         taskID4 = Bukkit.getScheduler().scheduleSyncRepeatingTask(Clans.getPlugin(Clans.class), new Runnable() {
-            Integer time = 900;
+            int time = 900;
             @Override
             public void run() {
                 if (time == 1){

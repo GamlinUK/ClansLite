@@ -1,9 +1,11 @@
 package xyz.gamlin.clans.utils;
 
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import xyz.gamlin.clans.Clans;
+import xyz.gamlin.clans.events.ClanDisbandEvent;
 import xyz.gamlin.clans.models.Clan;
 
 import java.io.IOException;
@@ -74,10 +76,13 @@ public class ClansStorageUtil {
         });
     }
 
-    public static void createClan(Player player, String clanName){
+    public static Clan createClan(Player player, String clanName){
         UUID ownerUUID = player.getUniqueId();
         String ownerUuidString = player.getUniqueId().toString();
-        clansList.put(ownerUUID, new Clan(ownerUuidString, clanName));
+        Clan newClan = new Clan(ownerUuidString, clanName);
+        clansList.put(ownerUUID, newClan);
+
+        return newClan;
     }
 
     public static boolean isClanExisting(Player player){
@@ -93,13 +98,20 @@ public class ClansStorageUtil {
         String key = uuid.toString();
         if (findClanByOwner(player) != null){
             if (isClanOwner(player)){
-             clansList.remove(uuid);
+                fireClanDisbandEvent(player);
+                clansList.remove(uuid);
              clansStorage.set("clans.data." + key, null);
              Clans.getPlugin().clansFileManager.saveClansConfig();
             }
             return true;
         }
         return false;
+    }
+
+    private static void fireClanDisbandEvent(Player player) {
+        Clan clanByOwner = ClansStorageUtil.findClanByOwner(player);
+        ClanDisbandEvent clanDisbandEvent = new ClanDisbandEvent(player, clanByOwner.getClanFinalName());
+        Bukkit.getPluginManager().callEvent(clanDisbandEvent);
     }
 
     public static boolean deleteOfflineClan(OfflinePlayer offlinePlayer) throws IOException{
