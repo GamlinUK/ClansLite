@@ -1,12 +1,12 @@
-package xyz.gamlin.clans.commands.SubCommands.Clan;
+package xyz.gamlin.clans.commands.clanSubCommands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import xyz.gamlin.clans.Clans;
-import xyz.gamlin.clans.apiEvents.ClanAllyAddEvent;
-import xyz.gamlin.clans.apiEvents.ClanAllyRemoveEvent;
+import xyz.gamlin.clans.api.events.ClanAllyAddEvent;
+import xyz.gamlin.clans.api.events.ClanAllyRemoveEvent;
 import xyz.gamlin.clans.models.Clan;
 import xyz.gamlin.clans.utils.ClansStorageUtil;
 import xyz.gamlin.clans.utils.ColorUtils;
@@ -15,11 +15,13 @@ import java.util.List;
 import java.util.UUID;
 
 public class ClanAllySubCommand {
+
     FileConfiguration clansConfig = Clans.getPlugin().getConfig();
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
     private static final String ALLY_CLAN = "%ALLYCLAN%";
     private static final String ALLY_OWNER = "%ALLYOWNER%";
     private static final String CLAN_OWNER = "%CLANOWNER%";
+
     public boolean clanAllySubCommand(CommandSender sender, String[] args) {
         if (sender instanceof Player) {
             Player player = ((Player) sender).getPlayer();

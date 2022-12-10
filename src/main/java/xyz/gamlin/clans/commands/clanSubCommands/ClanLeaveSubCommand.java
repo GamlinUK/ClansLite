@@ -1,4 +1,4 @@
-package xyz.gamlin.clans.commands.SubCommands.Clan;
+package xyz.gamlin.clans.commands.clanSubCommands;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -9,8 +9,10 @@ import xyz.gamlin.clans.utils.ClansStorageUtil;
 import xyz.gamlin.clans.utils.ColorUtils;
 
 public class ClanLeaveSubCommand {
+
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
     private static final String CLAN_PLACEHOLDER = "%CLAN%";
+
     public boolean clanLeaveSubCommand(CommandSender sender) {
         if (sender instanceof Player) {
             Player player = ((Player) sender).getPlayer();

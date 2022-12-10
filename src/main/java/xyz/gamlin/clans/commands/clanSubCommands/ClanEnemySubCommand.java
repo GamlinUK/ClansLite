@@ -1,28 +1,28 @@
-package xyz.gamlin.clans.commands.SubCommands.Clan;
+package xyz.gamlin.clans.commands.clanSubCommands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import xyz.gamlin.clans.Clans;
-import xyz.gamlin.clans.apiEvents.ClanEnemyAddEvent;
-import xyz.gamlin.clans.apiEvents.ClanEnemyRemoveEvent;
+import xyz.gamlin.clans.api.events.ClanEnemyAddEvent;
+import xyz.gamlin.clans.api.events.ClanEnemyRemoveEvent;
 import xyz.gamlin.clans.models.Clan;
 import xyz.gamlin.clans.utils.ClansStorageUtil;
 import xyz.gamlin.clans.utils.ColorUtils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 public class ClanEnemySubCommand {
+
     FileConfiguration clansConfig = Clans.getPlugin().getConfig();
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
     private static final String ENEMY_CLAN = "%ENEMYCLAN%";
     private static final String ENEMY_OWNER = "%ENEMYOWNER%";
     private static final String CLAN_OWNER = "%CLANOWNER%";
+
     public boolean clanEnemySubCommand(CommandSender sender, String[] args) {
         if (sender instanceof Player) {
             Player player = ((Player) sender).getPlayer();

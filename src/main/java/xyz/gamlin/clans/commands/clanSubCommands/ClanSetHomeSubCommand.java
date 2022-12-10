@@ -1,16 +1,21 @@
-package xyz.gamlin.clans.commands.SubCommands.Clan;
+package xyz.gamlin.clans.commands.clanSubCommands;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import xyz.gamlin.clans.Clans;
+import xyz.gamlin.clans.api.events.ClanHomeCreateEvent;
 import xyz.gamlin.clans.models.Clan;
 import xyz.gamlin.clans.utils.ClansStorageUtil;
 import xyz.gamlin.clans.utils.ColorUtils;
 
 public class ClanSetHomeSubCommand {
+
     FileConfiguration clansConfig = Clans.getPlugin().getConfig();
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+
     public boolean setClanHomeSubCommand(CommandSender sender) {
         if (sender instanceof Player) {
             Player player = ((Player) sender).getPlayer();
@@ -18,6 +23,8 @@ public class ClanSetHomeSubCommand {
                 if (ClansStorageUtil.isClanOwner(player)){
                     if (ClansStorageUtil.findClanByOwner(player) != null){
                         Clan clan = ClansStorageUtil.findClanByOwner(player);
+                        Location location = player.getLocation();
+                        fireClanHomeSetEvent(player, clan, location);
                         clan.setClanHomeWorld(player.getLocation().getWorld().getName());
                         clan.setClanHomeX(player.getLocation().getX());
                         clan.setClanHomeY(player.getLocation().getY());
@@ -36,5 +43,10 @@ public class ClanSetHomeSubCommand {
 
         }
         return false;
+    }
+
+    private static void fireClanHomeSetEvent(Player player, Clan clan, Location homeLocation) {
+        ClanHomeCreateEvent clanHomeCreateEvent = new ClanHomeCreateEvent(player, clan, homeLocation);
+        Bukkit.getPluginManager().callEvent(clanHomeCreateEvent);
     }
 }

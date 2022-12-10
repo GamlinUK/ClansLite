@@ -1,4 +1,4 @@
-package xyz.gamlin.clans.commands.SubCommands.Clan;
+package xyz.gamlin.clans.commands.clanSubCommands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -16,22 +16,22 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 
 public class ClanJoinSubCommand {
+
     Logger logger = Clans.getPlugin().getLogger();
 
     FileConfiguration clansConfig = Clans.getPlugin().getConfig();
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
     private static final String PLAYER_PLACEHOLDER = "%PLAYER%";
     private static final String CLAN_PLACEHOLDER = "%CLAN%";
+
     public boolean clanJoinSubCommand(CommandSender sender) {
         if (sender instanceof Player) {
             Player player = ((Player) sender).getPlayer();
             AtomicReference<String> inviterUUIDString = new AtomicReference<>("");
             Set<Map.Entry<UUID, ClanInvite>> clanInvitesList = ClanInviteUtil.getInvites();
             if (ClanInviteUtil.searchInvitee(player.getUniqueId().toString())) {
-
                 clanInvitesList.forEach((invites) ->
                         inviterUUIDString.set(invites.getValue().getInviter()));
-
                 logger.info(String.valueOf(inviterUUIDString.get()));
                 Player inviterPlayer = Bukkit.getPlayer(UUID.fromString(inviterUUIDString.get()));
                 Clan clan = ClansStorageUtil.findClanByOwner(inviterPlayer);

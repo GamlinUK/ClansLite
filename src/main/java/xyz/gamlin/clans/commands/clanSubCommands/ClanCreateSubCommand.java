@@ -1,11 +1,11 @@
-package xyz.gamlin.clans.commands.SubCommands.Clan;
+package xyz.gamlin.clans.commands.clanSubCommands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import xyz.gamlin.clans.Clans;
-import xyz.gamlin.clans.apiEvents.ClanCreateEvent;
+import xyz.gamlin.clans.api.events.ClanCreateEvent;
 import xyz.gamlin.clans.models.Clan;
 import xyz.gamlin.clans.utils.ClansStorageUtil;
 import xyz.gamlin.clans.utils.ColorUtils;
@@ -13,20 +13,21 @@ import xyz.gamlin.clans.utils.ColorUtils;
 import java.util.*;
 
 public class ClanCreateSubCommand {
+
     FileConfiguration clansConfig = Clans.getPlugin().getConfig();
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+    private static final String CLAN_PLACEHOLDER = "%CLAN%";
+    private static final String CLAN_OWNER = "%CLANOWNER%";
 
     int MIN_CHAR_LIMIT = clansConfig.getInt("clan-tags.min-character-limit");
     int MAX_CHAR_LIMIT = clansConfig.getInt("clan-tags.max-character-limit");
-    private static final String CLAN_PLACEHOLDER = "%CLAN%";
-    private static final String CLAN_OWNER = "%CLANOWNER%";
+
     Set<Map.Entry<UUID, Clan>> clans = ClansStorageUtil.getClans();
     ArrayList<String> clanNamesList = new ArrayList<>();
+
     public boolean createClanSubCommand(CommandSender sender, String[] args, List<String> bannedTags) {
         if (sender instanceof Player) {
             Player player = ((Player) sender).getPlayer();
-
-
             clans.forEach((clans) ->
                     clanNamesList.add(clans.getValue().getClanFinalName()));
             if (args.length >= 2) {

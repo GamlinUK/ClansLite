@@ -1,9 +1,6 @@
 package xyz.gamlin.clans.commands;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -11,18 +8,11 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import xyz.gamlin.clans.Clans;
-import xyz.gamlin.clans.apiEvents.*;
-import xyz.gamlin.clans.commands.SubCommands.Clan.*;
+import xyz.gamlin.clans.commands.clanSubCommands.*;
 import xyz.gamlin.clans.menuSystem.paginatedMenu.ClanListGUI;
-import xyz.gamlin.clans.models.Clan;
-import xyz.gamlin.clans.models.ClanInvite;
-import xyz.gamlin.clans.utils.ClanInviteUtil;
-import xyz.gamlin.clans.utils.ClansStorageUtil;
 import xyz.gamlin.clans.utils.ColorUtils;
-import xyz.gamlin.clans.utils.UsermapStorageUtil;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 
 public class ClanCommand implements CommandExecutor {
@@ -52,6 +42,7 @@ public class ClanCommand implements CommandExecutor {
                                     "\n/clan create <name>" +
                                     "\n/clan disband" +
                                     "\n/clan invite <player>" +
+                                    "\n/clan join" +
                                     "\n/clan kick <player>" +
                                     "\n/clan info" +
                                     "\n/clan list" +
@@ -68,6 +59,7 @@ public class ClanCommand implements CommandExecutor {
                                     "\n/clan create <name>" +
                                     "\n/clan disband" +
                                     "\n/clan invite <player>" +
+                                    "\n/clan join" +
                                     "\n/clan kick <player>" +
                                     "\n/clan info" +
                                     "\n/clan list" +
@@ -83,6 +75,7 @@ public class ClanCommand implements CommandExecutor {
                                     "\n/clan create <name>" +
                                     "\n/clan disband" +
                                     "\n/clan invite <player>" +
+                                    "\n/clan join" +
                                     "\n/clan kick <player>" +
                                     "\n/clan info" +
                                     "\n/clan list" +
@@ -98,6 +91,7 @@ public class ClanCommand implements CommandExecutor {
                                     "\n/clan create <name>" +
                                     "\n/clan disband" +
                                     "\n/clan invite <player>" +
+                                    "\n/clan join" +
                                     "\n/clan kick <player>" +
                                     "\n/clan info" +
                                     "\n/clan list" +

@@ -5,8 +5,8 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import xyz.gamlin.clans.Clans;
-import xyz.gamlin.clans.apiEvents.ClanDisbandEvent;
-import xyz.gamlin.clans.apiEvents.ClanOfflineDisbandEvent;
+import xyz.gamlin.clans.api.events.ClanDisbandEvent;
+import xyz.gamlin.clans.api.events.ClanOfflineDisbandEvent;
 import xyz.gamlin.clans.models.Clan;
 
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package xyz.gamlin.clans.commands.SubCommands.Clan;
+package xyz.gamlin.clans.commands.clanSubCommands;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -13,10 +13,11 @@ import java.util.Set;
 import java.util.UUID;
 
 public class ClanListSubCommand {
+
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+
     public boolean clanListSubCommand(CommandSender sender) {
         if (sender instanceof Player) {
-            Player player = ((Player) sender).getPlayer();
             Set<Map.Entry<UUID, Clan>> clans = ClansStorageUtil.getClans();
             StringBuilder clansString = new StringBuilder();
             if (clans.size() == 0) {

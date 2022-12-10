@@ -1,4 +1,4 @@
-package xyz.gamlin.clans.commands.SubCommands.Clan;
+package xyz.gamlin.clans.commands.clanSubCommands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -10,13 +10,12 @@ import xyz.gamlin.clans.utils.ClanInviteUtil;
 import xyz.gamlin.clans.utils.ClansStorageUtil;
 import xyz.gamlin.clans.utils.ColorUtils;
 
-import java.util.*;
-import java.util.logging.Logger;
-
 public class ClanInviteSubCommand {
+
     FileConfiguration clansConfig = Clans.getPlugin().getConfig();
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
     private static final String INVITED_PLAYER = "%INVITED%";
+
     public boolean clanInviteSubCommand(CommandSender sender, String[] args) {
         if (sender instanceof Player) {
             Player player = ((Player) sender).getPlayer();

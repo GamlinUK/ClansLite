@@ -1,4 +1,4 @@
-package xyz.gamlin.clans.commands.SubCommands.Clan;
+package xyz.gamlin.clans.commands.clanSubCommands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -12,9 +12,11 @@ import xyz.gamlin.clans.utils.ColorUtils;
 import xyz.gamlin.clans.utils.UsermapStorageUtil;
 
 public class ClanKickSubCommand {
+
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
     private static final String CLAN_PLACEHOLDER = "%CLAN%";
     private static final String PLAYER_TO_KICK = "%KICKEDPLAYER%";
+
     public boolean clanKickSubCommand(CommandSender sender, String[] args) {
         if (sender instanceof Player) {
             Player player = ((Player) sender).getPlayer();
