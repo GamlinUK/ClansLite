@@ -15,6 +15,7 @@ The `/clan` command is the main command of the plugin, with `/clan` you can do t
 * `/clan disband` - If you are the clan owner, this will destroy your clan
 * `/clan leave` - If you are in a clan, this will remove you from it
 * `/clan invite <player>` - Will invite a player to your clan if they are not already in one
+* `/clan join` - Will add you to a clan that you have been invited too.
 * `/clan kick <player>` - Will kick a player from your clan
 * `/clan info` - Will display information about your current clan
 * `/clan list` - Will list all clans in the server
