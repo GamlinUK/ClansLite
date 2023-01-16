@@ -16,10 +16,14 @@ import java.util.*;
 import java.util.logging.Logger;
 
 public class ClanCommand implements CommandExecutor {
+
     Logger logger = Clans.getPlugin().getLogger();
+
     public static int taskID1;
+
     FileConfiguration clansConfig = Clans.getPlugin().getConfig();
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+
     private static List<String> bannedTags;
 
     public static void updateBannedTagsList(){
@@ -43,6 +47,7 @@ public class ClanCommand implements CommandExecutor {
                                     "\n/clan disband" +
                                     "\n/clan invite <player>" +
                                     "\n/clan join" +
+                                    "\n/clan leave" +
                                     "\n/clan kick <player>" +
                                     "\n/clan info" +
                                     "\n/clan list" +
@@ -60,6 +65,7 @@ public class ClanCommand implements CommandExecutor {
                                     "\n/clan disband" +
                                     "\n/clan invite <player>" +
                                     "\n/clan join" +
+                                    "\n/clan leave" +
                                     "\n/clan kick <player>" +
                                     "\n/clan info" +
                                     "\n/clan list" +
@@ -76,6 +82,7 @@ public class ClanCommand implements CommandExecutor {
                                     "\n/clan disband" +
                                     "\n/clan invite <player>" +
                                     "\n/clan join" +
+                                    "\n/clan leave" +
                                     "\n/clan kick <player>" +
                                     "\n/clan info" +
                                     "\n/clan list" +
@@ -92,6 +99,7 @@ public class ClanCommand implements CommandExecutor {
                                     "\n/clan disband" +
                                     "\n/clan invite <player>" +
                                     "\n/clan join" +
+                                    "\n/clan leave" +
                                     "\n/clan kick <player>" +
                                     "\n/clan info" +
                                     "\n/clan list" +

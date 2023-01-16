@@ -19,7 +19,26 @@ clan-list:
   #Message sent when your on the last page.
   GUI-last-page: "&7You are on the last page."
 
+  icons:
+    #This allows you to customise the lore text for the player head icons in the ClanList GUI.
+    lore:
+      header: "&7----------"
+      prefix: "&3Clan Prefix: "
+      owner-online: "&3Clan Owner: &d"
+      owner-offline: "&3Clan Owner &7&o(Offline)&3: &d"
+      members: "&3Clan Members:"
+      allies: "&3Clan Allies:"
+      enemies: "&3Clan Enemies:"
+      footer-1: "&7----------"
+      action: "&d&oClick to send an invite request to this clan owner"
+      footer-2: "&7----------"
+
 #This is the options for the ClanJoinRequest GUI
 clan-join:
   #What name would you like the gui to have?
   name: "&3Ask to join Clan?"
+
+  icons:
+    #This allows you to customise the name text for the icons in the ClanJoinRequest GUI.
+    send-request-name: "&a&oSend request to join?"
+    cancel-request-name: "&c&oCancel and go back"

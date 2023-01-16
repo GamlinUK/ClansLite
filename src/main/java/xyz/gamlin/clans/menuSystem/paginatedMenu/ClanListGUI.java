@@ -25,7 +25,6 @@ public class ClanListGUI extends PaginatedMenu {
 
     public static int taskID5;
 
-    FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
     FileConfiguration guiConfig = Clans.getPlugin().clanGUIFileManager.getClanGUIConfig();
 
     public ClanListGUI(PlayerMenuUtility playerMenuUtility) {
@@ -57,7 +56,7 @@ public class ClanListGUI extends PaginatedMenu {
         }else if(event.getCurrentItem().getType().equals(Material.STONE_BUTTON)){
             if (ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName()).equalsIgnoreCase("Previous Page")){
                 if (page == 0){
-                    player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-list.GUI-first-page")));
+                    player.sendMessage(ColorUtils.translateColorCodes(guiConfig.getString("clan-list.GUI-first-page")));
                 }else{
                     page = page - 1;
                     super.open();
@@ -67,7 +66,7 @@ public class ClanListGUI extends PaginatedMenu {
                     page = page + 1;
                     super.open();
                 }else{
-                    player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-list.GUI-last-page")));
+                    player.sendMessage(ColorUtils.translateColorCodes(guiConfig.getString("clan-list.GUI-last-page")));
                 }
             }
         }
@@ -108,10 +107,14 @@ public class ClanListGUI extends PaginatedMenu {
                             ArrayList<String> clanMembersList = clan.getClanMembers();
                             ArrayList<String> clanAlliesList = clan.getClanAllies();
                             ArrayList<String> clanEnemiesList = clan.getClanEnemies();
-                            lore.add(ColorUtils.translateColorCodes("&7----------"));
-                            lore.add(ColorUtils.translateColorCodes("&3Clan Prefix:" + clan.getClanPrefix()));
-                            lore.add(ColorUtils.translateColorCodes("&3Clan Owner: &d" + clanOwnerPlayer.getName()));
-                            lore.add(ColorUtils.translateColorCodes("&3Clan Members:"));
+                            lore.add(ColorUtils.translateColorCodes(guiConfig.getString("clan-list.icons.lore.header")));
+                            lore.add(ColorUtils.translateColorCodes(guiConfig.getString("clan-list.icons.lore.prefix") + clan.getClanPrefix()));
+                            if (clanOwnerPlayer.isOnline()){
+                                lore.add(ColorUtils.translateColorCodes(guiConfig.getString("clan-list.icons.lore.owner-online") + clanOwnerPlayer.getName()));
+                            }else {
+                                lore.add(ColorUtils.translateColorCodes(guiConfig.getString("clan-list.icons.lore.owner-offline") + clanOwnerPlayer.getName()));
+                            }
+                            lore.add(ColorUtils.translateColorCodes(guiConfig.getString("clan-list.icons.lore.members")));
                             for (String string : clanMembersList){
                                 UUID memberUUID = UUID.fromString(string);
                                 OfflinePlayer member = Bukkit.getOfflinePlayer(memberUUID);
@@ -123,7 +126,7 @@ public class ClanListGUI extends PaginatedMenu {
                                     break;
                                 }
                             }
-                            lore.add(ColorUtils.translateColorCodes("&3Clan Allies:"));
+                            lore.add(ColorUtils.translateColorCodes(guiConfig.getString("clan-list.icons.lore.allies")));
                             for (String string : clanAlliesList){
                                 UUID allyUUID = UUID.fromString(string);
                                 OfflinePlayer ally = Bukkit.getOfflinePlayer(allyUUID);
@@ -135,7 +138,7 @@ public class ClanListGUI extends PaginatedMenu {
                                     break;
                                 }
                             }
-                            lore.add(ColorUtils.translateColorCodes("&3Clan Enemies:"));
+                            lore.add(ColorUtils.translateColorCodes(guiConfig.getString("clan-list.icons.lore.enemies")));
                             for (String string : clanEnemiesList){
                                 UUID enemyUUID = UUID.fromString(string);
                                 OfflinePlayer enemy = Bukkit.getOfflinePlayer(enemyUUID);
@@ -147,9 +150,9 @@ public class ClanListGUI extends PaginatedMenu {
                                     break;
                                 }
                             }
-                            lore.add(ColorUtils.translateColorCodes("&7----------"));
-                            lore.add(ColorUtils.translateColorCodes("&d&oClick to send an invite request to this clan owner"));
-                            lore.add(ColorUtils.translateColorCodes("&7----------"));
+                            lore.add(ColorUtils.translateColorCodes(guiConfig.getString("clan-list.icons.lore.footer-1")));
+                            lore.add(ColorUtils.translateColorCodes(guiConfig.getString("clan-list.icons.lore.action")));
+                            lore.add(ColorUtils.translateColorCodes(guiConfig.getString("clan-list.icons.lore.footer-2")));
 
                             meta.setLore(lore);
                             meta.getPersistentDataContainer().set(new NamespacedKey(Clans.getPlugin(), "uuid"), PersistentDataType.STRING, clan.getClanOwner());
@@ -162,6 +165,6 @@ public class ClanListGUI extends PaginatedMenu {
                     }
                 }
             }
-        }, 0, 40);
+        }, 0, 100);
     }
 }

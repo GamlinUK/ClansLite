@@ -57,12 +57,12 @@ public class ClanJoinRequestMenu extends Menu {
 
         ItemStack sendJoinRequestItem = new ItemStack(Material.LIME_STAINED_GLASS_PANE, 1);
         ItemMeta sendMeta = sendJoinRequestItem.getItemMeta();
-        sendMeta.setDisplayName(ColorUtils.translateColorCodes("&a&oSend request to join?"));
+        sendMeta.setDisplayName(ColorUtils.translateColorCodes(guiConfig.getString("clan-join.icons.send-request-name")));
         sendJoinRequestItem.setItemMeta(sendMeta);
 
         ItemStack cancelJoinRequestItem = new ItemStack(Material.RED_STAINED_GLASS_PANE, 1);
         ItemMeta cancelMeta = sendJoinRequestItem.getItemMeta();
-        cancelMeta.setDisplayName(ColorUtils.translateColorCodes("&c&oCancel and go back"));
+        cancelMeta.setDisplayName(ColorUtils.translateColorCodes(guiConfig.getString("clan-join.icons.cancel-request-name")));
         cancelJoinRequestItem.setItemMeta(cancelMeta);
 
         inventory.setItem(0, sendJoinRequestItem);
