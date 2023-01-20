@@ -15,7 +15,7 @@ import java.util.*;
 
 public class PlayerDamageEvent implements Listener {
 
-    FileConfiguration config = Clans.getPlugin().getConfig();
+    FileConfiguration clansConfig = Clans.getPlugin().getConfig();
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
 
     @EventHandler (priority = EventPriority.HIGH)
@@ -32,9 +32,9 @@ public class PlayerDamageEvent implements Listener {
                 if (attackingClan != null){
                     ArrayList<String> attackingClanMembers = attackingClan.getClanMembers();
                     if (attackingClanMembers.contains(hurtUUID) || attackingClan.getClanOwner().equals(hurtUUID)){
-                        if (config.getBoolean("protections.pvp.pvp-command-enabled")){
+                        if (clansConfig.getBoolean("protections.pvp.pvp-command-enabled")){
                             if (!attackingClan.isFriendlyFireAllowed()){
-                                if (config.getBoolean("protections.pvp.enable-bypass-permission")){
+                                if (clansConfig.getBoolean("protections.pvp.enable-bypass-permission")){
                                     if (attackingPlayer.hasPermission("clanslite.bypass.pvp")
                                             ||attackingPlayer.hasPermission("clanslite.bypass.*")
                                             ||attackingPlayer.hasPermission("clanslite.bypass")
@@ -58,9 +58,9 @@ public class PlayerDamageEvent implements Listener {
                     if (attackingClanByPlayer != null){
                         ArrayList<String> attackingMembers = attackingClanByPlayer.getClanMembers();
                         if (attackingMembers.contains(hurtUUID) || attackingClanByPlayer.getClanOwner().equals(hurtUUID)){
-                            if (config.getBoolean("protections.pvp.pvp-command-enabled")){
+                            if (clansConfig.getBoolean("protections.pvp.pvp-command-enabled")){
                                 if (!attackingClanByPlayer.isFriendlyFireAllowed()){
-                                    if (config.getBoolean("protections.pvp.enable-bypass-permission")){
+                                    if (clansConfig.getBoolean("protections.pvp.enable-bypass-permission")){
                                         if (attackingPlayer.hasPermission("clanslite.bypass.pvp")
                                                 ||attackingPlayer.hasPermission("clanslite.bypass.*")
                                                 ||attackingPlayer.hasPermission("clanslite.bypass")

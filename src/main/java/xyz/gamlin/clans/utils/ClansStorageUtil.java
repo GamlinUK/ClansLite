@@ -21,6 +21,7 @@ public class ClansStorageUtil {
 
     private static final FileConfiguration clansStorage = Clans.getPlugin().clansFileManager.getClansConfig();
     private static final FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+    private static final FileConfiguration clansConfig = Clans.getPlugin().getConfig();
 
     public static void saveClans() throws IOException {
         for (Map.Entry<UUID, Clan> entry : clansList.entrySet()){
@@ -104,6 +105,9 @@ public class ClansStorageUtil {
             if (isClanOwner(player)){
                 if (clansList.containsKey(uuid)){
                     fireClanDisbandEvent(player);
+                    if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
+                        logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanDisbandEvent"));
+                    }
                     clansList.remove(uuid);
                     clansStorage.set("clans.data." + key, null);
                     Clans.getPlugin().clansFileManager.saveClansConfig();
@@ -123,6 +127,9 @@ public class ClansStorageUtil {
         if (findClanByOfflineOwner(offlinePlayer) != null){
             if (clansList.containsKey(uuid)){
                 fireOfflineClanDisbandEvent(offlinePlayer);
+                if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
+                    logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired OfflineClanDisbandEvent"));
+                }
                 clansList.remove(uuid);
                 clansStorage.set("clans.data." + key, null);
                 Clans.getPlugin().clansFileManager.saveClansConfig();

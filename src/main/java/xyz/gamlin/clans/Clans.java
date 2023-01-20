@@ -173,6 +173,13 @@ public final class Clans extends JavaPlugin {
         logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Plugin by: &b&lLoving11ish"));
         logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3has been loaded successfully"));
         logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Plugin Version: &d&l" + pluginVersion));
+        if (getConfig().getBoolean("general.developer-debug-mode.enabled")){
+            logger.warning(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aDeveloper debug mode enabled!"));
+            logger.warning(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aThis WILL fill the console"));
+            logger.warning(ColorUtils.translateColorCodes("&6ClansLite-Debug: &awith additional ClansLite information!"));
+            logger.warning(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aThis setting is not intended for "));
+            logger.warning(ColorUtils.translateColorCodes("&6ClansLite-Debug: &acontinous use!"));
+        }
         logger.info(ColorUtils.translateColorCodes("-------------------------------------------"));
 
         //Check for available updates

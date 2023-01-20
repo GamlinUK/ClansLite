@@ -20,6 +20,11 @@ clan-list:
   GUI-last-page: "&7You are on the last page."
 
   icons:
+    #Do you want to use the auto data update system for the icons in the GUI? [Default value: true]
+    ##Disabling this option may help performance on lower spec servers!##
+    auto-refresh-data:
+      enabled: true
+
     #This allows you to customise the lore text for the player head icons in the ClanList GUI.
     lore:
       header: "&7----------"
@@ -30,7 +35,7 @@ clan-list:
       allies: "&3Clan Allies:"
       enemies: "&3Clan Enemies:"
       footer-1: "&7----------"
-      action: "&d&oClick to send an invite request to this clan owner"
+      action: "&d&oClick to send an invite request to this clan owner if online"
       footer-2: "&7----------"
 
 #This is the options for the ClanJoinRequest GUI

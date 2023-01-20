@@ -11,11 +11,13 @@ import xyz.gamlin.clans.utils.ClansStorageUtil;
 import xyz.gamlin.clans.utils.ColorUtils;
 
 import java.util.*;
+import java.util.logging.Logger;
 
 public class ClanCreateSubCommand {
 
     FileConfiguration clansConfig = Clans.getPlugin().getConfig();
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+    Logger logger = Clans.getPlugin().getLogger();
     private static final String CLAN_PLACEHOLDER = "%CLAN%";
     private static final String CLAN_OWNER = "%CLANOWNER%";
 
@@ -53,6 +55,9 @@ public class ClanCreateSubCommand {
                         String clanCreated = ColorUtils.translateColorCodes(messagesConfig.getString("clan-created-successfully")).replace(CLAN_PLACEHOLDER, ColorUtils.translateColorCodes(args[1]));
                         player.sendMessage(clanCreated);
                         fireClanCreateEvent(player, clan);
+                        if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
+                            logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanCreateEvent"));
+                        }
                         if (clansConfig.getBoolean("clan-creation.announce-to-all")) {
                             if (clansConfig.getBoolean("clan-creation.send-as-title")) {
                                 for (Player onlinePlayers : Clans.connectedPlayers.keySet()) {

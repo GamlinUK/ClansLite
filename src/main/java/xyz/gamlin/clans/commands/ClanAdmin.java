@@ -30,7 +30,9 @@ public class ClanAdmin implements CommandExecutor {
                 if (args[0].equalsIgnoreCase("save")) {
                     sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("saving-clans-start")));
                     try {
-                        ClansStorageUtil.saveClans();
+                        if (!ClansStorageUtil.getRawClansList().isEmpty()){
+                            ClansStorageUtil.saveClans();
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
                         sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clans-save-error-1")));
@@ -52,7 +54,11 @@ public class ClanAdmin implements CommandExecutor {
                         sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clans-save-error-2")));
                     }
                     try {
-                        ClansStorageUtil.restoreClans();
+                        if (Clans.getPlugin().clansFileManager.getClansConfig().contains("clans.data")){
+                            ClansStorageUtil.restoreClans();
+                        }else {
+                            sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clans-load-error-1")));
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
                         sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clans-load-error-1")));
@@ -60,6 +66,7 @@ public class ClanAdmin implements CommandExecutor {
                     }
                     ClanCommand.updateBannedTagsList();
                     Clans.getPlugin().messagesFileManager.reloadMessagesConfig();
+                    Clans.getPlugin().clanGUIFileManager.reloadClanGUIConfig();
                     sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("plugin-reload-successful")));
                 }
 
@@ -136,7 +143,9 @@ public class ClanAdmin implements CommandExecutor {
                 if (args[0].equalsIgnoreCase("save")) {
                     logger.info(ColorUtils.translateColorCodes(messagesConfig.getString("saving-clans-start")));
                     try {
-                        ClansStorageUtil.saveClans();
+                        if (!ClansStorageUtil.getRawClansList().isEmpty()){
+                            ClansStorageUtil.saveClans();
+                        }
                     } catch (IOException e) {
                         logger.severe(ColorUtils.translateColorCodes(messagesConfig.getString("clans-save-error-1")));
                         logger.severe(ColorUtils.translateColorCodes(messagesConfig.getString("clans-save-error-2")));
@@ -158,7 +167,11 @@ public class ClanAdmin implements CommandExecutor {
                         e.printStackTrace();
                     }
                     try {
-                        ClansStorageUtil.restoreClans();
+                        if (Clans.getPlugin().clansFileManager.getClansConfig().contains("clans.data")){
+                            ClansStorageUtil.restoreClans();
+                        }else {
+                            logger.severe(ColorUtils.translateColorCodes(messagesConfig.getString("clans-load-error-1")));
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
                         logger.severe(ColorUtils.translateColorCodes(messagesConfig.getString("clans-load-error-1")));
@@ -167,6 +180,7 @@ public class ClanAdmin implements CommandExecutor {
                     }
                     ClanCommand.updateBannedTagsList();
                     Clans.getPlugin().messagesFileManager.reloadMessagesConfig();
+                    Clans.getPlugin().clanGUIFileManager.reloadClanGUIConfig();
                     logger.info(ColorUtils.translateColorCodes(messagesConfig.getString("plugin-reload-successful")));
                 }
 

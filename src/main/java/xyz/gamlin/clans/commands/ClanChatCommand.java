@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import xyz.gamlin.clans.Clans;
+import xyz.gamlin.clans.api.events.ClanChatMessageSendEvent;
 import xyz.gamlin.clans.models.Clan;
 import xyz.gamlin.clans.utils.ClansStorageUtil;
 import xyz.gamlin.clans.utils.ColorUtils;
@@ -18,7 +19,7 @@ import java.util.logging.Logger;
 
 public class ClanChatCommand implements CommandExecutor {
 
-    FileConfiguration configFile = Clans.getPlugin().getConfig();
+    FileConfiguration clansConfig = Clans.getPlugin().getConfig();
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
 
     private static final String TIME_LEFT = "%TIMELEFT%";
@@ -32,7 +33,7 @@ public class ClanChatCommand implements CommandExecutor {
         if (sender instanceof Player){
             Player player = (Player) sender;
             UUID uuid = player.getUniqueId();
-            if (!(configFile.getBoolean("clan-chat.enabled"))){
+            if (!(clansConfig.getBoolean("clan-chat.enabled"))){
                 player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("function-disabled")));
                 return true;
             }
@@ -49,13 +50,13 @@ public class ClanChatCommand implements CommandExecutor {
                 Clan clanByOwner = ClansStorageUtil.findClanByOwner(player);
 
                 StringBuilder messageString = new StringBuilder();
-                messageString.append(configFile.getString("clan-chat.chat-prefix")).append(" ");
+                messageString.append(clansConfig.getString("clan-chat.chat-prefix")).append(" ");
                 messageString.append("&d").append(player.getName()).append(":&r").append(" ");
                 for (String arg : args){
                     messageString.append(arg).append(" ");
                 }
 
-                if (configFile.getBoolean("clan-chat.cool-down.enabled")){
+                if (clansConfig.getBoolean("clan-chat.cool-down.enabled")){
                     if (chatCoolDownTimer.containsKey(uuid)){
                         if (!(player.hasPermission("clanslite.bypass.chatcooldown")||player.hasPermission("clanslite.bypass.*")
                                 ||player.hasPermission("clanslite.bypass")||player.hasPermission("clanslite.*")||player.isOp())){
@@ -68,9 +69,13 @@ public class ClanChatCommand implements CommandExecutor {
                             }else {
 
                                 //Add player to cool down and run message
-                                chatCoolDownTimer.put(uuid, System.currentTimeMillis() + (configFile.getLong("clan-chat.cool-down.time") * 1000));
+                                chatCoolDownTimer.put(uuid, System.currentTimeMillis() + (clansConfig.getLong("clan-chat.cool-down.time") * 1000));
                                 if (clanByMember != null) {
                                     ArrayList<String> playerClanMembers = clanByMember.getClanMembers();
+                                    fireClanChatMessageSendEvent(player, clanByMember, clansConfig.getString("clan-chat.chat-prefix"), messageString.toString(), playerClanMembers);
+                                    if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
+                                        logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanChatMessageSendEvent"));
+                                    }
                                     for (String playerClanMember : playerClanMembers) {
                                         if (playerClanMember != null) {
                                             UUID memberUUID = UUID.fromString(playerClanMember);
@@ -89,6 +94,10 @@ public class ClanChatCommand implements CommandExecutor {
                                 }
                                 if (clanByOwner != null){
                                     ArrayList<String> ownerClanMembers = clanByOwner.getClanMembers();
+                                    fireClanChatMessageSendEvent(player, clanByOwner, clansConfig.getString("clan-chat.chat-prefix"), messageString.toString(), ownerClanMembers);
+                                    if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
+                                        logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanChatMessageSendEvent"));
+                                    }
                                     for (String ownerClanMember : ownerClanMembers){
                                         if (ownerClanMember != null){
                                             UUID memberUUID = UUID.fromString(ownerClanMember);
@@ -110,6 +119,10 @@ public class ClanChatCommand implements CommandExecutor {
                             //If player has cool down bypass
                             if (clanByMember != null){
                                 ArrayList<String> playerClanMembers = clanByMember.getClanMembers();
+                                fireClanChatMessageSendEvent(player, clanByMember, clansConfig.getString("clan-chat.chat-prefix"), messageString.toString(), playerClanMembers);
+                                if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
+                                    logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanChatMessageSendEvent"));
+                                }
                                 for (String playerClanMember : playerClanMembers){
                                     if (playerClanMember != null){
                                         UUID memberUUID = UUID.fromString(playerClanMember);
@@ -128,6 +141,10 @@ public class ClanChatCommand implements CommandExecutor {
                             }
                             if (clanByOwner != null){
                                 ArrayList<String> ownerClanMembers = clanByOwner.getClanMembers();
+                                fireClanChatMessageSendEvent(player, clanByOwner, clansConfig.getString("clan-chat.chat-prefix"), messageString.toString(), ownerClanMembers);
+                                if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
+                                    logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanChatMessageSendEvent"));
+                                }
                                 for (String ownerClanMember : ownerClanMembers){
                                     if (ownerClanMember != null){
                                         UUID memberUUID = UUID.fromString(ownerClanMember);
@@ -147,9 +164,13 @@ public class ClanChatCommand implements CommandExecutor {
                     }else {
 
                         //If player not in cool down hashmap
-                        chatCoolDownTimer.put(uuid, System.currentTimeMillis() + (configFile.getLong("clan-chat.cool-down.time") * 1000));
+                        chatCoolDownTimer.put(uuid, System.currentTimeMillis() + (clansConfig.getLong("clan-chat.cool-down.time") * 1000));
                         if (clanByMember != null){
                             ArrayList<String> playerClanMembers = clanByMember.getClanMembers();
+                            fireClanChatMessageSendEvent(player, clanByMember, clansConfig.getString("clan-chat.chat-prefix"), messageString.toString(), playerClanMembers);
+                            if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
+                                logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanChatMessageSendEvent"));
+                            }
                             for (String playerClanMember : playerClanMembers){
                                 if (playerClanMember != null){
                                     UUID memberUUID = UUID.fromString(playerClanMember);
@@ -168,6 +189,10 @@ public class ClanChatCommand implements CommandExecutor {
                         }
                         if (clanByOwner != null){
                             ArrayList<String> ownerClanMembers = clanByOwner.getClanMembers();
+                            fireClanChatMessageSendEvent(player, clanByOwner, clansConfig.getString("clan-chat.chat-prefix"), messageString.toString(), ownerClanMembers);
+                            if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
+                                logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanChatMessageSendEvent"));
+                            }
                             for (String ownerClanMember : ownerClanMembers){
                                 if (ownerClanMember != null){
                                     UUID memberUUID = UUID.fromString(ownerClanMember);
@@ -189,6 +214,10 @@ public class ClanChatCommand implements CommandExecutor {
                     //If cool down disabled
                     if (clanByMember != null){
                         ArrayList<String> playerClanMembers = clanByMember.getClanMembers();
+                        fireClanChatMessageSendEvent(player, clanByMember, clansConfig.getString("clan-chat.chat-prefix"), messageString.toString(), playerClanMembers);
+                        if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
+                            logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanChatMessageSendEvent"));
+                        }
                         for (String playerClanMember : playerClanMembers){
                             if (playerClanMember != null){
                                 UUID memberUUID = UUID.fromString(playerClanMember);
@@ -207,6 +236,10 @@ public class ClanChatCommand implements CommandExecutor {
                     }
                     if (clanByOwner != null){
                         ArrayList<String> ownerClanMembers = clanByOwner.getClanMembers();
+                        fireClanChatMessageSendEvent(player, clanByOwner, clansConfig.getString("clan-chat.chat-prefix"), messageString.toString(), ownerClanMembers);
+                        if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
+                            logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanChatMessageSendEvent"));
+                        }
                         for (String ownerClanMember : ownerClanMembers){
                             if (ownerClanMember != null){
                                 UUID memberUUID = UUID.fromString(ownerClanMember);
@@ -229,5 +262,10 @@ public class ClanChatCommand implements CommandExecutor {
             logger.warning(ColorUtils.translateColorCodes(messagesConfig.getString("player-only-command")));
         }
         return true;
+    }
+
+    private static void fireClanChatMessageSendEvent(Player player, Clan clan, String prefix, String message, ArrayList<String> recipients) {
+        ClanChatMessageSendEvent clanChatMessageSendEvent = new ClanChatMessageSendEvent(player, clan, prefix, message, recipients);
+        Bukkit.getPluginManager().callEvent(clanChatMessageSendEvent);
     }
 }

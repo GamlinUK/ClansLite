@@ -14,11 +14,13 @@ import xyz.gamlin.clans.utils.ColorUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 public class ClanEnemySubCommand {
 
     FileConfiguration clansConfig = Clans.getPlugin().getConfig();
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+    Logger logger = Clans.getPlugin().getLogger();
     private static final String ENEMY_CLAN = "%ENEMYCLAN%";
     private static final String ENEMY_OWNER = "%ENEMYOWNER%";
     private static final String CLAN_OWNER = "%CLANOWNER%";
@@ -53,6 +55,9 @@ public class ClanEnemySubCommand {
                                             }else {
                                                 ClansStorageUtil.addClanEnemy(player, enemyClanOwner);
                                                 fireClanEnemyAddEvent(player, clan, enemyClanOwner, enemyClan);
+                                                if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
+                                                    logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanEnemyAddEvent"));
+                                                }
                                                 player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("added-clan-to-your-enemies").replace(ENEMY_CLAN, enemyClan.getClanFinalName())));
                                                 String titleMain = ColorUtils.translateColorCodes(messagesConfig.getString("added-enemy-clan-to-your-enemies-title-1").replace(CLAN_OWNER, enemyClanOwner.getName()));
                                                 String titleAux = ColorUtils.translateColorCodes(messagesConfig.getString("added-enemy-clan-to-your-enemies-title-2").replace(CLAN_OWNER, enemyClanOwner.getName()));
@@ -116,6 +121,9 @@ public class ClanEnemySubCommand {
                                         String enemyClanOwnerString = enemyClanOwnerUUID.toString();
                                         if (enemyClans.contains(enemyClanOwnerString)){
                                             fireClanEnemyRemoveEvent(player, enemyClanOwner, enemyClan);
+                                            if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
+                                                logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanEnemyRemoveEvent"));
+                                            }
                                             ClansStorageUtil.removeClanEnemy(player, enemyClanOwner);
                                             player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("removed-clan-from-your-enemies").replace(ENEMY_CLAN, enemyClan.getClanFinalName())));
                                             String titleMain = ColorUtils.translateColorCodes(messagesConfig.getString("removed-enemy-clan-from-your-enemies-title-1").replace(CLAN_OWNER, enemyClanOwner.getName()));

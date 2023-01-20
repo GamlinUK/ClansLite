@@ -106,3 +106,7 @@ general:
   show-auto-invite-wipe-message:
     #Do you want to see notifications in console when the auto-invite-wipe task runs? [Default value: true]
     enabled: true
+  developer-debug-mode:
+    #Do you want to see a lot of debug messages in console when most actions are performed? [Default value: false]
+    enabled: false
+

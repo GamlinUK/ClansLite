@@ -10,10 +10,13 @@ import xyz.gamlin.clans.models.Clan;
 import xyz.gamlin.clans.utils.ClansStorageUtil;
 import xyz.gamlin.clans.utils.ColorUtils;
 
+import java.util.logging.Logger;
+
 public class ClanDelHomeSubCommand {
 
     FileConfiguration clansConfig = Clans.getPlugin().getConfig();
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+    Logger logger = Clans.getPlugin().getLogger();
 
     public boolean deleteClanHomeSubCommand(CommandSender sender) {
         if (sender instanceof Player) {
@@ -23,6 +26,9 @@ public class ClanDelHomeSubCommand {
                     Clan clanByOwner = ClansStorageUtil.findClanByOwner(player);
                     if (ClansStorageUtil.isHomeSet(clanByOwner)){
                         fireClanHomeDeleteEvent(player, clanByOwner);
+                        if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
+                            logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanHomeDeleteEvent"));
+                        }
                         ClansStorageUtil.deleteHome(clanByOwner);
                         player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("successfully-deleted-clan-home")));
                     }else {
