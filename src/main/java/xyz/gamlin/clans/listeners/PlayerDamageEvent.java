@@ -18,7 +18,7 @@ public class PlayerDamageEvent implements Listener {
     FileConfiguration clansConfig = Clans.getPlugin().getConfig();
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
 
-    @EventHandler (priority = EventPriority.HIGH)
+    @EventHandler (priority = EventPriority.NORMAL)
     public void onPlayerHit(EntityDamageByEntityEvent event){
         if (event.getEntity() instanceof Player) {
             Player hurtPlayer = (Player) event.getEntity();

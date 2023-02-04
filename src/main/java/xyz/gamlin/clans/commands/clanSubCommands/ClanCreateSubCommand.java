@@ -41,6 +41,14 @@ public class ClanCreateSubCommand {
                     player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-name-already-taken").replace(CLAN_PLACEHOLDER, args[1])));
                     return true;
                 }
+                if (ClansStorageUtil.isClanOwner(player)){
+                    player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-creation-failed").replace(CLAN_PLACEHOLDER, ColorUtils.translateColorCodes(args[1]))));
+                    return true;
+                }
+                if (ClansStorageUtil.findClanByPlayer(player) != null){
+                    player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-creation-failed").replace(CLAN_PLACEHOLDER, ColorUtils.translateColorCodes(args[1]))));
+                    return true;
+                }
                 if (args[1].length() < MIN_CHAR_LIMIT) {
                     int minCharLimit = clansConfig.getInt("clan-tags.min-character-limit");
                     player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-name-too-short").replace("%CHARMIN%", Integer.toString(minCharLimit))));
