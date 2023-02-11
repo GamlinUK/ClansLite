@@ -32,6 +32,7 @@ public class ClansStorageUtil {
             clansStorage.set("clans.data." + entry.getKey() + ".clanAllies", entry.getValue().getClanAllies());
             clansStorage.set("clans.data." + entry.getKey() + ".clanEnemies", entry.getValue().getClanEnemies());
             clansStorage.set("clans.data." + entry.getKey() + ".friendlyFire", entry.getValue().isFriendlyFireAllowed());
+            clansStorage.set("clans.data." + entry.getKey() + ".clanPoints", entry.getValue().getClanPoints());
             if (entry.getValue().getClanHomeWorld() != null){
                 clansStorage.set("clans.data." + entry.getKey() + ".clanHome.worldName", entry.getValue().getClanHomeWorld());
                 clansStorage.set("clans.data." + entry.getKey() + ".clanHome.x", entry.getValue().getClanHomeX());
@@ -57,6 +58,7 @@ public class ClansStorageUtil {
             ArrayList<String> clanAllies = new ArrayList<>(clanAlliesConfigSection);
             ArrayList<String> clanEnemies = new ArrayList<>(clanEnemiesConfigSection);
             boolean friendlyFire = clansStorage.getBoolean("clans.data." + key + ".friendlyFire");
+            int clanPoints = clansStorage.getInt("clans.data." + key + ".clanPoints");
             String clanHomeWorld = clansStorage.getString("clans.data." + key + ".clanHome.worldName");
             double clanHomeX = clansStorage.getDouble("clans.data." + key + ".clanHome.x");
             double clanHomeY = clansStorage.getDouble("clans.data." + key + ".clanHome.y");
@@ -70,6 +72,7 @@ public class ClansStorageUtil {
             clan.setClanAllies(clanAllies);
             clan.setClanEnemies(clanEnemies);
             clan.setFriendlyFireAllowed(friendlyFire);
+            clan.setClanPoints(clanPoints);
             clan.setClanHomeWorld(clanHomeWorld);
             clan.setClanHomeX(clanHomeX);
             clan.setClanHomeY(clanHomeY);
@@ -273,6 +276,35 @@ public class ClansStorageUtil {
         clan.setClanHomeWorld(null);
         clansStorage.set("clans.data." + key + ".clanHome", null);
         Clans.getPlugin().clansFileManager.saveClansConfig();
+    }
+
+    public static boolean hasEnoughPoints(Clan clan, int points){
+        if (clan.getClanPoints() >= points){
+            return true;
+        }
+        return false;
+    }
+
+    public static void addPoints(Clan clan, int points){
+       int currentPointValue = clan.getClanPoints();
+       clan.setClanPoints(currentPointValue + points);
+    }
+
+    public static void withdrawPoints(Clan clan, int points){
+        int currentPointValue = clan.getClanPoints();
+        if (currentPointValue != 0){
+            if (hasEnoughPoints(clan, points)){
+                clan.setClanPoints(currentPointValue - points);
+            }
+        }
+    }
+
+    public static void setPoints(Clan clan, int points){
+        clan.setClanPoints(points);
+    }
+
+    public static void resetPoints(Clan clan){
+        clan.setClanPoints(0);
     }
 
     private static void fireClanDisbandEvent(Player player) {

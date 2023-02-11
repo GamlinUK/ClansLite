@@ -11,6 +11,7 @@ public class Clan {
     private ArrayList<String> clanAllies;
     private ArrayList<String> clanEnemies;
     private boolean friendlyFire;
+    private int clanPoints;
     private String clanHomeWorld;
     private double clanHomeX;
     private double clanHomeY;
@@ -26,6 +27,7 @@ public class Clan {
         clanAllies = new ArrayList<>();
         clanEnemies = new ArrayList<>();
         friendlyFire = true;
+        clanPoints = 0;
         clanHomeWorld = null;
     }
 
@@ -104,6 +106,14 @@ public class Clan {
 
     public void setFriendlyFireAllowed(boolean friendlyFire){
         this.friendlyFire = friendlyFire;
+    }
+
+    public int getClanPoints() {
+        return clanPoints;
+    }
+
+    public void setClanPoints(int clanPoints) {
+        this.clanPoints = clanPoints;
     }
 
     public String getClanHomeWorld(){

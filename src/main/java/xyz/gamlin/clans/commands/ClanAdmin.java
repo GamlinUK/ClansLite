@@ -124,13 +124,11 @@ public class ClanAdmin implements CommandExecutor {
 
 //----------------------------------------------------------------------------------------------------------------------
             }else {
-                sender.sendMessage(ColorUtils.translateColorCodes(
-                        "&6ClansLite usage:&3" +
-                                "\n/clanadmin save" +
-                                "\n/clanadmin reload" +
-                                "\n/clanadmin disband <clan-owner>" +
-                                "\n/clanadmin about"
-                ));
+                sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clanadmin-command-incorrect-usage.line-1")));
+                sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clanadmin-command-incorrect-usage.line-2")));
+                sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clanadmin-command-incorrect-usage.line-3")));
+                sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clanadmin-command-incorrect-usage.line-4")));
+                sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clanadmin-command-incorrect-usage.line-5")));
             }
         }
 
@@ -238,13 +236,11 @@ public class ClanAdmin implements CommandExecutor {
 
 //----------------------------------------------------------------------------------------------------------------------
             }else {
-                sender.sendMessage(ColorUtils.translateColorCodes(
-                        "&6ClansLite usage:&3" +
-                                "\nclanadmin save" +
-                                "\nclanadmin reload" +
-                                "\nclanadmin disband <clan-owner>" +
-                                "\nclanadmin about"
-                ));
+                logger.info(ColorUtils.translateColorCodes(messagesConfig.getString("clanadmin-command-incorrect-usage.line-1")));
+                logger.info(ColorUtils.translateColorCodes(messagesConfig.getString("clanadmin-command-incorrect-usage.line-2")));
+                logger.info(ColorUtils.translateColorCodes(messagesConfig.getString("clanadmin-command-incorrect-usage.line-3")));
+                logger.info(ColorUtils.translateColorCodes(messagesConfig.getString("clanadmin-command-incorrect-usage.line-4")));
+                logger.info(ColorUtils.translateColorCodes(messagesConfig.getString("clanadmin-command-incorrect-usage.line-5")));
             }
         }
         return true;

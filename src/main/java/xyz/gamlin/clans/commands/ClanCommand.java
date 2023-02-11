@@ -41,72 +41,64 @@ public class ClanCommand implements CommandExecutor {
                     return true;
                 }
                 if (clansConfig.getBoolean("clan-home.enabled") && clansConfig.getBoolean("protections.pvp.pvp-command-enabled")){
-                    sender.sendMessage(ColorUtils.translateColorCodes(
-                            "&6ClansLite usage:&3" +
-                                    "\n/clan create <name>" +
-                                    "\n/clan disband" +
-                                    "\n/clan invite <player>" +
-                                    "\n/clan join" +
-                                    "\n/clan leave" +
-                                    "\n/clan kick <player>" +
-                                    "\n/clan info" +
-                                    "\n/clan list" +
-                                    "\n/clan prefix <prefix>" +
-                                    "\n/clan ally [add|remove] <clan-owner>" +
-                                    "\n/clan enemy [add|remove] <clan-owner>" +
-                                    "\n/clan pvp" +
-                                    "\n/clan [sethome|delhome|home]"
-                    ));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-1")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-2")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-3")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-4")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-5")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-6")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-7")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-8")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-9")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-10")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-11")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-12")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-13")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-14")));
                     return true;
                 }else if (clansConfig.getBoolean("clan-home.enabled")){
-                    sender.sendMessage(ColorUtils.translateColorCodes(
-                            "&6ClansLite usage:&3" +
-                                    "\n/clan create <name>" +
-                                    "\n/clan disband" +
-                                    "\n/clan invite <player>" +
-                                    "\n/clan join" +
-                                    "\n/clan leave" +
-                                    "\n/clan kick <player>" +
-                                    "\n/clan info" +
-                                    "\n/clan list" +
-                                    "\n/clan prefix <prefix>" +
-                                    "\n/clan ally [add|remove] <clan-owner>" +
-                                    "\n/clan enemy [add|remove] <clan-owner>" +
-                                    "\n/clan [sethome|delhome|home]"
-                    ));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-1")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-2")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-3")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-4")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-5")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-6")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-7")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-8")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-9")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-10")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-11")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-12")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-14")));
                     return true;
                 }else if (clansConfig.getBoolean("protections.pvp.pvp-command-enabled")){
-                    sender.sendMessage(ColorUtils.translateColorCodes(
-                            "&6ClansLite usage:&3" +
-                                    "\n/clan create <name>" +
-                                    "\n/clan disband" +
-                                    "\n/clan invite <player>" +
-                                    "\n/clan join" +
-                                    "\n/clan leave" +
-                                    "\n/clan kick <player>" +
-                                    "\n/clan info" +
-                                    "\n/clan list" +
-                                    "\n/clan prefix <prefix>" +
-                                    "\n/clan ally [add|remove] <clan-owner>" +
-                                    "\n/clan enemy [add|remove] <clan-owner>" +
-                                    "\n/clan pvp"
-                    ));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-1")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-2")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-3")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-4")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-5")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-6")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-7")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-8")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-9")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-10")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-11")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-12")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-13")));
                     return true;
                 }else {
-                    sender.sendMessage(ColorUtils.translateColorCodes(
-                            "&6ClansLite usage:&3" +
-                                    "\n/clan create <name>" +
-                                    "\n/clan disband" +
-                                    "\n/clan invite <player>" +
-                                    "\n/clan join" +
-                                    "\n/clan leave" +
-                                    "\n/clan kick <player>" +
-                                    "\n/clan info" +
-                                    "\n/clan list" +
-                                    "\n/clan prefix <prefix>" +
-                                    "\n/clan ally [add|remove] <clan-owner>" +
-                                    "\n/clan enemy [add|remove] <clan-owner>"
-                    ));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-1")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-2")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-3")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-4")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-5")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-6")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-7")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-8")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-9")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-10")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-11")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-12")));
                 }
                 return true;
             }else {

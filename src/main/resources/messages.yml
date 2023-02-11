@@ -176,6 +176,31 @@ clans-update-error-2: "&6ClansLite: &4Check the console for errors!"
 clan-player-not-found-1: "&6ClansLite: &4Failed to find player by name of &6%PLAYER%&4!"
 clan-player-not-found-2: "&6ClansLite: &4Ensure that &6%PLAYER% &4has joined before!"
 
+#/clan Command Responses
+clan-command-incorrect-usage:
+  line-1: "&6ClansLite usage:&3"
+  line-2: "/clan create <name>"
+  line-3: "/clan disband"
+  line-4: "/clan invite <player>"
+  line-5: "/clan join"
+  line-6: "/clan leave"
+  line-7: "/clan kick <player>"
+  line-8: "/clan info"
+  line-9: "/clan list"
+  line-10: "/clan prefix <prefix>"
+  line-11: "/clan ally [add|remove] <clan-owner>"
+  line-12: "/clan enemy [add|remove] <clan-owner>"
+  line-13: "/clan pvp"
+  line-14: "/clan [sethome|delhome|home]"
+
+#/clanadmin Command Responses
+clanadmin-command-incorrect-usage:
+  line-1: "&6ClansLite Admin usage:&3"
+  line-2: "/clanadmin save"
+  line-3: "/clanadmin reload"
+  line-4: "/clanadmin disband <clan-owner>"
+  line-5: "/clanadmin about"
+
 #Update Notification
 update-check-failure: "&6ClansLite: &4Unable to check for updates! - &c"
 update-available:
