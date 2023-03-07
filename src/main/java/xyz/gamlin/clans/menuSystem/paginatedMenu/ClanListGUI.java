@@ -67,14 +67,14 @@ public class ClanListGUI extends PaginatedMenu {
                 }
             }
         }else if(event.getCurrentItem().getType().equals(Material.STONE_BUTTON)){
-            if (ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName()).equalsIgnoreCase("Previous Page")){
+            if (event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ColorUtils.translateColorCodes(guiConfig.getString("clan-list.menu-controls.previous-page-icon-name")))){
                 if (page == 0){
                     player.sendMessage(ColorUtils.translateColorCodes(guiConfig.getString("clan-list.GUI-first-page")));
                 }else{
                     page = page - 1;
                     super.open();
                 }
-            }else if (ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName()).equalsIgnoreCase("Next Page")){
+            }else if (event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ColorUtils.translateColorCodes(guiConfig.getString("clan-list.menu-controls.next-page-icon-name")))){
                 if (!((index + 1) >= clans.size())){
                     page = page + 1;
                     super.open();

@@ -1,9 +1,13 @@
 package xyz.gamlin.clans.menuSystem;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
+import xyz.gamlin.clans.Clans;
+import xyz.gamlin.clans.utils.ColorUtils;
 
 public abstract class PaginatedMenu extends Menu {
+
+    FileConfiguration guiConfig = Clans.getPlugin().clanGUIFileManager.getClanGUIConfig();
 
     protected int page = 0;
     protected int maxItemsPerPage = 45;
@@ -14,9 +18,9 @@ public abstract class PaginatedMenu extends Menu {
     }
 
     public void addMenuControls(){
-        inventory.setItem(48, makeItem(Material.STONE_BUTTON, ChatColor.GREEN + "Previous Page"));
-        inventory.setItem(49, makeItem(Material.BARRIER, ChatColor.DARK_RED + "Close/Go Back"));
-        inventory.setItem(50, makeItem(Material.STONE_BUTTON, ChatColor.GREEN + "Next Page"));
+        inventory.setItem(48, makeItem(Material.STONE_BUTTON, ColorUtils.translateColorCodes(guiConfig.getString("clan-list.menu-controls.previous-page-icon-name"))));
+        inventory.setItem(49, makeItem(Material.BARRIER, ColorUtils.translateColorCodes(guiConfig.getString("clan-list.menu-controls.close-go-back-icon-name"))));
+        inventory.setItem(50, makeItem(Material.STONE_BUTTON, ColorUtils.translateColorCodes(guiConfig.getString("clan-list.menu-controls.next-page-icon-name"))));
     }
 
     public int getMaxItemsPerPage() {

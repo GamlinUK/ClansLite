@@ -19,6 +19,15 @@ clan-list:
   #Message sent when your on the last page.
   GUI-last-page: "&7You are on the last page."
 
+  #Menu controls options
+  menu-controls:
+    #The name of the previous page icon
+    previous-page-icon-name: "&2Previous Page"
+    #The name of the next page icon
+    next-page-icon-name: "&2Next Page"
+    #The name of the close/go back icon
+    close-go-back-icon-name: "&4Close/Go Back"
+
   icons:
     #Do you want to use the auto data update system for the icons in the GUI? [Default value: true]
     ##Disabling this option may help performance on lower spec servers!##
