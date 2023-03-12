@@ -34,6 +34,11 @@ clan-list:
     auto-refresh-data:
       enabled: true
 
+    icon-display-name:
+      #Do you want to use the Clan Name as the title for the icon: [Default value: true]
+      #If below is 'false' the name will be empty.
+      use-clan-name: true
+
     #This allows you to customise the lore text for the player head icons in the ClanList GUI.
     lore:
       header: "&7----------"

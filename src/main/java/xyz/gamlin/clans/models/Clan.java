@@ -39,7 +39,6 @@ public class Clan {
         return clanFinalName;
     }
 
-    @Deprecated
     public void setClanFinalName(String newClanFinalName){
         clanFinalName = newClanFinalName;
     }

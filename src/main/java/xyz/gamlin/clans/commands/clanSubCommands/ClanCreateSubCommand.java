@@ -1,5 +1,6 @@
 package xyz.gamlin.clans.commands.clanSubCommands;
 
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -39,6 +40,16 @@ public class ClanCreateSubCommand {
                 }
                 if (clanNamesList.contains(args[1])) {
                     player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-name-already-taken").replace(CLAN_PLACEHOLDER, args[1])));
+                    return true;
+                }
+                for (String names : clanNamesList){
+                    if (StringUtils.containsAnyIgnoreCase(names, args[1])){
+                        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-name-already-taken").replace(CLAN_PLACEHOLDER, args[1])));
+                        return true;
+                    }
+                }
+                if (args[1].contains("&")||args[1].contains("#")){
+                    player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-name-cannot-contain-colours")));
                     return true;
                 }
                 if (ClansStorageUtil.isClanOwner(player)){

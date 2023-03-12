@@ -117,8 +117,13 @@ public class ClanListGUI extends PaginatedMenu {
                                 }
 
                                 ItemMeta meta = playerHead.getItemMeta();
-                                String displayName = ColorUtils.translateColorCodes(clan.getClanFinalName());
-                                meta.setDisplayName(displayName);
+                                if (guiConfig.getBoolean("clan-list.icons.icon-display-name.use-clan-name")){
+                                    String displayName = ColorUtils.translateColorCodes(clan.getClanFinalName());
+                                    meta.setDisplayName(displayName);
+                                }else {
+                                    meta.setDisplayName(" ");
+                                }
+
 
                                 ArrayList<String> lore = new ArrayList<>();
                                 ArrayList<String> clanMembersList = clan.getClanMembers();

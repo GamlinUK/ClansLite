@@ -15,6 +15,7 @@ clan-name-too-long: "&3Clan name too long - maximum length is &6%CHARMAX% &3char
 clan-created-successfully: "&3Clan &6%CLAN% &3was Created!"
 clan-name-already-taken: "&3Sorry but &6%CLAN% &3is already taken.\n&3Please choose another!"
 clan-name-is-banned: "&3Sorry but &6%CLAN% &3is a &cBANNED &3name!\n&3Please choose another!"
+clan-name-cannot-contain-colours: "&3Sorry, the clan name cannot contain '&' or '#' characters."
 clan-creation-failed: "&3Clan &6%CLAN% &3was NOT created, please make sure you're not already in a clan!"
 clan-created-broadcast-chat: "&6%CLANOWNER%&3 Created a new clan!\n&3The new clan is called &6%CLAN%&3!"
 clan-created-broadcast-title-1: "&6%CLANOWNER%&3 Created a new clan!"

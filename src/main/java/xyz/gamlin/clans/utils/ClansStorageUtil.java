@@ -12,10 +12,13 @@ import xyz.gamlin.clans.models.Clan;
 import java.io.IOException;
 import java.util.*;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 public class ClansStorageUtil {
 
     private static final Logger logger = Clans.getPlugin().getLogger();
+
+    private static final Pattern STRIP_COLOR_PATTERN = Pattern.compile("(?i)" + String.valueOf('&') + "[0-9A-FK-OR]");
 
     private static Map<UUID, Clan> clansList = new HashMap<>();
 
@@ -67,6 +70,9 @@ public class ClansStorageUtil {
             float clanHomePitch = (float) clansStorage.getDouble("clans.data." + key + ".clanHome.pitch");
 
             Clan clan = new Clan(key, clanFinalName);
+            if (!clansStorage.getBoolean("name-strip-colour-complete")||clanFinalName.contains("&")||clanFinalName.contains("#")){
+                clan.setClanFinalName(stripClanNameColorCodes(clan));
+            }
             clan.setClanPrefix(clanPrefix);
             clan.setClanMembers(clanMembers);
             clan.setClanAllies(clanAllies);
@@ -82,6 +88,9 @@ public class ClansStorageUtil {
 
             clansList.put(uuid, clan);
         });
+        if (!clansStorage.getBoolean("name-strip-colour-complete")){
+            clansStorage.set("name-strip-colour-complete", true);
+        }
     }
 
     public static Clan createClan(Player player, String clanName){
@@ -276,6 +285,17 @@ public class ClansStorageUtil {
         clan.setClanHomeWorld(null);
         clansStorage.set("clans.data." + key + ".clanHome", null);
         Clans.getPlugin().clansFileManager.saveClansConfig();
+    }
+
+    public static String stripClanNameColorCodes(Clan clan){
+        String clanFinalName = clan.getClanFinalName();
+        if (clansConfig.getBoolean("general.developer-debug-mode.enabled")||!clansStorage.getBoolean("name-strip-colour-complete")
+                ||clanFinalName.contains("&")||clanFinalName.contains("#")){
+            logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFound Colour Code To Strip"));
+            logger.info(ColorUtils.translateColorCodes("&aOriginal Name: ") + clanFinalName);
+            logger.info(ColorUtils.translateColorCodes("&aNew Name: ") + (clanFinalName == null?null:STRIP_COLOR_PATTERN.matcher(clanFinalName).replaceAll("")));
+        }
+        return clanFinalName == null?null:STRIP_COLOR_PATTERN.matcher(clanFinalName).replaceAll("");
     }
 
     public static boolean hasEnoughPoints(Clan clan, int points){
