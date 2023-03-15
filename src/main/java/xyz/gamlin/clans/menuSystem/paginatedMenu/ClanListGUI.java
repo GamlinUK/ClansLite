@@ -27,6 +27,7 @@ public class ClanListGUI extends PaginatedMenu {
     public static int taskID5;
 
     FileConfiguration guiConfig = Clans.getPlugin().clanGUIFileManager.getClanGUIConfig();
+    FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
     FileConfiguration clansConfig = Clans.getPlugin().getConfig();
     Logger logger = Clans.getPlugin().getLogger();
 
@@ -49,8 +50,22 @@ public class ClanListGUI extends PaginatedMenu {
         Player player = (Player) event.getWhoClicked();
         ArrayList<Clan> clans = new ArrayList<>(ClansStorageUtil.getClanList());
         if (event.getCurrentItem().getType().equals(Material.PLAYER_HEAD)){
+            Clan onlineClanOwner = ClansStorageUtil.findClanByOwner(player);
+            Clan onlineClanPlayer = ClansStorageUtil.findClanByPlayer(player);
+            UUID target = UUID.fromString(event.getCurrentItem().getItemMeta().getPersistentDataContainer().get(new NamespacedKey(Clans.getPlugin(), "uuid"), PersistentDataType.STRING));
+            if (onlineClanOwner != null){
+                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-failed-own-clan")));
+                return;
+            }
+            if (onlineClanPlayer != null){
+                UUID ownerUUID = UUID.fromString(onlineClanPlayer.getClanOwner());
+                if (ownerUUID.equals(target)){
+                    player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-failed-own-clan")));
+                    return;
+                }
+            }
             PlayerMenuUtility playerMenuUtility = Clans.getPlayerMenuUtility(player);
-            playerMenuUtility.setOfflineClanOwner(Bukkit.getOfflinePlayer(UUID.fromString(event.getCurrentItem().getItemMeta().getPersistentDataContainer().get(new NamespacedKey(Clans.getPlugin(), "uuid"), PersistentDataType.STRING))));
+            playerMenuUtility.setOfflineClanOwner(Bukkit.getOfflinePlayer(target));
             new ClanJoinRequestMenu(Clans.getPlayerMenuUtility(player)).open();
             if (guiConfig.getBoolean("clan-list.icons.auto-refresh-data.enabled")){
                 Bukkit.getScheduler().cancelTask(taskID5);

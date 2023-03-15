@@ -20,10 +20,7 @@ import xyz.gamlin.clans.menuSystem.PlayerMenuUtility;
 import xyz.gamlin.clans.menuSystem.paginatedMenu.ClanListGUI;
 import xyz.gamlin.clans.updateSystem.JoinEvent;
 import xyz.gamlin.clans.updateSystem.UpdateChecker;
-import xyz.gamlin.clans.utils.ClansStorageUtil;
-import xyz.gamlin.clans.utils.ColorUtils;
-import xyz.gamlin.clans.utils.TaskTimerUtils;
-import xyz.gamlin.clans.utils.UsermapStorageUtil;
+import xyz.gamlin.clans.utils.*;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -141,7 +138,7 @@ public final class Clans extends JavaPlugin {
         ClanCommand.updateBannedTagsList();
 
         //Register PlaceHolderAPI hooks
-        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null){
+        if (Bukkit.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")){
             new PlayerClanExpansion().register();
             logger.info(ColorUtils.translateColorCodes("-------------------------------------------"));
             logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3PlaceholderAPI found!"));
@@ -155,7 +152,7 @@ public final class Clans extends JavaPlugin {
         }
 
         //Register FloodgateApi hooks
-        if (Bukkit.getPluginManager().getPlugin("floodgate") != null){
+        if (Bukkit.getServer().getPluginManager().isPluginEnabled("floodgate")){
             floodgateApi = FloodgateApi.getInstance();
             logger.info(ColorUtils.translateColorCodes("-------------------------------------------"));
             logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3FloodgateApi found!"));

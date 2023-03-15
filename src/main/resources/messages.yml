@@ -40,6 +40,7 @@ clan-invited-player-invite-pending: "&3You have been invited to a clan by &6%CLA
 clan-invite-request: "&6%PLAYER% &3would like you to invite them to your clan.\n&3Use &6/clan invite %PLAYER% &3to send the invite."
 clan-invite-request-failed: "&3Failed to send request, check that the clan owner is online!"
 clan-invite-sent-successfully: "&3You have successfully sent a request to %CLANOWNER%"
+clan-invite-failed-own-clan: "&3Failed to send request, this is YOUR clan!"
 
 #Clan Join Messages
 clan-join-successful: "&3Successfully joined &6%CLAN%&3!"
