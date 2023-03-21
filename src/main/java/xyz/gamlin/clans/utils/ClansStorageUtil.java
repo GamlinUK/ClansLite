@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import xyz.gamlin.clans.Clans;
 import xyz.gamlin.clans.api.events.ClanDisbandEvent;
 import xyz.gamlin.clans.api.events.ClanOfflineDisbandEvent;
+import xyz.gamlin.clans.api.events.ClanTransferOwnershipEvent;
 import xyz.gamlin.clans.models.Clan;
 
 import java.io.IOException;
@@ -245,18 +246,6 @@ public class ClansStorageUtil {
         clan.removeClanEnemy(enemyOwnerUUID);
     }
 
-    public static Set<Map.Entry<UUID, Clan>> getClans(){
-        return clansList.entrySet();
-    }
-
-    public static Set<UUID> getRawClansList(){
-        return clansList.keySet();
-    }
-
-    public static Collection<Clan> getClanList(){
-        return clansList.values();
-    }
-
     public static void addClanAlly(Player clanOwner, Player allyClanOwner){
         UUID ownerUUID = clanOwner.getUniqueId();
         UUID uuid = allyClanOwner.getUniqueId();
@@ -298,6 +287,60 @@ public class ClansStorageUtil {
         return clanFinalName == null?null:STRIP_COLOR_PATTERN.matcher(clanFinalName).replaceAll("");
     }
 
+    public static Clan transferClanOwner(Clan originalClan, Player originalClanOwner, Player newClanOwner) throws IOException{
+        if (findClanByOwner(originalClanOwner) != null){
+            if (!isClanOwner(originalClanOwner)){
+                String originalOwnerKey = originalClanOwner.getUniqueId().toString();
+                UUID originalOwnerUUID = originalClanOwner.getUniqueId();
+                UUID newOwnerUUID = newClanOwner.getUniqueId();
+
+                String clanFinalName = originalClan.getClanFinalName();
+                String clanPrefix = originalClan.getClanPrefix();
+                ArrayList<String> clanMembers = new ArrayList<>(originalClan.getClanMembers());
+                ArrayList<String> clanAllies = new ArrayList<>(originalClan.getClanAllies());
+                ArrayList<String> clanEnemies = new ArrayList<>(originalClan.getClanEnemies());
+                boolean friendlyFire = originalClan.isFriendlyFireAllowed();
+                int clanPoints = originalClan.getClanPoints();
+                String clanHomeWorld = originalClan.getClanHomeWorld();
+                double clanHomeX = originalClan.getClanHomeX();
+                double clanHomeY = originalClan.getClanHomeY();
+                double clanHomeZ = originalClan.getClanHomeZ();
+                float clanHomeYaw = originalClan.getClanHomeYaw();
+                float clanHomePitch = originalClan.getClanHomePitch();
+
+                Clan newClan = new Clan(newClanOwner.getName(), clanFinalName);
+                newClan.setClanPrefix(clanPrefix);
+                newClan.setClanMembers(clanMembers);
+                newClan.setClanAllies(clanAllies);
+                newClan.setClanEnemies(clanEnemies);
+                newClan.setFriendlyFireAllowed(friendlyFire);
+                newClan.setClanPoints(clanPoints);
+                newClan.setClanHomeWorld(clanHomeWorld);
+                newClan.setClanHomeX(clanHomeX);
+                newClan.setClanHomeY(clanHomeY);
+                newClan.setClanHomeZ(clanHomeZ);
+                newClan.setClanHomeYaw(clanHomeYaw);
+                newClan.setClanHomePitch(clanHomePitch);
+
+                clansList.put(newOwnerUUID, newClan);
+
+                if (clansList.containsKey(originalOwnerUUID)){
+                    fireClanTransferOwnershipEvent(originalClanOwner, newClanOwner, newClan);
+                    if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
+                        logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanTransferOwnershipEvent"));
+                    }
+                    clansList.remove(originalOwnerUUID);
+                    clansStorage.set("clans.data." + originalOwnerKey, null);
+                    Clans.getPlugin().clansFileManager.saveClansConfig();
+                }else {
+                    originalClanOwner.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clans-update-error-1")));
+                }
+                return newClan;
+            }
+        }
+        return null;
+    }
+
     public static boolean hasEnoughPoints(Clan clan, int points){
         if (clan.getClanPoints() >= points){
             return true;
@@ -327,6 +370,18 @@ public class ClansStorageUtil {
         clan.setClanPoints(0);
     }
 
+    public static Set<Map.Entry<UUID, Clan>> getClans(){
+        return clansList.entrySet();
+    }
+
+    public static Set<UUID> getRawClansList(){
+        return clansList.keySet();
+    }
+
+    public static Collection<Clan> getClanList(){
+        return clansList.values();
+    }
+
     private static void fireClanDisbandEvent(Player player) {
         Clan clanByOwner = ClansStorageUtil.findClanByOwner(player);
         ClanDisbandEvent clanDisbandEvent = new ClanDisbandEvent(player, clanByOwner.getClanFinalName());
@@ -337,5 +392,10 @@ public class ClansStorageUtil {
         Clan clanByOfflineOwner = ClansStorageUtil.findClanByOfflineOwner(offlinePlayer);
         ClanOfflineDisbandEvent clanOfflineDisbandEvent = new ClanOfflineDisbandEvent(offlinePlayer, clanByOfflineOwner.getClanFinalName());
         Bukkit.getPluginManager().callEvent(clanOfflineDisbandEvent);
+    }
+
+    private static void fireClanTransferOwnershipEvent(Player originalClanOwner, Player newClanOwner, Clan newClan){
+        ClanTransferOwnershipEvent clanTransferOwnershipEvent = new ClanTransferOwnershipEvent(originalClanOwner, originalClanOwner, newClanOwner, newClan);
+        Bukkit.getPluginManager().callEvent(clanTransferOwnershipEvent);
     }
 }

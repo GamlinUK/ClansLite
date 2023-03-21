@@ -27,6 +27,12 @@ clan-disband-failure: "&3Failed to disband clan - Please make sure you're the ow
 clan-admin-disband-failure: "&3Failed to disband clan - make sure that the provided player is a clan owner!"
 incorrect-disband-command-usage: "&3Unrecognised argument please use &6/clanadmin disband <clan-owner>&3."
 
+#Clan Transfer Ownership Messages
+clan-ownership-transfer-successful: "&3You successfully transferred your clan to &6%PLAYER%&3."
+clan-ownership-transfer-new-owner: "&6%OLDOWNER% &3has transferred ownership of &6%CLAN% &3to you."
+clan-ownership-transfer-failure-owner-offline: "&3Failed to transfer clan ownership to &6%PLAYER%&3!\n&3They may be offline."
+incorrect-clan-transfer-ownership-command-usage: "&3Unrecognised argument please use &6/clan transfer <player-name>&3."
+
 #Clan Invite Messages
 clan-invite-no-valid-player: "&3Please specify a player to invite!"
 clan-invite-not-clan-owner: "&3You must be a clan owner to invite people!"
@@ -190,10 +196,11 @@ clan-command-incorrect-usage:
   line-8: "/clan info"
   line-9: "/clan list"
   line-10: "/clan prefix <prefix>"
-  line-11: "/clan ally [add|remove] <clan-owner>"
-  line-12: "/clan enemy [add|remove] <clan-owner>"
-  line-13: "/clan pvp"
-  line-14: "/clan [sethome|delhome|home]"
+  line-11: "/clan transfer <player-name>"
+  line-12: "/clan ally [add|remove] <clan-owner>"
+  line-13: "/clan enemy [add|remove] <clan-owner>"
+  line-14: "/clan pvp"
+  line-15: "/clan [sethome|delhome|home]"
 
 #/clanadmin Command Responses
 clanadmin-command-incorrect-usage:

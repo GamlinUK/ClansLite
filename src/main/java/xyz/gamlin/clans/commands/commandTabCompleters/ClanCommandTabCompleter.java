@@ -26,6 +26,7 @@ public class ClanCommandTabCompleter implements TabCompleter {
             arguments.add("info");
             arguments.add("list");
             arguments.add("prefix");
+            arguments.add("transfer");
             arguments.add("ally add");
             arguments.add("ally remove");
             arguments.add("enemy add");

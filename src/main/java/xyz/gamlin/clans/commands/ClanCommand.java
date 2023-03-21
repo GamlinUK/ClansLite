@@ -55,6 +55,7 @@ public class ClanCommand implements CommandExecutor {
                     sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-12")));
                     sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-13")));
                     sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-14")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-15")));
                     return true;
                 }else if (clansConfig.getBoolean("clan-home.enabled")){
                     sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-1")));
@@ -69,7 +70,8 @@ public class ClanCommand implements CommandExecutor {
                     sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-10")));
                     sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-11")));
                     sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-12")));
-                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-14")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-13")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-15")));
                     return true;
                 }else if (clansConfig.getBoolean("protections.pvp.pvp-command-enabled")){
                     sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-1")));
@@ -85,6 +87,7 @@ public class ClanCommand implements CommandExecutor {
                     sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-11")));
                     sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-12")));
                     sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-13")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-14")));
                     return true;
                 }else {
                     sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-1")));
@@ -99,6 +102,7 @@ public class ClanCommand implements CommandExecutor {
                     sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-10")));
                     sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-11")));
                     sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-12")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-13")));
                 }
                 return true;
             }else {
@@ -111,6 +115,8 @@ public class ClanCommand implements CommandExecutor {
                         return new ClanInviteSubCommand().clanInviteSubCommand(sender, args);
                     case "prefix":
                         return new ClanPrefixSubCommand().clanPrefixSubCommand(sender, args, bannedTags);
+                    case "transfer":
+                        return new ClanTransferOwnerSubCommand().transferClanOwnerSubCommand(sender, args);
                     case "list":
                         return new ClanListSubCommand().clanListSubCommand(sender);
                     case "join":
