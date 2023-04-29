@@ -1,22 +1,21 @@
-package xyz.gamlin.clans.api.events;
+package xyz.gamlin.clans.api;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import xyz.gamlin.clans.models.Clan;
 
-public class ClanCreateEvent extends Event {
+public class ClanDisbandEvent extends Event {
     private static final HandlerList HANDLERS = new HandlerList();
     private final Player createdBy;
-    private final Clan clan;
+    private final String clanName;
 
     public static HandlerList getHandlerList() {
         return HANDLERS;
     }
 
-    public ClanCreateEvent(Player createdBy, Clan clanName) {
+    public ClanDisbandEvent(Player createdBy, String clanName) {
         this.createdBy = createdBy;
-        this.clan = clanName;
+        this.clanName = clanName;
     }
 
     @Override
@@ -28,8 +27,7 @@ public class ClanCreateEvent extends Event {
         return createdBy;
     }
 
-    public Clan getClan() {
-        return clan;
+    public String getClan() {
+        return clanName;
     }
-
 }

@@ -1,8 +1,7 @@
 package xyz.gamlin.clans.updateSystem;
 
-import org.bukkit.Bukkit;
+import com.tcoded.folialib.FoliaLib;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Consumer;
 import xyz.gamlin.clans.Clans;
 import xyz.gamlin.clans.utils.ColorUtils;
@@ -15,18 +14,17 @@ import java.util.logging.Logger;
 
 public class UpdateChecker {
 
-    private Plugin plugin;
     private int resourceId;
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
     Logger logger = Clans.getPlugin().getLogger();
 
-    public UpdateChecker(Plugin plugin, int resourceId) {
-        this.plugin = plugin;
+    public UpdateChecker(int resourceId) {
         this.resourceId = resourceId;
     }
 
     public void getVersion(final Consumer<String> consumer) {
-        Bukkit.getScheduler().runTaskAsynchronously(this.plugin, () -> {
+        FoliaLib foliaLib = new FoliaLib(Clans.getPlugin());
+        foliaLib.getImpl().runAsync(() -> {
             try (InputStream inputStream = new URL("https://api.spigotmc.org/legacy/update.php?resource=" + this.resourceId).openStream(); Scanner scanner = new Scanner(inputStream)) {
                 if (scanner.hasNext()) {
                     consumer.accept(scanner.next());

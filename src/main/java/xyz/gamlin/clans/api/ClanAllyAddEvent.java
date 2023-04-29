@@ -1,24 +1,24 @@
-package xyz.gamlin.clans.api.events;
+package xyz.gamlin.clans.api;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import xyz.gamlin.clans.models.Clan;
 
-public class ClanEnemyAddEvent extends Event {
+public class ClanAllyAddEvent extends Event {
     private static final HandlerList HANDLERS = new HandlerList();
     private final Player createdBy;
     private final Clan clan;
-    private final Player enemyClanCreatedBy;
-    private final Clan enemyClan;
+    private final Player allyClanCreatedBy;
+    private final Clan allyClan;
 
 
 
-    public ClanEnemyAddEvent(Player createdBy, Clan clan, Clan enemyClan, Player enemyClanCreatedBy) {
+    public ClanAllyAddEvent(Player createdBy, Clan clan, Clan allyClan, Player allyClanCreatedBy) {
         this.createdBy = createdBy;
         this.clan = clan;
-        this.enemyClanCreatedBy = enemyClanCreatedBy;
-        this.enemyClan = enemyClan;
+        this.allyClanCreatedBy = allyClanCreatedBy;
+        this.allyClan = allyClan;
     }
 
     @Override
@@ -34,17 +34,15 @@ public class ClanEnemyAddEvent extends Event {
         return clan;
     }
 
-    public Player getEnemyClanCreatedBy() {
-        return enemyClanCreatedBy;
+    public Player getAllyClanCreatedBy() {
+        return allyClanCreatedBy;
     }
 
-    public Clan getEnemyClan() {
-        return enemyClan;
+    public Clan getAllyClan() {
+        return allyClan;
     }
 
     public static HandlerList getHandlerList() {
         return HANDLERS;
     }
-
-
 }

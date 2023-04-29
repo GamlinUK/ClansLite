@@ -24,6 +24,8 @@ clan-tags:
     - "Up"
   #Add a space after the clan prefix in chat. [Default value: true]
   prefix-add-space-after: true
+  #Add `[]` characters before and after the clan prefix in the chat. [Default value: false]
+  prefix-add-brackets: false
 
 clan-size:
   #Set the default maximum amount of members that can join a players' clan. [Default value: 8]
@@ -62,6 +64,11 @@ clan-chat:
     enabled: true
     #Cool-down time in seconds. [Default value: 5 = 5 seconds]
     time: 5
+  chat-spy:
+    #Do you want players with the perm 'clanslite.chat.spy' be able to spy on all clan chat messages? [Default value: true]
+    enabled: true
+    #Below is the prefix for th chat spy messages. [Default value: &6[&cSPY&6]&r]
+    chat-spy-prefix: "&6[&cSPY&6]&r"
 
 #Set the maximum amount of allied clans that can a clan can have. [Default value: 4]
 max-clan-allies: 4
@@ -76,6 +83,18 @@ protections:
     pvp-command-enabled: true
     #Enable the ability for a player to bypass the pvp protection using 'clanslite.bypass.pvp'. [Default value: true]
     enable-bypass-permission: true
+
+#Clan & Player Points
+points:
+  player-points:
+    #Do you want players to get points when they kill another player? [Default value: true]
+    enabled: true
+    #How many points do you want the killer to get when they kill a non-enemy clan player? [Default value: 5]
+    non-enemy-clan-point-amount-on-kill: 5
+    #How many points do you want the killer to get when they kill an enemy clan player? [Default value: 10]
+    enemy-clan-point-amount-on-kill: 10
+    #Do you want to take the points given to the killer from the victims point balance if available? [Default value: true]
+    take-points-from-victim: true
 
 #Clan home system
 clan-home:

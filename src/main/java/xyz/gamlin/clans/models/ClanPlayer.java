@@ -7,6 +7,7 @@ public class ClanPlayer {
     private boolean isBedrockPlayer;
     private String bedrockUUID;
     private int pointBalance;
+    private boolean canChatSpy;
 
     public ClanPlayer(String UUID, String playerName) {
         javaUUID = UUID;
@@ -14,6 +15,7 @@ public class ClanPlayer {
         isBedrockPlayer = false;
         bedrockUUID = null;
         pointBalance = 0;
+        canChatSpy = false;
     }
 
     public String getJavaUUID() {
@@ -38,6 +40,14 @@ public class ClanPlayer {
 
     public void setPointBalance(int pointBalance) {
         this.pointBalance = pointBalance;
+    }
+
+    public boolean getCanChatSpy() {
+        return canChatSpy;
+    }
+
+    public void setCanChatSpy(boolean canChatSpy) {
+        this.canChatSpy = canChatSpy;
     }
 
     public boolean isBedrockPlayer() {

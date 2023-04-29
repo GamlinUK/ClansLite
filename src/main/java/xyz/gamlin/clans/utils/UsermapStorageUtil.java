@@ -6,13 +6,11 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.geysermc.floodgate.api.player.FloodgatePlayer;
 import xyz.gamlin.clans.Clans;
+import xyz.gamlin.clans.api.ClanChatSpyToggledEvent;
 import xyz.gamlin.clans.models.ClanPlayer;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class UsermapStorageUtil {
@@ -21,6 +19,7 @@ public class UsermapStorageUtil {
 
     private static Map<UUID, ClanPlayer> usermap = new HashMap<>();
 
+    private static FileConfiguration clansConfig = Clans.getPlugin().getConfig();
     private static FileConfiguration usermapConfig = Clans.getPlugin().usermapFileManager.getUsermapConfig();
     private static FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
 
@@ -31,6 +30,7 @@ public class UsermapStorageUtil {
             usermapConfig.set("users.data." + entry.getKey() + ".javaUUID", entry.getValue().getJavaUUID());
             usermapConfig.set("users.data." + entry.getKey() + ".lastPlayerName", entry.getValue().getLastPlayerName());
             usermapConfig.set("users.data." + entry.getKey() + ".pointBalance", entry.getValue().getPointBalance());
+            usermapConfig.set("users.data." + entry.getKey() + ".canChatSpy", entry.getValue().getCanChatSpy());
             usermapConfig.set("users.data." + entry.getKey() + ".isBedrockPlayer", entry.getValue().isBedrockPlayer());
             if (entry.getValue().isBedrockPlayer()){
                 usermapConfig.set("users.data." + entry.getKey() + ".bedrockUUID", entry.getValue().getBedrockUUID());
@@ -47,12 +47,14 @@ public class UsermapStorageUtil {
             String javaUUID = usermapConfig.getString("users.data." + key + ".javaUUID");
             String lastPlayerName = usermapConfig.getString("users.data." + key + ".lastPlayerName");
             int pointBalance = usermapConfig.getInt("users.data." + key + ".pointBalance");
+            boolean canChatSpy = usermapConfig.getBoolean("users.data." + key + ".canChatSpy");
             boolean isBedrockPlayer = usermapConfig.getBoolean("users.data." + key + ".isBedrockPlayer");
             String bedrockUUID = usermapConfig.getString("users.data." + key + ".bedrockUUID");
 
             ClanPlayer clanPlayer = new ClanPlayer(javaUUID, lastPlayerName);
 
             clanPlayer.setPointBalance(pointBalance);
+            clanPlayer.setCanChatSpy(canChatSpy);
             clanPlayer.setBedrockPlayer(isBedrockPlayer);
             clanPlayer.setBedrockUUID(bedrockUUID);
 
@@ -189,6 +191,35 @@ public class UsermapStorageUtil {
 
     }
 
+    public static boolean toggleChatSpy(Player player){
+        UUID uuid = player.getUniqueId();
+        ClanPlayer clanPlayer = usermap.get(uuid);
+        if (!clanPlayer.getCanChatSpy()){
+            clanPlayer.setCanChatSpy(true);
+            fireClanChatSpyToggledEvent(player, clanPlayer ,true);
+            if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
+                logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanChatSpyToggledEvent"));
+            }
+            return true;
+        }else {
+            clanPlayer.setCanChatSpy(false);
+            fireClanChatSpyToggledEvent(player, clanPlayer ,false);
+            if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
+                logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanChatSpyToggledEvent"));
+            }
+            return false;
+        }
+    }
+
+    public static boolean hasEnoughPoints(Player player, int points){
+        UUID uuid = player.getUniqueId();
+        ClanPlayer clanPlayer = usermap.get(uuid);
+        if (clanPlayer.getPointBalance() >= points){
+            return true;
+        }
+        return false;
+    }
+
     public static int getPointBalanceByBukkitPlayer(Player player){
         UUID uuid = player.getUniqueId();
         ClanPlayer clanPlayer = usermap.get(uuid);
@@ -217,6 +248,20 @@ public class UsermapStorageUtil {
         usermap.replace(uuid, clanPlayer);
     }
 
+    public static boolean withdrawPoints(Player player, int points){
+        UUID uuid = player.getUniqueId();
+        ClanPlayer clanPlayer = usermap.get(uuid);
+        int currentPointValue = clanPlayer.getPointBalance();
+        if (currentPointValue != 0){
+            if (hasEnoughPoints(player, points)){
+                clanPlayer.setPointBalance(currentPointValue - points);
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+
     public static void resetOnlinePlayerPointBalance(Player player){
         UUID uuid = player.getUniqueId();
         ClanPlayer clanPlayer = usermap.get(uuid);
@@ -233,5 +278,23 @@ public class UsermapStorageUtil {
 
     public static Set<UUID> getRawUsermapList(){
         return usermap.keySet();
+    }
+
+    public static List<String> getAllPlayerPointsValues(){
+        List<String> pointValues = new ArrayList<>();
+        for (ClanPlayer clanPlayer : usermap.values()){
+            String value = String.valueOf(clanPlayer.getPointBalance());
+            pointValues.add(value);
+        }
+        return pointValues;
+    }
+
+    public static Map<UUID, ClanPlayer> getUsermap() {
+        return usermap;
+    }
+
+    private static void fireClanChatSpyToggledEvent(Player player, ClanPlayer clanPlayer, boolean chatSpyToggledState) {
+        ClanChatSpyToggledEvent clanChatSpyToggledEvent = new ClanChatSpyToggledEvent(player, clanPlayer, chatSpyToggledState);
+        Bukkit.getPluginManager().callEvent(clanChatSpyToggledEvent);
     }
 }

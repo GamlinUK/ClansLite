@@ -5,9 +5,9 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import xyz.gamlin.clans.Clans;
-import xyz.gamlin.clans.api.events.ClanDisbandEvent;
-import xyz.gamlin.clans.api.events.ClanOfflineDisbandEvent;
-import xyz.gamlin.clans.api.events.ClanTransferOwnershipEvent;
+import xyz.gamlin.clans.api.ClanDisbandEvent;
+import xyz.gamlin.clans.api.ClanOfflineDisbandEvent;
+import xyz.gamlin.clans.api.ClanTransferOwnershipEvent;
 import xyz.gamlin.clans.models.Clan;
 
 import java.io.IOException;
@@ -80,12 +80,14 @@ public class ClansStorageUtil {
             clan.setClanEnemies(clanEnemies);
             clan.setFriendlyFireAllowed(friendlyFire);
             clan.setClanPoints(clanPoints);
-            clan.setClanHomeWorld(clanHomeWorld);
-            clan.setClanHomeX(clanHomeX);
-            clan.setClanHomeY(clanHomeY);
-            clan.setClanHomeZ(clanHomeZ);
-            clan.setClanHomeYaw(clanHomeYaw);
-            clan.setClanHomePitch(clanHomePitch);
+            if (clanHomeWorld != null){
+                clan.setClanHomeWorld(clanHomeWorld);
+                clan.setClanHomeX(clanHomeX);
+                clan.setClanHomeY(clanHomeY);
+                clan.setClanHomeZ(clanHomeZ);
+                clan.setClanHomeYaw(clanHomeYaw);
+                clan.setClanHomePitch(clanHomePitch);
+            }
 
             clansList.put(uuid, clan);
         });
@@ -289,53 +291,59 @@ public class ClansStorageUtil {
 
     public static Clan transferClanOwner(Clan originalClan, Player originalClanOwner, Player newClanOwner) throws IOException{
         if (findClanByOwner(originalClanOwner) != null){
-            if (!isClanOwner(originalClanOwner)){
-                String originalOwnerKey = originalClanOwner.getUniqueId().toString();
-                UUID originalOwnerUUID = originalClanOwner.getUniqueId();
-                UUID newOwnerUUID = newClanOwner.getUniqueId();
+            if (isClanOwner(originalClanOwner)){
+                if (!isClanOwner(newClanOwner) && findClanByPlayer(newClanOwner) == null){
+                    String originalOwnerKey = originalClanOwner.getUniqueId().toString();
+                    UUID originalOwnerUUID = originalClanOwner.getUniqueId();
+                    UUID newOwnerUUID = newClanOwner.getUniqueId();
 
-                String clanFinalName = originalClan.getClanFinalName();
-                String clanPrefix = originalClan.getClanPrefix();
-                ArrayList<String> clanMembers = new ArrayList<>(originalClan.getClanMembers());
-                ArrayList<String> clanAllies = new ArrayList<>(originalClan.getClanAllies());
-                ArrayList<String> clanEnemies = new ArrayList<>(originalClan.getClanEnemies());
-                boolean friendlyFire = originalClan.isFriendlyFireAllowed();
-                int clanPoints = originalClan.getClanPoints();
-                String clanHomeWorld = originalClan.getClanHomeWorld();
-                double clanHomeX = originalClan.getClanHomeX();
-                double clanHomeY = originalClan.getClanHomeY();
-                double clanHomeZ = originalClan.getClanHomeZ();
-                float clanHomeYaw = originalClan.getClanHomeYaw();
-                float clanHomePitch = originalClan.getClanHomePitch();
+                    String clanFinalName = originalClan.getClanFinalName();
+                    String clanPrefix = originalClan.getClanPrefix();
+                    ArrayList<String> clanMembers = new ArrayList<>(originalClan.getClanMembers());
+                    ArrayList<String> clanAllies = new ArrayList<>(originalClan.getClanAllies());
+                    ArrayList<String> clanEnemies = new ArrayList<>(originalClan.getClanEnemies());
+                    boolean friendlyFire = originalClan.isFriendlyFireAllowed();
+                    int clanPoints = originalClan.getClanPoints();
+                    String clanHomeWorld = originalClan.getClanHomeWorld();
+                    double clanHomeX = originalClan.getClanHomeX();
+                    double clanHomeY = originalClan.getClanHomeY();
+                    double clanHomeZ = originalClan.getClanHomeZ();
+                    float clanHomeYaw = originalClan.getClanHomeYaw();
+                    float clanHomePitch = originalClan.getClanHomePitch();
 
-                Clan newClan = new Clan(newClanOwner.getName(), clanFinalName);
-                newClan.setClanPrefix(clanPrefix);
-                newClan.setClanMembers(clanMembers);
-                newClan.setClanAllies(clanAllies);
-                newClan.setClanEnemies(clanEnemies);
-                newClan.setFriendlyFireAllowed(friendlyFire);
-                newClan.setClanPoints(clanPoints);
-                newClan.setClanHomeWorld(clanHomeWorld);
-                newClan.setClanHomeX(clanHomeX);
-                newClan.setClanHomeY(clanHomeY);
-                newClan.setClanHomeZ(clanHomeZ);
-                newClan.setClanHomeYaw(clanHomeYaw);
-                newClan.setClanHomePitch(clanHomePitch);
+                    Clan newClan = new Clan(newOwnerUUID.toString(), clanFinalName);
+                    newClan.setClanPrefix(clanPrefix);
+                    newClan.setClanMembers(clanMembers);
+                    newClan.setClanAllies(clanAllies);
+                    newClan.setClanEnemies(clanEnemies);
+                    newClan.setFriendlyFireAllowed(friendlyFire);
+                    newClan.setClanPoints(clanPoints);
+                    newClan.setClanHomeWorld(clanHomeWorld);
+                    newClan.setClanHomeX(clanHomeX);
+                    newClan.setClanHomeY(clanHomeY);
+                    newClan.setClanHomeZ(clanHomeZ);
+                    newClan.setClanHomeYaw(clanHomeYaw);
+                    newClan.setClanHomePitch(clanHomePitch);
 
-                clansList.put(newOwnerUUID, newClan);
+                    clansList.put(newOwnerUUID, newClan);
 
-                if (clansList.containsKey(originalOwnerUUID)){
-                    fireClanTransferOwnershipEvent(originalClanOwner, newClanOwner, newClan);
-                    if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                        logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanTransferOwnershipEvent"));
+                    if (clansList.containsKey(originalOwnerUUID)){
+                        fireClanTransferOwnershipEvent(originalClanOwner, newClanOwner, newClan);
+                        if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
+                            logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanTransferOwnershipEvent"));
+                        }
+                        clansList.remove(originalOwnerUUID);
+                        clansStorage.set("clans.data." + originalOwnerKey, null);
+                        Clans.getPlugin().clansFileManager.saveClansConfig();
+                    }else {
+                        originalClanOwner.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clans-update-error-1")));
                     }
-                    clansList.remove(originalOwnerUUID);
-                    clansStorage.set("clans.data." + originalOwnerKey, null);
-                    Clans.getPlugin().clansFileManager.saveClansConfig();
+                    return newClan;
                 }else {
-                    originalClanOwner.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clans-update-error-1")));
+                    originalClanOwner.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-ownership-transfer-failed-target-in-clan")));
                 }
-                return newClan;
+            }else {
+                originalClanOwner.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-must-be-owner")));
             }
         }
         return null;
@@ -353,13 +361,16 @@ public class ClansStorageUtil {
        clan.setClanPoints(currentPointValue + points);
     }
 
-    public static void withdrawPoints(Clan clan, int points){
+    public static boolean withdrawPoints(Clan clan, int points){
         int currentPointValue = clan.getClanPoints();
         if (currentPointValue != 0){
             if (hasEnoughPoints(clan, points)){
                 clan.setClanPoints(currentPointValue - points);
+                return true;
             }
+            return false;
         }
+        return false;
     }
 
     public static void setPoints(Clan clan, int points){

@@ -7,10 +7,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import xyz.gamlin.clans.Clans;
-import xyz.gamlin.clans.api.events.ClanChatMessageSendEvent;
+import xyz.gamlin.clans.api.ClanChatMessageSendEvent;
 import xyz.gamlin.clans.models.Clan;
+import xyz.gamlin.clans.models.ClanPlayer;
 import xyz.gamlin.clans.utils.ClansStorageUtil;
 import xyz.gamlin.clans.utils.ColorUtils;
+import xyz.gamlin.clans.utils.UsermapStorageUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,9 +48,19 @@ public class ClanChatCommand implements CommandExecutor {
                 return true;
 
             }else {
+                ArrayList<Player> onlinePlayers = new ArrayList<>(Bukkit.getServer().getOnlinePlayers());
+                ArrayList<Player> playersWithSpyPerms = new ArrayList<>();
+                for (Player p : onlinePlayers){
+                    ClanPlayer clanPlayer = UsermapStorageUtil.getClanPlayerByBukkitPlayer(p);
+                    if (clanPlayer.getCanChatSpy() && p.hasPermission("clanslite.chat.spy")){
+                        playersWithSpyPerms.add(p);
+                    }
+                }
+
                 Clan clanByMember = ClansStorageUtil.findClanByPlayer(player);
                 Clan clanByOwner = ClansStorageUtil.findClanByOwner(player);
 
+                String chatSpyPrefix = clansConfig.getString("clan-chat.chat-spy.chat-spy-prefix");
                 StringBuilder messageString = new StringBuilder();
                 messageString.append(clansConfig.getString("clan-chat.chat-prefix")).append(" ");
                 messageString.append("&d").append(player.getName()).append(":&r").append(" ");
@@ -87,6 +99,11 @@ public class ClanChatCommand implements CommandExecutor {
                                                     playerClanOwner.sendMessage(ColorUtils.translateColorCodes(messageString.toString()));
                                                 }
                                                 playerClanPlayer.sendMessage(ColorUtils.translateColorCodes(messageString.toString()));
+                                                if (clansConfig.getBoolean("clan-chat.chat-spy.enabled")){
+                                                    for (Player p : playersWithSpyPerms){
+                                                        p.sendMessage(ColorUtils.translateColorCodes(chatSpyPrefix + " " + messageString.toString()));
+                                                    }
+                                                }
                                                 return true;
                                             }
                                         }
@@ -105,6 +122,11 @@ public class ClanChatCommand implements CommandExecutor {
                                             if (ownerClanPlayer != null){
                                                 ownerClanPlayer.sendMessage(ColorUtils.translateColorCodes(messageString.toString()));
                                                 player.sendMessage(ColorUtils.translateColorCodes(messageString.toString()));
+                                                if (clansConfig.getBoolean("clan-chat.chat-spy.enabled")){
+                                                    for (Player p : playersWithSpyPerms){
+                                                        p.sendMessage(ColorUtils.translateColorCodes(chatSpyPrefix + " " + messageString.toString()));
+                                                    }
+                                                }
                                                 return true;
                                             }
                                         }
@@ -134,6 +156,11 @@ public class ClanChatCommand implements CommandExecutor {
                                                 playerClanOwner.sendMessage(ColorUtils.translateColorCodes(messageString.toString()));
                                             }
                                             playerClanPlayer.sendMessage(ColorUtils.translateColorCodes(messageString.toString()));
+                                            if (clansConfig.getBoolean("clan-chat.chat-spy.enabled")){
+                                                for (Player p : playersWithSpyPerms){
+                                                    p.sendMessage(ColorUtils.translateColorCodes(chatSpyPrefix + " " + messageString.toString()));
+                                                }
+                                            }
                                             return true;
                                         }
                                     }
@@ -152,6 +179,11 @@ public class ClanChatCommand implements CommandExecutor {
                                         if (ownerClanPlayer != null){
                                             ownerClanPlayer.sendMessage(ColorUtils.translateColorCodes(messageString.toString()));
                                             player.sendMessage(ColorUtils.translateColorCodes(messageString.toString()));
+                                            if (clansConfig.getBoolean("clan-chat.chat-spy.enabled")){
+                                                for (Player p : playersWithSpyPerms){
+                                                    p.sendMessage(ColorUtils.translateColorCodes(chatSpyPrefix + " " + messageString.toString()));
+                                                }
+                                            }
                                             return true;
                                         }
                                     }
@@ -182,6 +214,11 @@ public class ClanChatCommand implements CommandExecutor {
                                             playerClanOwner.sendMessage(ColorUtils.translateColorCodes(messageString.toString()));
                                         }
                                         playerClanPlayer.sendMessage(ColorUtils.translateColorCodes(messageString.toString()));
+                                        if (clansConfig.getBoolean("clan-chat.chat-spy.enabled")){
+                                            for (Player p : playersWithSpyPerms){
+                                                p.sendMessage(ColorUtils.translateColorCodes(chatSpyPrefix + " " + messageString.toString()));
+                                            }
+                                        }
                                         return true;
                                     }
                                 }
@@ -200,6 +237,11 @@ public class ClanChatCommand implements CommandExecutor {
                                     if (ownerClanPlayer != null){
                                         ownerClanPlayer.sendMessage(ColorUtils.translateColorCodes(messageString.toString()));
                                         player.sendMessage(ColorUtils.translateColorCodes(messageString.toString()));
+                                        if (clansConfig.getBoolean("clan-chat.chat-spy.enabled")){
+                                            for (Player p : playersWithSpyPerms){
+                                                p.sendMessage(ColorUtils.translateColorCodes(chatSpyPrefix + " " + messageString.toString()));
+                                            }
+                                        }
                                         return true;
                                     }
                                 }
@@ -229,6 +271,11 @@ public class ClanChatCommand implements CommandExecutor {
                                         playerClanOwner.sendMessage(ColorUtils.translateColorCodes(messageString.toString()));
                                     }
                                     playerClanPlayer.sendMessage(ColorUtils.translateColorCodes(messageString.toString()));
+                                    if (clansConfig.getBoolean("clan-chat.chat-spy.enabled")){
+                                        for (Player p : playersWithSpyPerms){
+                                            p.sendMessage(ColorUtils.translateColorCodes(chatSpyPrefix + " " + messageString.toString()));
+                                        }
+                                    }
                                     return true;
                                 }
                             }
@@ -247,6 +294,11 @@ public class ClanChatCommand implements CommandExecutor {
                                 if (ownerClanPlayer != null){
                                     ownerClanPlayer.sendMessage(ColorUtils.translateColorCodes(messageString.toString()));
                                     player.sendMessage(ColorUtils.translateColorCodes(messageString.toString()));
+                                    if (clansConfig.getBoolean("clan-chat.chat-spy.enabled")){
+                                        for (Player p : playersWithSpyPerms){
+                                            p.sendMessage(ColorUtils.translateColorCodes(chatSpyPrefix + " " + messageString.toString()));
+                                        }
+                                    }
                                     return true;
                                 }
                             }

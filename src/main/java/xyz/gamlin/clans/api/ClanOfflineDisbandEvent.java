@@ -1,4 +1,4 @@
-package xyz.gamlin.clans.api.events;
+package xyz.gamlin.clans.api;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.event.Event;

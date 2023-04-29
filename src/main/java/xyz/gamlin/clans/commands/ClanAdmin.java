@@ -1,5 +1,6 @@
 package xyz.gamlin.clans.commands;
 
+import com.tcoded.folialib.FoliaLib;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -14,6 +15,7 @@ import xyz.gamlin.clans.utils.ColorUtils;
 import xyz.gamlin.clans.utils.UsermapStorageUtil;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 public class ClanAdmin implements CommandExecutor {
@@ -32,6 +34,8 @@ public class ClanAdmin implements CommandExecutor {
                     try {
                         if (!ClansStorageUtil.getRawClansList().isEmpty()){
                             ClansStorageUtil.saveClans();
+                        }else {
+                            sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("save-failed-no-clans")));
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -43,31 +47,26 @@ public class ClanAdmin implements CommandExecutor {
 
 //----------------------------------------------------------------------------------------------------------------------
                 if (args[0].equalsIgnoreCase("reload")) {
-                    Clans.getPlugin().reloadConfig();
-                    try {
-                        if (!ClansStorageUtil.getRawClansList().isEmpty()){
-                            ClansStorageUtil.saveClans();
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("plugin-reload-begin")));
+                    FoliaLib foliaLib = new FoliaLib(Clans.getPlugin());
+                    Clans plugin = Clans.getPlugin();
+                    plugin.onDisable();
+                    foliaLib.getImpl().runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            plugin.onEnable();
                         }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clans-save-error-1")));
-                        sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clans-save-error-2")));
-                    }
-                    try {
-                        if (Clans.getPlugin().clansFileManager.getClansConfig().contains("clans.data")){
-                            ClansStorageUtil.restoreClans();
-                        }else {
-                            sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clans-load-error-1")));
+                    }, 5L, TimeUnit.SECONDS);
+                    foliaLib.getImpl().runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            Clans.getPlugin().reloadConfig();
+                            ClanCommand.updateBannedTagsList();
+                            Clans.getPlugin().messagesFileManager.reloadMessagesConfig();
+                            Clans.getPlugin().clanGUIFileManager.reloadClanGUIConfig();
+                            sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("plugin-reload-successful")));
                         }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clans-load-error-1")));
-                        sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clans-load-error-2")));
-                    }
-                    ClanCommand.updateBannedTagsList();
-                    Clans.getPlugin().messagesFileManager.reloadMessagesConfig();
-                    Clans.getPlugin().clanGUIFileManager.reloadClanGUIConfig();
-                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("plugin-reload-successful")));
+                    }, 5L, TimeUnit.SECONDS);
                 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -143,6 +142,8 @@ public class ClanAdmin implements CommandExecutor {
                     try {
                         if (!ClansStorageUtil.getRawClansList().isEmpty()){
                             ClansStorageUtil.saveClans();
+                        }else {
+                            logger.warning(ColorUtils.translateColorCodes(messagesConfig.getString("save-failed-no-clans")));
                         }
                     } catch (IOException e) {
                         logger.severe(ColorUtils.translateColorCodes(messagesConfig.getString("clans-save-error-1")));
@@ -154,32 +155,26 @@ public class ClanAdmin implements CommandExecutor {
 
 //----------------------------------------------------------------------------------------------------------------------
                 if (args[0].equalsIgnoreCase("reload")) {
-                    Clans.getPlugin().reloadConfig();
-                    try {
-                        if (!ClansStorageUtil.getRawClansList().isEmpty()){
-                            ClansStorageUtil.saveClans();
+                    logger.info(ColorUtils.translateColorCodes(messagesConfig.getString("plugin-reload-begin")));
+                    FoliaLib foliaLib = new FoliaLib(Clans.getPlugin());
+                    Clans plugin = Clans.getPlugin();
+                    plugin.onDisable();
+                    foliaLib.getImpl().runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            plugin.onEnable();
                         }
-                    } catch (IOException e) {
-                        logger.severe(ColorUtils.translateColorCodes(messagesConfig.getString("clans-save-error-1")));
-                        logger.severe(ColorUtils.translateColorCodes(messagesConfig.getString("clans-save-error-2")));
-                        e.printStackTrace();
-                    }
-                    try {
-                        if (Clans.getPlugin().clansFileManager.getClansConfig().contains("clans.data")){
-                            ClansStorageUtil.restoreClans();
-                        }else {
-                            logger.severe(ColorUtils.translateColorCodes(messagesConfig.getString("clans-load-error-1")));
+                    }, 5L, TimeUnit.SECONDS);
+                    foliaLib.getImpl().runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            Clans.getPlugin().reloadConfig();
+                            ClanCommand.updateBannedTagsList();
+                            Clans.getPlugin().messagesFileManager.reloadMessagesConfig();
+                            Clans.getPlugin().clanGUIFileManager.reloadClanGUIConfig();
+                            logger.info(ColorUtils.translateColorCodes(messagesConfig.getString("plugin-reload-successful")));
                         }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        logger.severe(ColorUtils.translateColorCodes(messagesConfig.getString("clans-load-error-1")));
-                        logger.severe(ColorUtils.translateColorCodes(messagesConfig.getString("clans-load-error-2")));
-                        e.printStackTrace();
-                    }
-                    ClanCommand.updateBannedTagsList();
-                    Clans.getPlugin().messagesFileManager.reloadMessagesConfig();
-                    Clans.getPlugin().clanGUIFileManager.reloadClanGUIConfig();
-                    logger.info(ColorUtils.translateColorCodes(messagesConfig.getString("plugin-reload-successful")));
+                    }, 5L, TimeUnit.SECONDS);
                 }
 
 //----------------------------------------------------------------------------------------------------------------------

@@ -17,12 +17,12 @@ public class ClanTransferOwnerSubCommand {
 
     public boolean transferClanOwnerSubCommand(CommandSender sender, String[] args){
         if (sender instanceof Player){
-            Player player = ((Player) sender).getPlayer();
-            if (player != null){
-                if (args.length > 2){
-                    String PLAYER_PLACEHOLDER = "%PLAYER%";
-                    Player newClanOwner = Bukkit.getPlayerExact(args[2]);
-                    if (newClanOwner != null){
+            Player player = (Player) sender;
+            if (args.length > 1){
+                String PLAYER_PLACEHOLDER = "%PLAYER%";
+                Player newClanOwner = Bukkit.getPlayerExact(args[1]);
+                if (newClanOwner != null){
+                    if (newClanOwner != player){
                         if (ClansStorageUtil.isClanOwner(player)){
                             Clan originalClan = ClansStorageUtil.findClanByOwner(player);
                             if (originalClan != null){
@@ -37,7 +37,7 @@ public class ClanTransferOwnerSubCommand {
                                                 .replace(OLD_OWNER_PLACEHOLDER, player.getName()).replace(NEW_CLAN_NAME, newClan.getClanFinalName())));
                                         return true;
                                     }
-                                } catch (IOException e) {
+                                }catch (IOException e) {
                                     sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clans-update-error-1")));
                                     sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clans-update-error-2")));
                                     e.printStackTrace();
@@ -47,12 +47,15 @@ public class ClanTransferOwnerSubCommand {
                             player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-must-be-owner")));
                         }
                     }else {
-                        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-ownership-transfer-failure-owner-offline")
-                                .replace(PLAYER_PLACEHOLDER, args[2])));
+                        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-ownership-transfer-failed-cannot-transfer-to-self")
+                                .replace(PLAYER_PLACEHOLDER, args[1])));
                     }
                 }else {
-                    player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("incorrect-clan-transfer-ownership-command-usage")));
+                    player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-ownership-transfer-failure-owner-offline")
+                            .replace(PLAYER_PLACEHOLDER, args[1])));
                 }
+            }else {
+                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("incorrect-clan-transfer-ownership-command-usage")));
             }
         }
         return true;

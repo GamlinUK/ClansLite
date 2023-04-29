@@ -1,6 +1,7 @@
 package xyz.gamlin.clans.commands;
 
-import org.bukkit.Bukkit;
+import com.tcoded.folialib.FoliaLib;
+import com.tcoded.folialib.wrapper.WrappedTask;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,13 +14,14 @@ import xyz.gamlin.clans.menuSystem.paginatedMenu.ClanListGUI;
 import xyz.gamlin.clans.utils.ColorUtils;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 public class ClanCommand implements CommandExecutor {
 
     Logger logger = Clans.getPlugin().getLogger();
 
-    public static int taskID1;
+    public static WrappedTask task1;
 
     FileConfiguration clansConfig = Clans.getPlugin().getConfig();
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
@@ -27,8 +29,9 @@ public class ClanCommand implements CommandExecutor {
     private static List<String> bannedTags;
 
     public static void updateBannedTagsList(){
-        taskID1 = Bukkit.getScheduler().scheduleSyncDelayedTask(Clans.getPlugin(),
-                () -> bannedTags = Clans.getPlugin().getConfig().getStringList("clan-tags.disallowed-tags"), 10);
+        FoliaLib foliaLib = new FoliaLib(Clans.getPlugin());
+        task1 = foliaLib.getImpl().runLaterAsync(() ->
+                bannedTags = Clans.getPlugin().getConfig().getStringList("clan-tags.disallowed-tags"), 1L, TimeUnit.SECONDS);
     }
 
     @Override
@@ -40,7 +43,8 @@ public class ClanCommand implements CommandExecutor {
                     new ClanListGUI(Clans.getPlayerMenuUtility(player)).open();
                     return true;
                 }
-                if (clansConfig.getBoolean("clan-home.enabled") && clansConfig.getBoolean("protections.pvp.pvp-command-enabled")){
+                if (clansConfig.getBoolean("clan-home.enabled") && clansConfig.getBoolean("protections.pvp.pvp-command-enabled")
+                        && clansConfig.getBoolean("points.player-points.enabled")){
                     sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-1")));
                     sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-2")));
                     sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-3")));
@@ -56,6 +60,7 @@ public class ClanCommand implements CommandExecutor {
                     sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-13")));
                     sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-14")));
                     sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-15")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-16")));
                     return true;
                 }else if (clansConfig.getBoolean("clan-home.enabled")){
                     sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-1")));
@@ -88,6 +93,22 @@ public class ClanCommand implements CommandExecutor {
                     sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-12")));
                     sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-13")));
                     sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-14")));
+                    return true;
+                }else if (clansConfig.getBoolean("points.player-points.enabled")){
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-1")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-2")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-3")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-4")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-5")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-6")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-7")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-8")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-9")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-10")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-11")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-12")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-13")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-16")));
                     return true;
                 }else {
                     sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-1")));
@@ -139,6 +160,8 @@ public class ClanCommand implements CommandExecutor {
                         return new ClanDelHomeSubCommand().deleteClanHomeSubCommand(sender);
                     case "home":
                         return new ClanHomeSubCommand().tpClanHomeSubCommand(sender);
+                    case "points":
+                        return new ClanPointSubCommand().clanPointSubCommand(sender, args);
                     default:
                         player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("incorrect-command-usage")));
 

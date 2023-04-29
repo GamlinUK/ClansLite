@@ -1,5 +1,7 @@
 package xyz.gamlin.clans.menuSystem.paginatedMenu;
 
+import com.tcoded.folialib.FoliaLib;
+import com.tcoded.folialib.wrapper.WrappedTask;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -18,13 +20,14 @@ import xyz.gamlin.clans.utils.ColorUtils;
 
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import static org.bukkit.Bukkit.getServer;
 
 public class ClanListGUI extends PaginatedMenu {
 
-    public static int taskID5;
+    public static WrappedTask task5;
 
     FileConfiguration guiConfig = Clans.getPlugin().clanGUIFileManager.getClanGUIConfig();
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
@@ -68,7 +71,7 @@ public class ClanListGUI extends PaginatedMenu {
             playerMenuUtility.setOfflineClanOwner(Bukkit.getOfflinePlayer(target));
             new ClanJoinRequestMenu(Clans.getPlayerMenuUtility(player)).open();
             if (guiConfig.getBoolean("clan-list.icons.auto-refresh-data.enabled")){
-                Bukkit.getScheduler().cancelTask(taskID5);
+                task5.cancel();
                 if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
                     logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aAuto refresh task cancelled"));
                 }
@@ -76,7 +79,7 @@ public class ClanListGUI extends PaginatedMenu {
         }else if (event.getCurrentItem().getType().equals(Material.BARRIER)) {
             player.closeInventory();
             if (guiConfig.getBoolean("clan-list.icons.auto-refresh-data.enabled")){
-                Bukkit.getScheduler().cancelTask(taskID5);
+                task5.cancel();
                 if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
                     logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aAuto refresh task cancelled"));
                 }
@@ -104,7 +107,8 @@ public class ClanListGUI extends PaginatedMenu {
     public void setMenuItems() {
         addMenuControls();
         if (guiConfig.getBoolean("clan-list.icons.auto-refresh-data.enabled")){
-            taskID5 = Bukkit.getScheduler().scheduleSyncRepeatingTask(Clans.getPlugin(), new Runnable() {
+            FoliaLib foliaLib = new FoliaLib(Clans.getPlugin());
+            task5 = foliaLib.getImpl().runTimerAsync(new Runnable() {
                 @Override
                 public void run() {
                     //The thing you will be looping through to place items
@@ -204,7 +208,7 @@ public class ClanListGUI extends PaginatedMenu {
                         }
                     }
                 }
-            }, 0, 100);
+            }, 0L, 5L, TimeUnit.SECONDS);
         }else {
             //The thing you will be looping through to place items
             ArrayList<Clan> clans = new ArrayList<>(ClansStorageUtil.getClanList());

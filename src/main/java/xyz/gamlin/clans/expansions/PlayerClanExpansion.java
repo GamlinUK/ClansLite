@@ -20,12 +20,12 @@ public class PlayerClanExpansion extends PlaceholderExpansion {
 
     @Override
     public @NotNull String getAuthor() {
-        return "Loving11ish";
+        return Clans.getPlugin().getDescription().getAuthors().get(0);
     }
 
     @Override
     public @NotNull String getVersion() {
-        return "1.3.9-BETA-01";
+        return Clans.getPlugin().getDescription().getVersion();
     }
 
     @Override
@@ -53,16 +53,32 @@ public class PlayerClanExpansion extends PlaceholderExpansion {
         if (params.equalsIgnoreCase("clanPrefix")){
             //%clansLite_clanPrefix%
             if (clanOwner != null){
-                if (configFile.getBoolean("clan-tags.prefix-add-space-after")){
-                    return ColorUtils.translateColorCodes(clanOwner.getClanPrefix() + "&r ");
+                if (configFile.getBoolean("clan-tags.prefix-add-brackets")){
+                    if (configFile.getBoolean("clan-tags.prefix-add-space-after")){
+                        return ColorUtils.translateColorCodes("[" + clanOwner.getClanPrefix() + "]&r ");
+                    }else {
+                        return ColorUtils.translateColorCodes("[" + clanOwner.getClanPrefix() + "]&r");
+                    }
                 }else {
-                    return ColorUtils.translateColorCodes(clanOwner.getClanPrefix() + "&r");
+                    if (configFile.getBoolean("clan-tags.prefix-add-space-after")){
+                        return ColorUtils.translateColorCodes(clanOwner.getClanPrefix() + "&r ");
+                    }else {
+                        return ColorUtils.translateColorCodes(clanOwner.getClanPrefix() + "&r");
+                    }
                 }
             }else if (clanMember != null){
-                if (configFile.getBoolean("clan-tags.prefix-add-space-after")){
-                    return ColorUtils.translateColorCodes(clanMember.getClanPrefix() + "&r ");
+                if (configFile.getBoolean("clan-tags.prefix-add-brackets")){
+                    if (configFile.getBoolean("clan-tags.prefix-add-space-after")){
+                        return ColorUtils.translateColorCodes("[" + clanMember.getClanPrefix() + "]&r ");
+                    }else {
+                        return ColorUtils.translateColorCodes("[" + clanMember.getClanPrefix() + "]&r");
+                    }
                 }else {
-                    return ColorUtils.translateColorCodes(clanMember.getClanPrefix() + "&r");
+                    if (configFile.getBoolean("clan-tags.prefix-add-space-after")){
+                        return ColorUtils.translateColorCodes(clanMember.getClanPrefix() + "&r ");
+                    }else {
+                        return ColorUtils.translateColorCodes(clanMember.getClanPrefix() + "&r");
+                    }
                 }
             }else {
                 return "";
@@ -128,6 +144,17 @@ public class PlayerClanExpansion extends PlaceholderExpansion {
             //%clansLite_playerPointBalance%
             if (clanPlayer != null){
                 return String.valueOf(clanPlayer.getPointBalance());
+            }else {
+                return "";
+            }
+        }
+
+        if (params.equalsIgnoreCase("clanPointBalance")){
+            //%clansLite_clanPointBalance%
+            if (clanOwner != null){
+                return String.valueOf(clanOwner.getClanPoints());
+            }else if (clanMember != null){
+                return String.valueOf(clanMember.getClanPoints());
             }else {
                 return "";
             }

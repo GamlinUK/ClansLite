@@ -31,6 +31,8 @@ incorrect-disband-command-usage: "&3Unrecognised argument please use &6/clanadmi
 clan-ownership-transfer-successful: "&3You successfully transferred your clan to &6%PLAYER%&3."
 clan-ownership-transfer-new-owner: "&6%OLDOWNER% &3has transferred ownership of &6%CLAN% &3to you."
 clan-ownership-transfer-failure-owner-offline: "&3Failed to transfer clan ownership to &6%PLAYER%&3!\n&3They may be offline."
+clan-ownership-transfer-failed-cannot-transfer-to-self: "&3Failed to transfer clan ownership to &6%PLAYER%!\n&3The specified player cannot be yourself!"
+clan-ownership-transfer-failed-target-in-clan: "&3Failed to transfer clan as the target is already in/owns a clan!"
 incorrect-clan-transfer-ownership-command-usage: "&3Unrecognised argument please use &6/clan transfer <player-name>&3."
 
 #Clan Invite Messages
@@ -94,12 +96,15 @@ clan-info-members-online: "\n&a%MEMBER%\n"
 clan-info-members-offline: "\n&c%MEMBER%&7&o(offline)\n"
 clan-info-allies-header: "\n\n&3Allied Clans:"
 clan-ally-members: "\n&a%ALLYCLAN%\n"
+clan-ally-members-not-found: "\n&aAlly not found\n"
 clan-info-enemies-header: "\n\n&3Enemy Clans:"
 clan-enemy-members: "\n&c%ENEMYCLAN%\n"
+clan-enemy-members-not-found: "\n&aEnemy not found\n"
 clan-pvp-status-enabled: "\n\n&3Friendly Fire: &a&oENABLED"
 clan-pvp-status-disabled: "\n\n&3Friendly Fire: &c&oDISABLED"
 clan-home-set-true: "\n\n&3Home Set: &a&oTRUE"
 clan-home-set-false: "\n\n&3Home Set: &c&oFALSE"
+clan-points-value: "\n\n&3Clan Points Balance: &a%POINTS%"
 clan-info-footer: "\n&7-----"
 not-in-clan: "&3You are not in a clan!"
 
@@ -160,15 +165,43 @@ failed-tp-not-in-clan: "&3You need to be in a clan first! Use &6/clan &3for deta
 #Clan Chat
 failed-must-be-in-clan: "&3You need to be in a clan first! Use &6/clan &3for details how."
 chat-cool-down-timer-wait: "&3Sorry, you can't use that again for another &6%TIMELEFT%&r &3seconds."
+chatspy-toggle-on: "&3Toggled Clan Chat spy &a&lON&3."
+chatspy-toggle-off: "&3Toggled Clan Chat spy &c&lOFF&3."
+
+#Clan & Player Points
+player-points-killer-non-enemy-received-success: "&3You killed &6%PLAYER% &3and won &6%POINTVALUE%&3 points!"
+player-points-killer-enemy-received-success: "&3You killed &6%PLAYER% &3,they were a clan enemy and you won &6%ENEMYPOINTVALUE%&3 points!"
+player-points-victim-non-enemy-withdrawn-success: "&3You died to &6%KILLER% &3and had &6%POINTVALUE% &3points withdrawn!"
+player-points-victim-enemy-withdrawn-success: "&3You died to &6%KILLER% &3,they were a clan enemy and you had &6%ENEMYPOINTVALUE% &3points withdrawn!"
+player-points-console-victim-point-withdraw-failed: "&6%VICTIM% &cdid not have enough points to remove when they were killed!"
+player-points-victim-withdraw-failed: "&3You did not have enough points to be withdrawn when you died!"
+player-points-list-command: "&3You currently have &6%POINTVALUE% &3points in your personal balance."
+clan-deposit-points-success: "&3You successfully deposited &6%POINTS% &3points into &6%CLAN%'s &3account."
+clan-deposit-points-failed: "&cFailed to deposit &6%POINTS% &cpoints into &6%CLAN%'s &caccount. &3You have insufficient points!"
+clan-deposit-points-invalid-point-amount: "&cPlease provide an amount to deposit!"
+clan-deposit-points-incorrect-command: "&cPlease provide a point value: &6/clan point deposit <amount>"
+clan-withdraw-points-success: "&3You successfully withdrew &6%POINTS% &3from &6%CLAN%'s &3into your account."
+clan-withdraw-points-failed: "&cFailed to withdraw &6%POINTS% &cfrom &6%CLAN%'s &caccount. &3Your clan has insufficient points!"
+clan-withdraw-points-invalid-point-amount: "&cPlease provide an amount to withdraw!"
+clan-withdraw-points-incorrect-command: "&cPlease provide a point value: &6/clan point withdraw <amount>"
+clan-points-failed-not-in-clan: "&3You need to be in a clan first! Use &6/clan &3for details how."
+
+#PlayerPoints command
+all-points-list-header: "&7----- &6All Player Points &7-----&r\n"
+all-points-list-entry: " &7>> &e%PLAYER%&7: &6%POINTVALUE%\n"
+all-points-list-footer: "&7----- &6All Player Points &7-----&r"
 
 #General Plugin Messages
 clan-must-be-owner: "&3You must be the clan owner to do this."
 function-disabled: "&3Sorry, that has been disabled. :("
-plugin-reload-successful: "&6ClansLite: &aThe configs have been reloaded!"
+no-permission: "&6ClansLite: &cSorry, you don't have permission to do that. :("
+plugin-reload-begin: "&6ClansLite: &aBeginning plugin reload..."
+plugin-reload-successful: "&6ClansLite: &aThe plugin has been successfully reloaded!"
 incorrect-command-usage: "&3Unrecognised argument please use &6/clan&3."
 player-only-command: "&4Sorry, that command can only be run by a player!"
 saving-clans-start: "&6ClansLite: Saving clans data..."
 save-completed: "&6ClansLite: &aClans saved!"
+save-failed-no-clans: "&6ClansLite: &cSkipping saving of clans as &c&lNO &cclans are stored in memory!"
 auto-save-started: "&6ClansLite: &aAuto save task has started."
 auto-save-complete: "&6ClansLite: &aSaved all Clans to file!"
 auto-save-failed: "&6ClansLite: &4Failed to save clans.yml to file!"
@@ -201,6 +234,7 @@ clan-command-incorrect-usage:
   line-13: "/clan enemy [add|remove] <clan-owner>"
   line-14: "/clan pvp"
   line-15: "/clan [sethome|delhome|home]"
+  line-16: "/clan points [deposit|withdraw] <amount>"
 
 #/clanadmin Command Responses
 clanadmin-command-incorrect-usage:

@@ -8,27 +8,35 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import xyz.gamlin.clans.Clans;
 import xyz.gamlin.clans.utils.ColorUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 public class JoinEvent implements Listener {
 
     FileConfiguration clansConfig = Clans.getPlugin().getConfig();
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+    List<UUID> notifiedPlayerUUID = new ArrayList<>();
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         if (player.hasPermission("clanslite.update")||player.hasPermission("clanslite.*")||player.isOp()) {
             if (clansConfig.getBoolean("plugin-update-notifications.enabled")){
-                new UpdateChecker(Clans.getPlugin(), 97163).getVersion(version -> {
-                    try {
-                        if (!(Clans.getPlugin().getDescription().getVersion().equalsIgnoreCase(version))) {
-                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("update-available.1")));
-                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("update-available.2")));
-                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("update-available.3")));
+                if (!notifiedPlayerUUID.contains(player.getUniqueId())){
+                    new UpdateChecker(97163).getVersion(version -> {
+                        try {
+                            if (!(Clans.getPlugin().getDescription().getVersion().equalsIgnoreCase(version))) {
+                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("update-available.1")));
+                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("update-available.2")));
+                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("update-available.3")));
+                                notifiedPlayerUUID.add(player.getUniqueId());
+                            }
+                        }catch (NullPointerException e){
+                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("Update-check-failure")));
                         }
-                    }catch (NullPointerException e){
-                        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("Update-check-failure")));
-                    }
-                });
+                    });
+                }
             }
         }
     }

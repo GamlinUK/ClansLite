@@ -1,6 +1,6 @@
 package xyz.gamlin.clans.listeners;
 
-import org.bukkit.Bukkit;
+import com.tcoded.folialib.wrapper.WrappedTask;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -39,8 +39,9 @@ public class MenuEvent implements Listener {
         InventoryHolder holder = event.getInventory().getHolder();
         if (holder instanceof Menu){
             if (((Menu) holder).getMenuName().equalsIgnoreCase(ColorUtils.translateColorCodes(guiConfig.getString("clan-list.name")))){
-                if (Bukkit.getScheduler().isCurrentlyRunning(ClanListGUI.taskID5)||Bukkit.getScheduler().isQueued(ClanListGUI.taskID5)){
-                    Bukkit.getScheduler().cancelTask(ClanListGUI.taskID5);
+                WrappedTask wrappedTask = ClanListGUI.task5;
+                if (!wrappedTask.isCancelled()){
+                    wrappedTask.cancel();
                     if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
                         logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aAuto refresh task cancelled"));
                     }

@@ -25,22 +25,43 @@ public class PlayerMessageEvent implements Listener {
         }
         else if (ClansStorageUtil.findClanByOwner(player) != null){
             Clan clan = ClansStorageUtil.findClanByOwner(player);
-            if (configFile.getBoolean("clan-tags.prefix-add-space-after")){
-                format = StringUtils.replace(format, clanMergeTag, ColorUtils.translateColorCodes(clan.getClanPrefix() + " &r"));
+            if (configFile.getBoolean("clan-tags.prefix-add-brackets")){
+                if (configFile.getBoolean("clan-tags.prefix-add-space-after")){
+                    format = StringUtils.replace(format, clanMergeTag, ColorUtils.translateColorCodes("[" + clan.getClanPrefix() + "] &r"));
+                }else {
+                    format = StringUtils.replace(format, clanMergeTag, ColorUtils.translateColorCodes("[" + clan.getClanPrefix() + "]&r"));
+                }
+                event.setFormat(format);
+                return;
             }else {
-                format = StringUtils.replace(format, clanMergeTag, ColorUtils.translateColorCodes(clan.getClanPrefix() + "&r"));
+                if (configFile.getBoolean("clan-tags.prefix-add-space-after")){
+                    format = StringUtils.replace(format, clanMergeTag, ColorUtils.translateColorCodes(clan.getClanPrefix() + " &r"));
+                }else {
+                    format = StringUtils.replace(format, clanMergeTag, ColorUtils.translateColorCodes(clan.getClanPrefix() + "&r"));
+                }
+                event.setFormat(format);
+                return;
             }
-            event.setFormat(format);
-            return;
+
         }else {
             Clan clan = ClansStorageUtil.findClanByPlayer(player);
-            if (configFile.getBoolean("clan-tags.prefix-add-space-after")){
-                format = StringUtils.replace(format, clanMergeTag, ColorUtils.translateColorCodes(clan.getClanPrefix() + " &r"));
+            if (configFile.getBoolean("clan-tags.prefix-add-brackets")){
+                if (configFile.getBoolean("clan-tags.prefix-add-space-after")){
+                    format = StringUtils.replace(format, clanMergeTag, ColorUtils.translateColorCodes("[" + clan.getClanPrefix() + "] &r"));
+                }else {
+                    format = StringUtils.replace(format, clanMergeTag, ColorUtils.translateColorCodes("[" + clan.getClanPrefix() + "]&r"));
+                }
+                event.setFormat(format);
+                return;
             }else {
-                format = StringUtils.replace(format, clanMergeTag, ColorUtils.translateColorCodes(clan.getClanPrefix() + "&r"));
+                if (configFile.getBoolean("clan-tags.prefix-add-space-after")){
+                    format = StringUtils.replace(format, clanMergeTag, ColorUtils.translateColorCodes(clan.getClanPrefix() + " &r"));
+                }else {
+                    format = StringUtils.replace(format, clanMergeTag, ColorUtils.translateColorCodes(clan.getClanPrefix() + "&r"));
+                }
+                event.setFormat(format);
+                return;
             }
-            event.setFormat(format);
-            return;
         }
         event.setFormat(format);
     }

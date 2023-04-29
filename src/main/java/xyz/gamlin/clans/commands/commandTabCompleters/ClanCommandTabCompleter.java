@@ -35,6 +35,8 @@ public class ClanCommandTabCompleter implements TabCompleter {
             arguments.add("sethome");
             arguments.add("delhome");
             arguments.add("home");
+            arguments.add("points deposit");
+            arguments.add("points withdraw");
         }
 
         List<String> result = new ArrayList<>();

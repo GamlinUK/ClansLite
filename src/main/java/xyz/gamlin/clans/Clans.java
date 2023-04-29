@@ -1,13 +1,14 @@
 package xyz.gamlin.clans;
 
+import com.rylinaux.plugman.api.PlugManAPI;
+import com.tcoded.folialib.FoliaLib;
+import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.geysermc.floodgate.api.FloodgateApi;
-import xyz.gamlin.clans.commands.ClanAdmin;
-import xyz.gamlin.clans.commands.ClanChatCommand;
-import xyz.gamlin.clans.commands.ClanCommand;
+import xyz.gamlin.clans.commands.*;
 import xyz.gamlin.clans.commands.commandTabCompleters.ClanAdminTabCompleter;
 import xyz.gamlin.clans.commands.commandTabCompleters.ClanCommandTabCompleter;
 import xyz.gamlin.clans.expansions.PlayerClanExpansion;
@@ -24,12 +25,14 @@ import xyz.gamlin.clans.utils.*;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 public final class Clans extends JavaPlugin {
 
     private final PluginDescriptionFile pluginInfo = getDescription();
     private final String pluginVersion = pluginInfo.getVersion();
+    private FoliaLib foliaLib = new FoliaLib(this);
     Logger logger = this.getLogger();
 
     private static Clans plugin;
@@ -71,6 +74,45 @@ public final class Clans extends JavaPlugin {
             logger.info(ColorUtils.translateColorCodes("&6ClansLite: &aA supported Minecraft version has been detected"));
             logger.info(ColorUtils.translateColorCodes("&6ClansLite: &6Continuing plugin startup"));
             logger.info(ColorUtils.translateColorCodes("&a-------------------------------------------"));
+        }
+
+        //Suggest PaperMC if not using
+        if (foliaLib.isUnsupported()||foliaLib.isSpigot()){
+            PaperLib.suggestPaper(this);
+        }
+
+        //Check if PlugManX is enabled
+        if (isPlugManXEnabled()){
+            if (!PlugManAPI.iDoNotWantToBeUnOrReloaded("ClansLite")){
+                logger.severe(ColorUtils.translateColorCodes("&c-------------------------------------------"));
+                logger.severe(ColorUtils.translateColorCodes("&c-------------------------------------------"));
+                logger.severe(ColorUtils.translateColorCodes("&4WARNING WARNING WARNING WARNING!"));
+                logger.severe(ColorUtils.translateColorCodes("&c-------------------------------------------"));
+                logger.severe(ColorUtils.translateColorCodes("&6ClansLite: &4You appear to be using an unsupported version of &d&lPlugManX"));
+                logger.severe(ColorUtils.translateColorCodes("&6ClansLite: &4Please &4&lDO NOT USE PLUGMANX TO LOAD/UNLOAD/RELOAD THIS PLUGIN!"));
+                logger.severe(ColorUtils.translateColorCodes("&6ClansLite: &4Please &4&lFULLY RESTART YOUR SERVER!"));
+                logger.severe(ColorUtils.translateColorCodes("&c-------------------------------------------"));
+                logger.severe(ColorUtils.translateColorCodes("&6ClansLite: &4This plugin &4&lHAS NOT &4been validated to use this version of PlugManX!"));
+                logger.severe(ColorUtils.translateColorCodes("&6ClansLite: &4&lNo official support will be given to you if you use this!"));
+                logger.severe(ColorUtils.translateColorCodes("&6ClansLite: &4&lUnless Loving11ish has explicitly agreed to help!"));
+                logger.severe(ColorUtils.translateColorCodes("&6ClansLite: &4Please add ClansLite to the ignored-plugins list in PlugManX's config.yml"));
+                logger.severe(ColorUtils.translateColorCodes("&c-------------------------------------------"));
+                logger.severe(ColorUtils.translateColorCodes("&6ClansLite: &6Continuing plugin startup"));
+                logger.severe(ColorUtils.translateColorCodes("&c-------------------------------------------"));
+                logger.severe(ColorUtils.translateColorCodes("&c-------------------------------------------"));
+            }else {
+                logger.info(ColorUtils.translateColorCodes("&a-------------------------------------------"));
+                logger.info(ColorUtils.translateColorCodes("&6ClansLite: &aSuccessfully hooked into PlugManX"));
+                logger.info(ColorUtils.translateColorCodes("&6ClansLite: &aSuccessfully added ClansLite to ignoredPlugins list."));
+                logger.info(ColorUtils.translateColorCodes("&6ClansLite: &6Continuing plugin startup"));
+                logger.info(ColorUtils.translateColorCodes("&a-------------------------------------------"));
+            }
+        }else {
+            logger.info(ColorUtils.translateColorCodes("-------------------------------------------"));
+            logger.info(ColorUtils.translateColorCodes("&6ClansLite: &cPlugManX not found!"));
+            logger.info(ColorUtils.translateColorCodes("&6ClansLite: &cDisabling PlugManX hook loader"));
+            logger.info(ColorUtils.translateColorCodes("&6ClansLite: &6Continuing plugin startup"));
+            logger.info(ColorUtils.translateColorCodes("-------------------------------------------"));
         }
 
         //Load the plugin configs
@@ -121,16 +163,20 @@ public final class Clans extends JavaPlugin {
         this.getCommand("clan").setExecutor(new ClanCommand());
         this.getCommand("clanadmin").setExecutor(new ClanAdmin());
         this.getCommand("cc").setExecutor(new ClanChatCommand());
+        this.getCommand("chatspy").setExecutor(new ClanChatSpyCommand());
+        this.getCommand("playerpoints").setExecutor(new PlayerPointsCommand());
 
         //Register the command tab completers
         this.getCommand("clan").setTabCompleter(new ClanCommandTabCompleter());
         this.getCommand("clanadmin").setTabCompleter(new ClanAdminTabCompleter());
+        this.getCommand("playerpoints").setTabCompleter(new PlayerPointsCommand());
 
         //Register the plugin events
         this.getServer().getPluginManager().registerEvents(new PlayerConnectionEvent(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerDisconnectEvent(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerMessageEvent(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerDamageEvent(), this);
+        this.getServer().getPluginManager().registerEvents(new PlayerKillEvent(), this);
         this.getServer().getPluginManager().registerEvents(new JoinEvent(), this);
         this.getServer().getPluginManager().registerEvents(new MenuEvent(), this);
 
@@ -138,7 +184,7 @@ public final class Clans extends JavaPlugin {
         ClanCommand.updateBannedTagsList();
 
         //Register PlaceHolderAPI hooks
-        if (Bukkit.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")){
+        if (Bukkit.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")||isPlaceholderAPIEnabled()){
             new PlayerClanExpansion().register();
             logger.info(ColorUtils.translateColorCodes("-------------------------------------------"));
             logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3PlaceholderAPI found!"));
@@ -152,7 +198,7 @@ public final class Clans extends JavaPlugin {
         }
 
         //Register FloodgateApi hooks
-        if (Bukkit.getServer().getPluginManager().isPluginEnabled("floodgate")){
+        if (Bukkit.getServer().getPluginManager().isPluginEnabled("floodgate")||isFloodgateEnabled()){
             floodgateApi = FloodgateApi.getInstance();
             logger.info(ColorUtils.translateColorCodes("-------------------------------------------"));
             logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3FloodgateApi found!"));
@@ -180,7 +226,7 @@ public final class Clans extends JavaPlugin {
         logger.info(ColorUtils.translateColorCodes("-------------------------------------------"));
 
         //Check for available updates
-        new UpdateChecker(this, 97163).getVersion(version -> {
+        new UpdateChecker(97163).getVersion(version -> {
             if (this.getDescription().getVersion().equalsIgnoreCase(version)) {
                 logger.info(ColorUtils.translateColorCodes(messagesFileManager.getMessagesConfig().getString("no-update-available.1")));
                 logger.info(ColorUtils.translateColorCodes(messagesFileManager.getMessagesConfig().getString("no-update-available.2")));
@@ -194,24 +240,24 @@ public final class Clans extends JavaPlugin {
 
         //Start auto save task
         if (getConfig().getBoolean("general.run-auto-save-task.enabled")){
-            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+            foliaLib.getImpl().runLaterAsync(new Runnable() {
                 @Override
                 public void run() {
                     TaskTimerUtils.runClansAutoSaveOne();
                     logger.info(ColorUtils.translateColorCodes(messagesFileManager.getMessagesConfig().getString("auto-save-started")));
                 }
-            },100L);
+            }, 5L, TimeUnit.SECONDS);
         }
 
         //Start auto invite clear task
         if (getConfig().getBoolean("general.run-auto-invite-wipe-task.enabled")){
-            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+            foliaLib.getImpl().runLaterAsync(new Runnable() {
                 @Override
                 public void run() {
                     TaskTimerUtils.runClanInviteClearOne();
                     logger.info(ColorUtils.translateColorCodes(messagesFileManager.getMessagesConfig().getString("auto-invite-wipe-started")));
                 }
-            },100L);
+            }, 5L, TimeUnit.SECONDS);
         }
     }
 
@@ -223,21 +269,48 @@ public final class Clans extends JavaPlugin {
         logger.info(ColorUtils.translateColorCodes("-------------------------------------------"));
         logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Plugin by: &b&lLoving11ish"));
         try {
-            if (Bukkit.getScheduler().isCurrentlyRunning(TaskTimerUtils.taskID1)||Bukkit.getScheduler().isQueued(TaskTimerUtils.taskID1)){
-                Bukkit.getScheduler().cancelTask(TaskTimerUtils.taskID1);
+            if (!TaskTimerUtils.task1.isCancelled()){
+                if (getConfig().getBoolean("general.developer-debug-mode.enabled")){
+                    logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aWrapped task: " + TaskTimerUtils.task1.toString()));
+                    logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aTimed task 1 canceled successfully"));
+                }
+                TaskTimerUtils.task1.cancel();
             }
-            if (Bukkit.getScheduler().isCurrentlyRunning(TaskTimerUtils.taskID2)||Bukkit.getScheduler().isQueued(TaskTimerUtils.taskID2)){
-                Bukkit.getScheduler().cancelTask(TaskTimerUtils.taskID2);
+            if (!TaskTimerUtils.task2.isCancelled()){
+                if (getConfig().getBoolean("general.developer-debug-mode.enabled")){
+                    logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aWrapped task: " + TaskTimerUtils.task2.toString()));
+                    logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aTimed task 2 canceled successfully"));
+                }
+                TaskTimerUtils.task2.cancel();
             }
-            if (Bukkit.getScheduler().isCurrentlyRunning(TaskTimerUtils.taskID3)||Bukkit.getScheduler().isQueued(TaskTimerUtils.taskID3)){
-                Bukkit.getScheduler().cancelTask(TaskTimerUtils.taskID3);
+            if (!TaskTimerUtils.task3.isCancelled()){
+                if (getConfig().getBoolean("general.developer-debug-mode.enabled")){
+                    logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aWrapped task: " + TaskTimerUtils.task3.toString()));
+                    logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aTimed task 3 canceled successfully"));
+                }
+                TaskTimerUtils.task3.cancel();
             }
-            if (Bukkit.getScheduler().isCurrentlyRunning(TaskTimerUtils.taskID4)||Bukkit.getScheduler().isQueued(TaskTimerUtils.taskID4)){
-                Bukkit.getScheduler().cancelTask(TaskTimerUtils.taskID4);
+            if (!TaskTimerUtils.task4.isCancelled()){
+                if (getConfig().getBoolean("general.developer-debug-mode.enabled")){
+                    logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aWrapped task: " + TaskTimerUtils.task4.toString()));
+                    logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aTimed task 4 canceled successfully"));
+                }
+                TaskTimerUtils.task4.cancel();
             }
-            if (Bukkit.getScheduler().isCurrentlyRunning(ClanListGUI.taskID5)||Bukkit.getScheduler().isQueued(ClanListGUI.taskID5)){
-                Bukkit.getScheduler().cancelTask(ClanListGUI.taskID5);
+            if (!ClanListGUI.task5.isCancelled()){
+                if (getConfig().getBoolean("general.developer-debug-mode.enabled")){
+                    logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aWrapped task: " + ClanListGUI.task5.toString()));
+                    logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aTimed task 5 canceled successfully"));
+                }
+                ClanListGUI.task5.cancel();
             }
+            if (foliaLib.isUnsupported()){
+                Bukkit.getScheduler().cancelTasks(this);
+                if (getConfig().getBoolean("general.developer-debug-mode.enabled")){
+                    logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aBukkit scheduler tasks canceled successfully"));
+                }
+            }
+            logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Background tasks have disabled successfully!"));
         }catch (Exception e){
             logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Background tasks have disabled successfully!"));
         }
@@ -271,6 +344,13 @@ public final class Clans extends JavaPlugin {
         logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Has been shutdown successfully"));
         logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Goodbye!"));
         logger.info(ColorUtils.translateColorCodes("-------------------------------------------"));
+
+        plugin = null;
+        floodgateApi = null;
+        messagesFileManager = null;
+        clansFileManager = null;
+        clanGUIFileManager = null;
+        usermapFileManager = null;
     }
 
     public static PlayerMenuUtility getPlayerMenuUtility(Player player) {
@@ -281,6 +361,57 @@ public final class Clans extends JavaPlugin {
             return playerMenuUtility;
         } else {
             return playerMenuUtilityMap.get(player);
+        }
+    }
+
+    public boolean isFloodgateEnabled() {
+        try {
+            Class.forName("org.geysermc.floodgate.api.FloodgateApi");
+            if (getConfig().getBoolean("general.developer-debug-mode.enabled")){
+                logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFound FloodgateApi class at:"));
+                logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &dorg.geysermc.floodgate.api.FloodgateApi"));
+            }
+            return true;
+        } catch (ClassNotFoundException e) {
+            if (getConfig().getBoolean("general.developer-debug-mode.enabled")){
+                logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aCould not find FloodgateApi class at:"));
+                logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &dorg.geysermc.floodgate.api.FloodgateApi"));
+            }
+            return false;
+        }
+    }
+
+    public boolean isPlugManXEnabled() {
+        try {
+            Class.forName("com.rylinaux.plugman.PlugMan");
+            if (getConfig().getBoolean("general.developer-debug-mode.enabled")){
+                logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFound PlugManX main class at:"));
+                logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &dcom.rylinaux.plugman.PlugMan"));
+            }
+            return true;
+        }catch (ClassNotFoundException e){
+            if (getConfig().getBoolean("general.developer-debug-mode.enabled")){
+                logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aCould not find PlugManX main class at:"));
+                logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &dcom.rylinaux.plugman.PlugMan"));
+            }
+            return false;
+        }
+    }
+
+    public boolean isPlaceholderAPIEnabled() {
+        try {
+            Class.forName("me.clip.placeholderapi.PlaceholderAPIPlugin");
+            if (getConfig().getBoolean("general.developer-debug-mode.enabled")){
+                logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFound PlaceholderAPI main class at:"));
+                logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &dme.clip.placeholderapi.PlaceholderAPIPlugin"));
+            }
+            return true;
+        }catch (ClassNotFoundException e){
+            if (getConfig().getBoolean("general.developer-debug-mode.enabled")){
+                logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aCould not find PlaceholderAPI main class at:"));
+                logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &dme.clip.placeholderapi.PlaceholderAPIPlugin"));
+            }
+            return false;
         }
     }
 

@@ -41,51 +41,54 @@ public class ClanInviteSubCommand {
                             sender.sendMessage(playerAlreadyInClan);
                         } else {
                             Clan clan = ClansStorageUtil.findClanByOwner(player);
-                            if (!clansConfig.getBoolean("clan-size.tiered-clan-system.enabled")){
-                                if (clan.getClanMembers().size() >= clansConfig.getInt("clan-size.default-max-clan-size")) {
-                                    int maxSize = clansConfig.getInt("clan-size.default-max-clan-size");
-                                    player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-max-size-reached")).replace("%LIMIT%", String.valueOf(maxSize)));
-                                    return true;
-                                }
-                            }else {
-                                if (player.hasPermission("clanslite.maxclansize.group6")){
-                                    if (clan.getClanMembers().size() >= clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-6")){
-                                        int g6MaxSize = clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-6");
-                                        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-max-size-reached")).replace("%LIMIT%", String.valueOf(g6MaxSize)));
+                            if (!(player.hasPermission("clanslite.maxclansize.*")||player.hasPermission("clanslite.*")||player.isOp())){
+                                if (!clansConfig.getBoolean("clan-size.tiered-clan-system.enabled")){
+                                    if (clan.getClanMembers().size() >= clansConfig.getInt("clan-size.default-max-clan-size")) {
+                                        int maxSize = clansConfig.getInt("clan-size.default-max-clan-size");
+                                        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-max-size-reached")).replace("%LIMIT%", String.valueOf(maxSize)));
                                         return true;
                                     }
-                                }else if (player.hasPermission("clanslite.maxclansize.group5")){
-                                    if (clan.getClanMembers().size() >= clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-2")){
-                                        int g5MaxSize = clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-5");
-                                        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-max-size-reached")).replace("%LIMIT%", String.valueOf(g5MaxSize)));
-                                        return true;
-                                    }
-                                }else if (player.hasPermission("clanslite.maxclansize.group4")) {
-                                    if (clan.getClanMembers().size() >= clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-4")) {
-                                        int g4MaxSize = clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-4");
-                                        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-max-size-reached")).replace("%LIMIT%", String.valueOf(g4MaxSize)));
-                                        return true;
-                                    }
-                                }else if (player.hasPermission("clanslite.maxclansize.group3")) {
-                                    if (clan.getClanMembers().size() >= clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-4")) {
-                                        int g3MaxSize = clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-3");
-                                        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-max-size-reached")).replace("%LIMIT%", String.valueOf(g3MaxSize)));
-                                        return true;
-                                    }
-                                }else if (player.hasPermission("clanslite.maxclansize.group2")) {
-                                    if (clan.getClanMembers().size() >= clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-2")) {
-                                        int g2MaxSize = clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-2");
-                                        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-max-size-reached")).replace("%LIMIT%", String.valueOf(g2MaxSize)));
-                                        return true;
-                                    }
-                                }else if (player.hasPermission("clanslite.maxclansize.group1")) {
-                                    if (clan.getClanMembers().size() >= clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-1")) {
-                                        int g1MaxSize = clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-1");
-                                        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-max-size-reached")).replace("%LIMIT%", String.valueOf(g1MaxSize)));
-                                        return true;
+                                }else {
+                                    if (player.hasPermission("clanslite.maxclansize.group6")){
+                                        if (clan.getClanMembers().size() >= clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-6")){
+                                            int g6MaxSize = clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-6");
+                                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-max-size-reached")).replace("%LIMIT%", String.valueOf(g6MaxSize)));
+                                            return true;
+                                        }
+                                    }else if (player.hasPermission("clanslite.maxclansize.group5")){
+                                        if (clan.getClanMembers().size() >= clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-2")){
+                                            int g5MaxSize = clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-5");
+                                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-max-size-reached")).replace("%LIMIT%", String.valueOf(g5MaxSize)));
+                                            return true;
+                                        }
+                                    }else if (player.hasPermission("clanslite.maxclansize.group4")) {
+                                        if (clan.getClanMembers().size() >= clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-4")) {
+                                            int g4MaxSize = clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-4");
+                                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-max-size-reached")).replace("%LIMIT%", String.valueOf(g4MaxSize)));
+                                            return true;
+                                        }
+                                    }else if (player.hasPermission("clanslite.maxclansize.group3")) {
+                                        if (clan.getClanMembers().size() >= clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-4")) {
+                                            int g3MaxSize = clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-3");
+                                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-max-size-reached")).replace("%LIMIT%", String.valueOf(g3MaxSize)));
+                                            return true;
+                                        }
+                                    }else if (player.hasPermission("clanslite.maxclansize.group2")) {
+                                        if (clan.getClanMembers().size() >= clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-2")) {
+                                            int g2MaxSize = clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-2");
+                                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-max-size-reached")).replace("%LIMIT%", String.valueOf(g2MaxSize)));
+                                            return true;
+                                        }
+                                    }else if (player.hasPermission("clanslite.maxclansize.group1")) {
+                                        if (clan.getClanMembers().size() >= clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-1")) {
+                                            int g1MaxSize = clansConfig.getInt("clan-size.tiered-clan-system.permission-group-list.group-1");
+                                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-max-size-reached")).replace("%LIMIT%", String.valueOf(g1MaxSize)));
+                                            return true;
+                                        }
                                     }
                                 }
                             }
+
 
                             if (Clans.getFloodgateApi() != null){
                                 if (Clans.bedrockPlayers.containsKey(invitedPlayer)){

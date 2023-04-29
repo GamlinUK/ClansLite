@@ -1,5 +1,6 @@
 package xyz.gamlin.clans.commands.clanSubCommands;
 
+import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -7,8 +8,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import xyz.gamlin.clans.Clans;
-import xyz.gamlin.clans.api.events.ClanHomePreTeleportEvent;
-import xyz.gamlin.clans.api.events.ClanHomeTeleportEvent;
+import xyz.gamlin.clans.api.ClanHomePreTeleportEvent;
+import xyz.gamlin.clans.api.ClanHomeTeleportEvent;
 import xyz.gamlin.clans.models.Clan;
 import xyz.gamlin.clans.utils.ClansStorageUtil;
 import xyz.gamlin.clans.utils.ColorUtils;
@@ -59,7 +60,7 @@ public class ClanHomeSubCommand {
                                         if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
                                             logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanHomeTeleportEvent"));
                                         }
-                                        player.teleport(location);
+                                        PaperLib.teleportAsync(player, location);
                                         player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("successfully-teleported-to-home")));
                                     }
                                 }else {
@@ -68,7 +69,7 @@ public class ClanHomeSubCommand {
                                     if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
                                         logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanHomeTeleportEvent"));
                                     }
-                                    player.teleport(location);
+                                    PaperLib.teleportAsync(player, location);
                                     player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("successfully-teleported-to-home")));
                                 }
                             }else {
@@ -78,7 +79,7 @@ public class ClanHomeSubCommand {
                                 if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
                                     logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanHomeTeleportEvent"));
                                 }
-                                player.teleport(location);
+                                PaperLib.teleportAsync(player, location);
                                 player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("successfully-teleported-to-home")));
                             }
                         }else {
@@ -87,7 +88,7 @@ public class ClanHomeSubCommand {
                             if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
                                 logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanHomeTeleportEvent"));
                             }
-                            player.teleport(location);
+                            PaperLib.teleportAsync(player, location);
                             player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("successfully-teleported-to-home")));
                         }
                     }else {
@@ -121,7 +122,7 @@ public class ClanHomeSubCommand {
                                         if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
                                             logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanHomeTeleportEvent"));
                                         }
-                                        player.teleport(location);
+                                        PaperLib.teleportAsync(player, location);
                                         player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("successfully-teleported-to-home")));
                                     }
                                 }else {
@@ -130,7 +131,7 @@ public class ClanHomeSubCommand {
                                     if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
                                         logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanHomeTeleportEvent"));
                                     }
-                                    player.teleport(location);
+                                    PaperLib.teleportAsync(player, location);
                                     player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("successfully-teleported-to-home")));
                                 }
                             }else {
@@ -140,7 +141,7 @@ public class ClanHomeSubCommand {
                                 if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
                                     logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanHomeTeleportEvent"));
                                 }
-                                player.teleport(location);
+                                PaperLib.teleportAsync(player, location);
                                 player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("successfully-teleported-to-home")));
                             }
                         }else {
@@ -149,7 +150,7 @@ public class ClanHomeSubCommand {
                             if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
                                 logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanHomeTeleportEvent"));
                             }
-                            player.teleport(location);
+                            PaperLib.teleportAsync(player, location);
                             player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("successfully-teleported-to-home")));
                         }
                     }else {

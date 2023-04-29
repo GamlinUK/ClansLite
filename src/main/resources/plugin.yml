@@ -2,29 +2,30 @@ name: ClansLite
 version: '${project.version}'
 main: xyz.gamlin.clans.Clans
 api-version: 1.13
+folia-supported: true
 prefix: ClansLite
 authors: [ Loving11ish, GameKuchen ]
 description: A simple and lightweight Clans plugin for Minecraft.
 website: https://www.spigotmc.org/resources/clanslite.97163/
-softdepend: [PlaceholderAPI]
+softdepend: [ PlaceholderAPI, PlugManX ]
 commands:
   clan:
     description: Create, delete and manage clans!
-    usage: "Usage: /clan [create|disband|invite|kick|info|list|prefix|transfer|ally|enemy|sethome|delhome|home]"
+    usage: "Usage: /clan [create|disband|invite|kick|info|list|prefix|transfer|ally|enemy|sethome|delhome|home|points]"
     permission: clanslite.clan
     aliases:
       - clans
       - c
       - cl
   clanadmin:
-    description: Admin commands for clans
+    description: Admin commands for clans.
     usage: "Usage: /clanadmin [save|reload|about]"
     permission: clanslite.admin
     aliases:
       - ca
       - cla
   cc:
-    description: Send a message to your clan members only
+    description: Send a message to your clan members only.
     usage: "Usage: /cc <message>"
     permission: clanslite.clan
     aliases:
@@ -32,14 +33,41 @@ commands:
       - clanc
       - cchat
       - chat
+  chatspy:
+    description: Allows admins to see ALL clan chat messages.
+    usage: "Usage: /chatspy"
+    permission: clanslite.chat.spy
+    aliases:
+      - cs
+      - ccs
+      - clanchatspy
+      - spy
+  playerpoints:
+    description: Displays a players point balance or displays all players points balances.
+    usage: "/playerpoint {listall}"
+    permission: clanslite.clan
+    aliases:
+      - pp
+      - points
+      - ppoints
+
 permissions:
   clanslite.clan:
     default: true
   clanslite.maxclansize.group1:
     default: true
-  clanslite.clanadmin:
+  clanslite.*:
     default: op
-  clanslite.update:
-    default: op
-  clanslite.bypass:
-    default: op
+    children:
+      clanslite.clanadmin:
+        children:
+          clanslite.chat.spy:
+            default: op
+          clanslite.update:
+            default: op
+          clanslite.bypass:
+            default: op
+          clanslite.maxclansize.*:
+            default: op
+          clanslite.points.listall:
+            default: op

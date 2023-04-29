@@ -1,22 +1,25 @@
 package xyz.gamlin.clans.utils;
 
-import org.bukkit.Bukkit;
+import com.tcoded.folialib.FoliaLib;
+import com.tcoded.folialib.wrapper.WrappedTask;
 import xyz.gamlin.clans.Clans;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 public class TaskTimerUtils {
 
     static Logger logger = Clans.getPlugin().getLogger();
+    static FoliaLib foliaLib = new FoliaLib(Clans.getPlugin());
 
-    public static int taskID1;
-    public static int taskID2;
-    public static int taskID3;
-    public static int taskID4;
+    public static WrappedTask task1;
+    public static WrappedTask task2;
+    public static WrappedTask task3;
+    public static WrappedTask task4;
 
     public static void runClansAutoSaveOne(){
-        taskID1 = Bukkit.getScheduler().scheduleSyncRepeatingTask(Clans.getPlugin(Clans.class), new Runnable() {
+        task1 = foliaLib.getImpl().runTimerAsync(new Runnable() {
             int time = 900;
             @Override
             public void run() {
@@ -31,18 +34,18 @@ public class TaskTimerUtils {
                         e.printStackTrace();
                     }
                     runClansAutoSaveTwo();
-                    Bukkit.getScheduler().cancelTask(taskID1);
+                    task1.cancel();
                     return;
                 }
                 else {
                     time --;
                 }
             }
-        },0, 20);
+        }, 0L, 1L, TimeUnit.SECONDS);
     }
 
     public static void runClansAutoSaveTwo(){
-        taskID2 = Bukkit.getScheduler().scheduleSyncRepeatingTask(Clans.getPlugin(Clans.class), new Runnable() {
+        task2 = foliaLib.getImpl().runTimerAsync(new Runnable() {
             int time = 900;
             @Override
             public void run() {
@@ -57,18 +60,18 @@ public class TaskTimerUtils {
                         e.printStackTrace();
                     }
                     runClansAutoSaveOne();
-                    Bukkit.getScheduler().cancelTask(taskID2);
+                    task2.cancel();
                     return;
                 }
                 else {
                     time --;
                 }
             }
-        },0, 20);
+        }, 0L, 1L, TimeUnit.SECONDS);
     }
 
     public static void runClanInviteClearOne(){
-        taskID3 = Bukkit.getScheduler().scheduleSyncRepeatingTask(Clans.getPlugin(Clans.class), new Runnable() {
+        task3 = foliaLib.getImpl().runTimerAsync(new Runnable() {
             int time = 900;
             @Override
             public void run() {
@@ -82,17 +85,17 @@ public class TaskTimerUtils {
                         logger.info(ColorUtils.translateColorCodes(Clans.getPlugin().messagesFileManager.getMessagesConfig().getString("invite-wipe-failed")));
                     }
                     runClanInviteClearTwo();
-                    Bukkit.getScheduler().cancelTask(taskID3);
+                    task3.cancel();
                     return;
                 }else {
                     time --;
                 }
             }
-        }, 0, 20);
+        }, 0L, 1L, TimeUnit.SECONDS);
     }
 
     public static void runClanInviteClearTwo(){
-        taskID4 = Bukkit.getScheduler().scheduleSyncRepeatingTask(Clans.getPlugin(Clans.class), new Runnable() {
+        task4 = foliaLib.getImpl().runTimerAsync(new Runnable() {
             int time = 900;
             @Override
             public void run() {
@@ -106,12 +109,12 @@ public class TaskTimerUtils {
                         logger.info(ColorUtils.translateColorCodes(Clans.getPlugin().messagesFileManager.getMessagesConfig().getString("invite-wipe-failed")));
                     }
                     runClanInviteClearOne();
-                    Bukkit.getScheduler().cancelTask(taskID4);
+                    task4.cancel();
                     return;
                 }else {
                     time --;
                 }
             }
-        }, 0, 20);
+        }, 0L, 1L, TimeUnit.SECONDS);
     }
 }
