@@ -20,6 +20,8 @@ public class PlayerMessageEvent implements Listener {
         String clanMergeTag = "{CLAN}";
         Player player = event.getPlayer();
         String format = event.getFormat();
+        String openBracket = configFile.getString("clan-tags.brackets-opening");
+        String closeBracket = configFile.getString("clan-tags.brackets-closing");
         if (ClansStorageUtil.findClanByPlayer(player) == null){
             format = StringUtils.replace(format, clanMergeTag, "");
         }
@@ -27,9 +29,9 @@ public class PlayerMessageEvent implements Listener {
             Clan clan = ClansStorageUtil.findClanByOwner(player);
             if (configFile.getBoolean("clan-tags.prefix-add-brackets")){
                 if (configFile.getBoolean("clan-tags.prefix-add-space-after")){
-                    format = StringUtils.replace(format, clanMergeTag, ColorUtils.translateColorCodes("[" + clan.getClanPrefix() + "] &r"));
+                    format = StringUtils.replace(format, clanMergeTag, ColorUtils.translateColorCodes(openBracket + clan.getClanPrefix() + closeBracket + "&r "));
                 }else {
-                    format = StringUtils.replace(format, clanMergeTag, ColorUtils.translateColorCodes("[" + clan.getClanPrefix() + "]&r"));
+                    format = StringUtils.replace(format, clanMergeTag, ColorUtils.translateColorCodes(openBracket + clan.getClanPrefix() + closeBracket + "&r"));
                 }
                 event.setFormat(format);
                 return;
@@ -47,9 +49,9 @@ public class PlayerMessageEvent implements Listener {
             Clan clan = ClansStorageUtil.findClanByPlayer(player);
             if (configFile.getBoolean("clan-tags.prefix-add-brackets")){
                 if (configFile.getBoolean("clan-tags.prefix-add-space-after")){
-                    format = StringUtils.replace(format, clanMergeTag, ColorUtils.translateColorCodes("[" + clan.getClanPrefix() + "] &r"));
+                    format = StringUtils.replace(format, clanMergeTag, ColorUtils.translateColorCodes(openBracket + clan.getClanPrefix() + closeBracket + "&r "));
                 }else {
-                    format = StringUtils.replace(format, clanMergeTag, ColorUtils.translateColorCodes("[" + clan.getClanPrefix() + "]&r"));
+                    format = StringUtils.replace(format, clanMergeTag, ColorUtils.translateColorCodes(openBracket + clan.getClanPrefix() + closeBracket + "&r"));
                 }
                 event.setFormat(format);
                 return;

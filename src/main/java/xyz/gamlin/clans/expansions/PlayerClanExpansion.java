@@ -52,12 +52,14 @@ public class PlayerClanExpansion extends PlaceholderExpansion {
 
         if (params.equalsIgnoreCase("clanPrefix")){
             //%clansLite_clanPrefix%
+            String openBracket = configFile.getString("clan-tags.brackets-opening");
+            String closeBracket = configFile.getString("clan-tags.brackets-closing");
             if (clanOwner != null){
                 if (configFile.getBoolean("clan-tags.prefix-add-brackets")){
                     if (configFile.getBoolean("clan-tags.prefix-add-space-after")){
-                        return ColorUtils.translateColorCodes("[" + clanOwner.getClanPrefix() + "]&r ");
+                        return ColorUtils.translateColorCodes(openBracket + clanOwner.getClanPrefix() + closeBracket +"&r ");
                     }else {
-                        return ColorUtils.translateColorCodes("[" + clanOwner.getClanPrefix() + "]&r");
+                        return ColorUtils.translateColorCodes(openBracket + clanOwner.getClanPrefix() + closeBracket +"&r");
                     }
                 }else {
                     if (configFile.getBoolean("clan-tags.prefix-add-space-after")){
@@ -69,9 +71,9 @@ public class PlayerClanExpansion extends PlaceholderExpansion {
             }else if (clanMember != null){
                 if (configFile.getBoolean("clan-tags.prefix-add-brackets")){
                     if (configFile.getBoolean("clan-tags.prefix-add-space-after")){
-                        return ColorUtils.translateColorCodes("[" + clanMember.getClanPrefix() + "]&r ");
+                        return ColorUtils.translateColorCodes(openBracket + clanMember.getClanPrefix() + closeBracket +"&r ");
                     }else {
-                        return ColorUtils.translateColorCodes("[" + clanMember.getClanPrefix() + "]&r");
+                        return ColorUtils.translateColorCodes(openBracket + clanMember.getClanPrefix() + closeBracket +"&r");
                     }
                 }else {
                     if (configFile.getBoolean("clan-tags.prefix-add-space-after")){

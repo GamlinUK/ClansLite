@@ -26,6 +26,9 @@ clan-tags:
   prefix-add-space-after: true
   #Add `[]` characters before and after the clan prefix in the chat. [Default value: false]
   prefix-add-brackets: false
+  #Below is how the above brackets should appear.
+  brackets-opening: "&f["
+  brackets-closing: "&f]"
 
 clan-size:
   #Set the default maximum amount of members that can join a players' clan. [Default value: 8]
@@ -35,8 +38,8 @@ clan-size:
     #Enable the tiered system use. [Default value: false]
     enabled: false
     permission-group-list:
-      group-1: 4 #Perm: 'clanslite.maxclansize.group1' [This perm is given by default]
-      group-2: 8 #Perm: 'clanslite.maxclansize.group2'
+      group-1: 4  #Perm: 'clanslite.maxclansize.group1' [This perm is given by default]
+      group-2: 8  #Perm: 'clanslite.maxclansize.group2'
       group-3: 12 #Perm: 'clanslite.maxclansize.group3'
       group-4: 16 #Perm: 'clanslite.maxclansize.group4'
       group-5: 20 #Perm: 'clanslite.maxclansize.group5'
