@@ -50,10 +50,11 @@ public class PlayerKillEvent implements Listener {
                             }
                         }
                         UsermapStorageUtil.addPointsToOnlinePlayer(killer, nonEnemyPointValue);
-                        firePlayerPointsAwardedEvent(killer, killer, victim, null, null, nonEnemyPointValue, false);
-                        if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                            logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired PlayerPointsAwardedEvent"));
-                        }
+                        //TODO -> fix this non clan event firing!
+//                        firePlayerPointsAwardedEvent(killer, killer, victim, null, null, nonEnemyPointValue, false);
+//                        if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
+//                            logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired PlayerPointsAwardedEvent"));
+//                        }
                     }
 
                     else if (ClansStorageUtil.findClanByOwner(killer) != null || ClansStorageUtil.findClanByOwner(victim) != null){

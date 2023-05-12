@@ -6,7 +6,7 @@
 
     <groupId>xyz.gamlin</groupId>
     <artifactId>ClansLite</artifactId>
-    <version>1.3.9-BETA-04</version>
+    <version>1.3.9-BETA-05</version>
     <packaging>jar</packaging>
 
     <name>ClansLite</name>
@@ -38,11 +38,11 @@
                 <relocations>
                     <relocation>
                         <pattern>io.papermc.lib</pattern>
-                        <shadedPattern>xyz.gamlin.clans.Clans.paperlib</shadedPattern> <!-- Replace this -->
+                        <shadedPattern>xyz.gamlin.clans.paperlib</shadedPattern> <!-- Replace this -->
                     </relocation>
                     <relocation>
                         <pattern>com.tcoded.folialib</pattern>
-                        <shadedPattern>xyz.gamlin.clans.Clans.folialib</shadedPattern>
+                        <shadedPattern>xyz.gamlin.clans.folialib</shadedPattern>
                     </relocation>
                 </relocations>
             </configuration>
