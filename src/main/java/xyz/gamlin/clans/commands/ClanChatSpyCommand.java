@@ -26,15 +26,13 @@ public class ClanChatSpyCommand implements CommandExecutor {
                     }else {
                         player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("chatspy-toggle-off")));
                     }
-                    return true;
                 }else {
                     player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("no-permission")));
-                    return true;
                 }
             }else {
                 player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("function-disabled")));
-                return true;
             }
+            return true;
         }
         return true;
     }

@@ -25,6 +25,8 @@ public class ClanHomeSubCommand {
     Logger logger = Clans.getPlugin().getLogger();
     private static final String TIME_LEFT = "%TIMELEFT%";
 
+    private static ClanHomePreTeleportEvent homePreTeleportEvent = null;
+
     HashMap<UUID, Long> homeCoolDownTimer = new HashMap<>();
 
     public boolean tpClanHomeSubCommand(CommandSender sender) {
@@ -38,6 +40,12 @@ public class ClanHomeSubCommand {
                         fireClanHomePreTPEvent(player, clanByOwner);
                         if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
                             logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanHomePreTPEvent"));
+                        }
+                        if (homePreTeleportEvent.isCancelled()){
+                            if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
+                                logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aClanHomePreTPEvent cancelled by external source"));
+                            }
+                            return true;
                         }
                         World world = Bukkit.getWorld(clanByOwner.getClanHomeWorld());
                         double x = clanByOwner.getClanHomeX();
@@ -99,6 +107,12 @@ public class ClanHomeSubCommand {
                     fireClanHomePreTPEvent(player, clanByPlayer);
                     if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
                         logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanHomePreTPEvent"));
+                    }
+                    if (homePreTeleportEvent.isCancelled()){
+                        if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
+                            logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aClanHomePreTPEvent cancelled by external source"));
+                        }
+                        return true;
                     }
                     if (clanByPlayer.getClanHomeWorld() != null){
                         World world = Bukkit.getWorld(clanByPlayer.getClanHomeWorld());
@@ -171,6 +185,7 @@ public class ClanHomeSubCommand {
     private static void fireClanHomePreTPEvent(Player player, Clan clan) {
         ClanHomePreTeleportEvent clanHomePreTeleportEvent = new ClanHomePreTeleportEvent(player, clan);
         Bukkit.getPluginManager().callEvent(clanHomePreTeleportEvent);
+        homePreTeleportEvent = clanHomePreTeleportEvent;
     }
 
     private static void fireClanHomeTeleportEvent(Player player, Clan clan, Location homeLocation, Location tpFromLocation) {
