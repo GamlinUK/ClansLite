@@ -86,6 +86,25 @@ protections:
     pvp-command-enabled: true
     #Enable the ability for a player to bypass the pvp protection using 'clanslite.bypass.pvp'. [Default value: true]
     enable-bypass-permission: true
+  chests:
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+    #THIS FEATURE IS COMING SOON!! IT IS CURRENTLY DISABLED!! PLEASE WAIT FOR THE NEXT UPDATE!!
+
+    ##THIS FEATURE IS EXTREMELY EXPERIMENTAL CURRENTLY!##
+    ##USE WITH CAUTION AND FREQUENT BACKUPS!##
+    #Globaly enable the clan protected chests system. [Default value: false]
+    enabled: false
+    #Enable the ability for a player to bypass the chest protection using 'clanslite.bypass.chests'. [Default value: true]
+    enable-bypass-permission: true
+    #Allow protected chests to be broken by TNT explosions? [Default value: true]
+    enable-TNT-destruction: true
+    #Allow protected chests to be broken by Creeper explosions? [Default value: true]
+    enable-creeper-destruction: true
+    #Set the value of clan points required to purchase a new protected chest. [Default value: 250]
+    clan-points-purchase-value: 250
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+    #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
 #Clan & Player Points
 points:

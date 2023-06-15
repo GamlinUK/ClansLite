@@ -5,10 +5,12 @@ import com.tcoded.folialib.FoliaLib;
 import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.geysermc.floodgate.api.FloodgateApi;
 import xyz.gamlin.clans.commands.*;
+import xyz.gamlin.clans.commands.commandTabCompleters.ChestCommandTabCompleter;
 import xyz.gamlin.clans.commands.commandTabCompleters.ClanAdminTabCompleter;
 import xyz.gamlin.clans.commands.commandTabCompleters.ClanCommandTabCompleter;
 import xyz.gamlin.clans.expansions.PlayerClanExpansion;
@@ -55,8 +57,9 @@ public final class Clans extends JavaPlugin {
         if (!(Bukkit.getServer().getVersion().contains("1.13")||Bukkit.getServer().getVersion().contains("1.14")||
                 Bukkit.getServer().getVersion().contains("1.15")||Bukkit.getServer().getVersion().contains("1.16")||
                 Bukkit.getServer().getVersion().contains("1.17")||Bukkit.getServer().getVersion().contains("1.18")||
-                Bukkit.getServer().getVersion().contains("1.19"))){
+                Bukkit.getServer().getVersion().contains("1.19")||Bukkit.getServer().getVersion().contains("1.20"))){
             logger.warning(ColorUtils.translateColorCodes("&4-------------------------------------------"));
+            logger.warning(ColorUtils.translateColorCodes("&6ClansLite: &4Your server version is: " + Bukkit.getServer().getVersion()));
             logger.warning(ColorUtils.translateColorCodes("&6ClansLite: &4This plugin is only supported on the Minecraft versions listed below:"));
             logger.warning(ColorUtils.translateColorCodes("&6ClansLite: &41.13.x"));
             logger.warning(ColorUtils.translateColorCodes("&6ClansLite: &41.14.x"));
@@ -65,6 +68,7 @@ public final class Clans extends JavaPlugin {
             logger.warning(ColorUtils.translateColorCodes("&6ClansLite: &41.17.x"));
             logger.warning(ColorUtils.translateColorCodes("&6ClansLite: &41.18.x"));
             logger.warning(ColorUtils.translateColorCodes("&6ClansLite: &41.19.x"));
+            logger.warning(ColorUtils.translateColorCodes("&6ClansLite: &41.20.x"));
             logger.warning(ColorUtils.translateColorCodes("&6ClansLite: &4Is now disabling!"));
             logger.warning(ColorUtils.translateColorCodes("&4-------------------------------------------"));
             Bukkit.getPluginManager().disablePlugin(this);
@@ -72,6 +76,7 @@ public final class Clans extends JavaPlugin {
         }else {
             logger.info(ColorUtils.translateColorCodes("&a-------------------------------------------"));
             logger.info(ColorUtils.translateColorCodes("&6ClansLite: &aA supported Minecraft version has been detected"));
+            logger.info(ColorUtils.translateColorCodes("&6ClansLite: &4Your server version is: " + Bukkit.getServer().getVersion()));
             logger.info(ColorUtils.translateColorCodes("&6ClansLite: &6Continuing plugin startup"));
             logger.info(ColorUtils.translateColorCodes("&a-------------------------------------------"));
         }
@@ -130,33 +135,47 @@ public final class Clans extends JavaPlugin {
         //Load clans.yml
         this.clansFileManager = new ClansFileManager();
         clansFileManager.ClansFileManager(this);
-        if (clansFileManager.getClansConfig().contains("clans.data")){
-            try {
-                ClansStorageUtil.restoreClans();
-            } catch (IOException e) {
-                logger.severe(ColorUtils.translateColorCodes("&6ClansLite: &4Failed to load data from clans.yml!"));
-                logger.severe(ColorUtils.translateColorCodes("&6ClansLite: &4See below for errors!"));
-                logger.severe(ColorUtils.translateColorCodes("&6ClansLite: &4Disabling Plugin!"));
-                e.printStackTrace();
-                Bukkit.getPluginManager().disablePlugin(this);
-                return;
+        if (clansFileManager != null){
+            if (clansFileManager.getClansConfig().contains("clans.data")){
+                try {
+                    ClansStorageUtil.restoreClans();
+                } catch (IOException e) {
+                    logger.severe(ColorUtils.translateColorCodes("&6ClansLite: &4Failed to load data from clans.yml!"));
+                    logger.severe(ColorUtils.translateColorCodes("&6ClansLite: &4See below for errors!"));
+                    logger.severe(ColorUtils.translateColorCodes("&6ClansLite: &4Disabling Plugin!"));
+                    e.printStackTrace();
+                    Bukkit.getPluginManager().disablePlugin(this);
+                    return;
+                }
             }
+        }else {
+            logger.severe(ColorUtils.translateColorCodes("&6ClansLite: &4Failed to load data from clans.yml!"));
+            logger.severe(ColorUtils.translateColorCodes("&6ClansLite: &4Disabling Plugin!"));
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
         }
 
         //Load usermap.yml
         this.usermapFileManager = new UsermapFileManager();
         usermapFileManager.UsermapFileManager(this);
-        if (usermapFileManager.getUsermapConfig().contains("users.data")){
-            try {
-                UsermapStorageUtil.restoreUsermap();
-            } catch (IOException e) {
-                logger.severe(ColorUtils.translateColorCodes("&6ClansLite: &4Failed to load data from usermap.yml!"));
-                logger.severe(ColorUtils.translateColorCodes("&6ClansLite: &4See below for errors!"));
-                logger.severe(ColorUtils.translateColorCodes("&6ClansLite: &4Disabling Plugin!"));
-                e.printStackTrace();
-                Bukkit.getPluginManager().disablePlugin(this);
-                return;
+        if (usermapFileManager != null){
+            if (usermapFileManager.getUsermapConfig().contains("users.data")){
+                try {
+                    UsermapStorageUtil.restoreUsermap();
+                } catch (IOException e) {
+                    logger.severe(ColorUtils.translateColorCodes("&6ClansLite: &4Failed to load data from usermap.yml!"));
+                    logger.severe(ColorUtils.translateColorCodes("&6ClansLite: &4See below for errors!"));
+                    logger.severe(ColorUtils.translateColorCodes("&6ClansLite: &4Disabling Plugin!"));
+                    e.printStackTrace();
+                    Bukkit.getPluginManager().disablePlugin(this);
+                    return;
+                }
             }
+        }else {
+            logger.severe(ColorUtils.translateColorCodes("&6ClansLite: &4Failed to load data from usermap.yml!"));
+            logger.severe(ColorUtils.translateColorCodes("&6ClansLite: &4Disabling Plugin!"));
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
         }
 
         //Register the plugin commands
@@ -164,10 +183,12 @@ public final class Clans extends JavaPlugin {
         this.getCommand("clanadmin").setExecutor(new ClanAdmin());
         this.getCommand("cc").setExecutor(new ClanChatCommand());
         this.getCommand("chatspy").setExecutor(new ClanChatSpyCommand());
+        //this.getCommand("chest").setExecutor(new ChestCommand());
         this.getCommand("playerpoints").setExecutor(new PlayerPointsCommand());
 
         //Register the command tab completers
         this.getCommand("clan").setTabCompleter(new ClanCommandTabCompleter());
+        //this.getCommand("chest").setTabCompleter(new ChestCommandTabCompleter());
         this.getCommand("clanadmin").setTabCompleter(new ClanAdminTabCompleter());
         this.getCommand("playerpoints").setTabCompleter(new PlayerPointsCommand());
 
@@ -177,6 +198,8 @@ public final class Clans extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new PlayerMessageEvent(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerDamageEvent(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerKillEvent(), this);
+        //this.getServer().getPluginManager().registerEvents(new ChestBreakEvent(), this);
+        //this.getServer().getPluginManager().registerEvents(new ChestOpenEvent(), this);
         this.getServer().getPluginManager().registerEvents(new JoinEvent(), this);
         this.getServer().getPluginManager().registerEvents(new MenuEvent(), this);
 
@@ -265,6 +288,9 @@ public final class Clans extends JavaPlugin {
     public void onDisable() {
         //Plugin shutdown logic
 
+        //Unregister plugin listeners
+        HandlerList.unregisterAll(this);
+
         //Safely stop the background tasks if running
         logger.info(ColorUtils.translateColorCodes("-------------------------------------------"));
         logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3Plugin by: &b&lLoving11ish"));
@@ -316,27 +342,35 @@ public final class Clans extends JavaPlugin {
         }
 
         //Save clansList HashMap to clans.yml
-        if (!ClansStorageUtil.getRawClansList().isEmpty()){
-            try {
-                ClansStorageUtil.saveClans();
-                logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3All clans saved to clans.yml successfully!"));
-            } catch (IOException e) {
-                logger.severe(ColorUtils.translateColorCodes("&6ClansLite: &4Failed to save clans to clans.yml!"));
-                logger.severe(ColorUtils.translateColorCodes("&6ClansLite: &4See below error for reason!"));
-                e.printStackTrace();
+        if (clansFileManager != null){
+            if (!ClansStorageUtil.getRawClansList().isEmpty()){
+                try {
+                    ClansStorageUtil.saveClans();
+                    logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3All clans saved to clans.yml successfully!"));
+                } catch (IOException e) {
+                    logger.severe(ColorUtils.translateColorCodes("&6ClansLite: &4Failed to save clans to clans.yml!"));
+                    logger.severe(ColorUtils.translateColorCodes("&6ClansLite: &4See below error for reason!"));
+                    e.printStackTrace();
+                }
             }
+        }else {
+            logger.severe(ColorUtils.translateColorCodes("&6ClansLite: &4Failed to save clans to clans.yml!"));
         }
 
         //Saver usermap to usermap.yml
-        if (!UsermapStorageUtil.getRawUsermapList().isEmpty()){
-            try {
-                UsermapStorageUtil.saveUsermap();
-                logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3All users saved to usermap.yml successfully!"));
-            } catch (IOException e) {
-                logger.severe(ColorUtils.translateColorCodes("&6ClansLite: &4Failed to save usermap to usermap.yml!"));
-                logger.severe(ColorUtils.translateColorCodes("&6ClansLite: &4See below error for reason!"));
-                e.printStackTrace();
+        if (usermapFileManager != null){
+            if (!UsermapStorageUtil.getRawUsermapList().isEmpty()){
+                try {
+                    UsermapStorageUtil.saveUsermap();
+                    logger.info(ColorUtils.translateColorCodes("&6ClansLite: &3All users saved to usermap.yml successfully!"));
+                } catch (IOException e) {
+                    logger.severe(ColorUtils.translateColorCodes("&6ClansLite: &4Failed to save usermap to usermap.yml!"));
+                    logger.severe(ColorUtils.translateColorCodes("&6ClansLite: &4See below error for reason!"));
+                    e.printStackTrace();
+                }
             }
+        }else {
+            logger.severe(ColorUtils.translateColorCodes("&6ClansLite: &4Failed to save usermap to usermap.yml!"));
         }
 
         //Final plugin shutdown message

@@ -161,6 +161,28 @@ public class PlayerClanExpansion extends PlaceholderExpansion {
                 return "";
             }
         }
+
+        if (params.equalsIgnoreCase("clanChestMaxAllowed")){
+            //%clansLite_clanChestMaxAllowed%
+            if (clanOwner != null){
+                return String.valueOf(clanOwner.getMaxAllowedProtectedChests());
+            }else if (clanMember != null){
+                return String.valueOf(clanMember.getMaxAllowedProtectedChests());
+            }else {
+                return "";
+            }
+        }
+
+        if (params.equalsIgnoreCase("clanChestCurrentLocked")){
+            //%clansLite_clanChestCurrentLocked%
+            if (clanOwner != null){
+                return String.valueOf(clanOwner.getProtectedChests().size());
+            }else if (clanMember != null){
+                return String.valueOf(clanMember.getProtectedChests().size());
+            }else {
+                return "";
+            }
+        }
         return null;
     }
 }

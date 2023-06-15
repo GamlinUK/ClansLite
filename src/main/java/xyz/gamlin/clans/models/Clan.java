@@ -1,10 +1,11 @@
 package xyz.gamlin.clans.models;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Clan {
 
-    private String clanFinalOwner;
+    private final String clanFinalOwner;
     private String clanFinalName;
     private String clanPrefix;
     private ArrayList<String> clanMembers;
@@ -18,6 +19,8 @@ public class Clan {
     private double clanHomeZ;
     private float clanHomeYaw;
     private float clanHomePitch;
+    private int maxAllowedProtectedChests;
+    private HashMap<String, Chest> protectedChests = new HashMap<>();
 
     public Clan(String clanOwner, String clanName) {
         clanFinalOwner = clanOwner;
@@ -29,6 +32,7 @@ public class Clan {
         friendlyFire = true;
         clanPoints = 0;
         clanHomeWorld = null;
+        maxAllowedProtectedChests = 0;
     }
 
     public String getClanOwner(){
@@ -161,5 +165,21 @@ public class Clan {
 
     public void setClanHomePitch(float clanHomePitch){
         this.clanHomePitch = clanHomePitch;
+    }
+
+    public int getMaxAllowedProtectedChests() {
+        return maxAllowedProtectedChests;
+    }
+
+    public void setMaxAllowedProtectedChests(int maxAllowedProtectedChests) {
+        this.maxAllowedProtectedChests = maxAllowedProtectedChests;
+    }
+
+    public HashMap<String, Chest> getProtectedChests() {
+        return protectedChests;
+    }
+
+    public void setProtectedChests(HashMap<String, Chest> protectedChests) {
+        this.protectedChests = protectedChests;
     }
 }
