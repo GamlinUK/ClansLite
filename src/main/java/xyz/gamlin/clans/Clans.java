@@ -183,12 +183,12 @@ public final class Clans extends JavaPlugin {
         this.getCommand("clanadmin").setExecutor(new ClanAdmin());
         this.getCommand("cc").setExecutor(new ClanChatCommand());
         this.getCommand("chatspy").setExecutor(new ClanChatSpyCommand());
-        //this.getCommand("chest").setExecutor(new ChestCommand());
+        this.getCommand("chest").setExecutor(new ChestCommand());
         this.getCommand("playerpoints").setExecutor(new PlayerPointsCommand());
 
         //Register the command tab completers
         this.getCommand("clan").setTabCompleter(new ClanCommandTabCompleter());
-        //this.getCommand("chest").setTabCompleter(new ChestCommandTabCompleter());
+        this.getCommand("chest").setTabCompleter(new ChestCommandTabCompleter());
         this.getCommand("clanadmin").setTabCompleter(new ClanAdminTabCompleter());
         this.getCommand("playerpoints").setTabCompleter(new PlayerPointsCommand());
 
@@ -198,8 +198,8 @@ public final class Clans extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new PlayerMessageEvent(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerDamageEvent(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerKillEvent(), this);
-        //this.getServer().getPluginManager().registerEvents(new ChestBreakEvent(), this);
-        //this.getServer().getPluginManager().registerEvents(new ChestOpenEvent(), this);
+        this.getServer().getPluginManager().registerEvents(new ChestBreakEvent(), this);
+        this.getServer().getPluginManager().registerEvents(new ChestOpenEvent(), this);
         this.getServer().getPluginManager().registerEvents(new JoinEvent(), this);
         this.getServer().getPluginManager().registerEvents(new MenuEvent(), this);
 

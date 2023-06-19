@@ -40,9 +40,9 @@ public class ChestBreakEvent implements Listener {
         }
         if (event.getBlock().getType().equals(Material.CHEST)){
             Location chestLocation = event.getBlock().getLocation();
-            int x = (int) Math.round(chestLocation.getX());
-            int y = (int) Math.round(chestLocation.getY());
-            int z = (int) Math.round(chestLocation.getZ());
+            double x = Math.round(chestLocation.getX());
+            double y = Math.round(chestLocation.getY());
+            double z = Math.round(chestLocation.getZ());
 
             if (!ClansStorageUtil.isChestLocked(chestLocation)){
                 return;
@@ -107,17 +107,7 @@ public class ChestBreakEvent implements Listener {
                         if (!clansConfig.getBoolean("protections.chests.enable-TNT-destruction")){
                             event.blockList().remove(block);
                         }else {
-                            try {
-                                if (ClansStorageUtil.removeProtectedChest(owningClanOwnerUUID, chestLocation)){
-                                    container.remove(new NamespacedKey(Clans.getPlugin(), "owningClanName"));
-                                    container.remove(new NamespacedKey(Clans.getPlugin(), "owningClanOwnerUUID"));
-                                    tileState.update();
-                                }
-                            }catch (IOException e){
-                                logger.warning(ColorUtils.translateColorCodes(messagesConfig.getString("clans-update-error-1")));
-                                logger.warning(ColorUtils.translateColorCodes(messagesConfig.getString("clans-update-error-2")));
-                                e.printStackTrace();
-                            }
+                            removeLockedChest(owningClanOwnerUUID, chestLocation, container, tileState);
                         }
                     }
                 }
@@ -141,21 +131,25 @@ public class ChestBreakEvent implements Listener {
                         if (!clansConfig.getBoolean("protections.chests.enable-creeper-destruction")){
                             event.blockList().remove(block);
                         }else {
-                            try {
-                                if (ClansStorageUtil.removeProtectedChest(owningClanOwnerUUID, chestLocation)){
-                                    container.remove(new NamespacedKey(Clans.getPlugin(), "owningClanName"));
-                                    container.remove(new NamespacedKey(Clans.getPlugin(), "owningClanOwnerUUID"));
-                                    tileState.update();
-                                }
-                            }catch (IOException e){
-                                logger.warning(ColorUtils.translateColorCodes(messagesConfig.getString("clans-update-error-1")));
-                                logger.warning(ColorUtils.translateColorCodes(messagesConfig.getString("clans-update-error-2")));
-                                e.printStackTrace();
-                            }
+                            removeLockedChest(owningClanOwnerUUID, chestLocation, container, tileState);
                         }
                     }
                 }
             }
+        }
+    }
+
+    private void removeLockedChest(String owningClanOwnerUUID, Location chestLocation, PersistentDataContainer container, TileState tileState){
+        try {
+            if (ClansStorageUtil.removeProtectedChest(owningClanOwnerUUID, chestLocation)){
+                container.remove(new NamespacedKey(Clans.getPlugin(), "owningClanName"));
+                container.remove(new NamespacedKey(Clans.getPlugin(), "owningClanOwnerUUID"));
+                tileState.update();
+            }
+        }catch (IOException e){
+            logger.warning(ColorUtils.translateColorCodes(messagesConfig.getString("clans-update-error-1")));
+            logger.warning(ColorUtils.translateColorCodes(messagesConfig.getString("clans-update-error-2")));
+            e.printStackTrace();
         }
     }
 }

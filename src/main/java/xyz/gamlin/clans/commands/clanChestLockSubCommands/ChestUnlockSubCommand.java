@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import xyz.gamlin.clans.Clans;
+import xyz.gamlin.clans.api.ChestUnlockEvent;
 import xyz.gamlin.clans.models.Chest;
 import xyz.gamlin.clans.utils.ClansStorageUtil;
 import xyz.gamlin.clans.utils.ColorUtils;
@@ -20,6 +21,7 @@ public class ChestUnlockSubCommand {
 
     Logger logger = Clans.getPlugin().getLogger();
 
+    FileConfiguration clansConfig = Clans.getPlugin().getConfig();
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
 
     private static final String X_PLACEHOLDER = "%X%";
@@ -49,6 +51,10 @@ public class ChestUnlockSubCommand {
 
                                 try {
                                     if (ClansStorageUtil.removeProtectedChest(clanOwnerUUIDString, location, player)){
+                                        fireChestUnlockEvent(player, location);
+                                        if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
+                                            logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ChestUnlockEvent"));
+                                        }
                                         player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("chest-protection-removed-successfully")
                                                 .replace(X_PLACEHOLDER, String.valueOf(x))
                                                 .replace(Y_PLACEHOLDER, String.valueOf(y))
@@ -84,5 +90,10 @@ public class ChestUnlockSubCommand {
             }
         }
         return true;
+    }
+
+    private static void fireChestUnlockEvent(Player player, Location removedLockLocation){
+        ChestUnlockEvent chestUnlockEvent = new ChestUnlockEvent(player, removedLockLocation);
+        Bukkit.getPluginManager().callEvent(chestUnlockEvent);
     }
 }
