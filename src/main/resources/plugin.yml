@@ -42,14 +42,14 @@ commands:
       - ccs
       - clanchatspy
       - spy
-  #chest:
-    #description: Protect your clan chests.
-    #usage: "Usage: /chest [lock|unlock|accesslist|buylock]"
-    #permission: clanslite.clan
-    #aliases:
-      #- cchest
-      #- cch
-      #- cht
+  chest:
+    description: Protect your clan chests.
+    usage: "Usage: /chest [lock|unlock|accesslist|buylock]"
+    permission: clanslite.clan
+    aliases:
+      - cchest
+      - cch
+      - cht
   playerpoints:
     description: Displays a players point balance or displays all players points balances.
     usage: "Usage: /playerpoints [listall]"
