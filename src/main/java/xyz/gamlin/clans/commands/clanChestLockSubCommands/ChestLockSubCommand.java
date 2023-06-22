@@ -74,9 +74,10 @@ public class ChestLockSubCommand {
                     }
                     return true;
                 }
+            }if (clanByOwner == null || clanByPlayer == null){
+                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("failed-not-in-clan")));
+                return true;
             }
-            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("failed-not-in-clan")));
-            return true;
         }
         return true;
     }

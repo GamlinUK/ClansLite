@@ -59,7 +59,7 @@ public final class Clans extends JavaPlugin {
                 Bukkit.getServer().getVersion().contains("1.17")||Bukkit.getServer().getVersion().contains("1.18")||
                 Bukkit.getServer().getVersion().contains("1.19")||Bukkit.getServer().getVersion().contains("1.20"))){
             logger.warning(ColorUtils.translateColorCodes("&4-------------------------------------------"));
-            logger.warning(ColorUtils.translateColorCodes("&6ClansLite: &4Your server version is: " + Bukkit.getServer().getVersion()));
+            logger.warning(ColorUtils.translateColorCodes("&6ClansLite: &4Your server version is: &d" + Bukkit.getServer().getVersion()));
             logger.warning(ColorUtils.translateColorCodes("&6ClansLite: &4This plugin is only supported on the Minecraft versions listed below:"));
             logger.warning(ColorUtils.translateColorCodes("&6ClansLite: &41.13.x"));
             logger.warning(ColorUtils.translateColorCodes("&6ClansLite: &41.14.x"));
@@ -76,7 +76,7 @@ public final class Clans extends JavaPlugin {
         }else {
             logger.info(ColorUtils.translateColorCodes("&a-------------------------------------------"));
             logger.info(ColorUtils.translateColorCodes("&6ClansLite: &aA supported Minecraft version has been detected"));
-            logger.info(ColorUtils.translateColorCodes("&6ClansLite: &4Your server version is: " + Bukkit.getServer().getVersion()));
+            logger.info(ColorUtils.translateColorCodes("&6ClansLite: &aYour server version is: &d" + Bukkit.getServer().getVersion()));
             logger.info(ColorUtils.translateColorCodes("&6ClansLite: &6Continuing plugin startup"));
             logger.info(ColorUtils.translateColorCodes("&a-------------------------------------------"));
         }

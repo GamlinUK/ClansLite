@@ -67,7 +67,7 @@ permissions:
   clanslite.*:
     default: op
     children:
-      clanslite.clanadmin:
+      clanslite.admin:
         children:
           clanslite.chat.spy:
             default: op

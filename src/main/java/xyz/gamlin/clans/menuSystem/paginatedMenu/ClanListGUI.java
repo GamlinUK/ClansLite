@@ -1,7 +1,7 @@
 package xyz.gamlin.clans.menuSystem.paginatedMenu;
 
 import com.tcoded.folialib.FoliaLib;
-import com.tcoded.folialib.wrapper.WrappedTask;
+import com.tcoded.folialib.wrapper.task.WrappedTask;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;

@@ -284,6 +284,18 @@ public class ClansStorageUtil {
         UUID uuid = player.getUniqueId();
         String memberUUID = uuid.toString();
         clan.addClanMember(memberUUID);
+        if (clansConfig.getBoolean("protections.chests.enabled")){
+            HashMap<String, Chest> clanChestList = clan.getProtectedChests();
+            if (!clanChestList.isEmpty()){
+                for (Map.Entry<String, Chest> chestEntry : clanChestList.entrySet()){
+                    Chest chest = chestEntry.getValue();
+                    ArrayList<String> playersWithAccess = chest.getPlayersWithAccess();
+                    playersWithAccess.add(memberUUID);
+                    chest.setPlayersWithAccess(playersWithAccess);
+                    clanChestList.replace(chestEntry.getKey(), chest);
+                }
+            }
+        }
         return true;
     }
 

@@ -24,11 +24,9 @@ public class PlayerDamageEvent implements Listener {
 
     @EventHandler (priority = EventPriority.NORMAL)
     public void onPlayerHit(EntityDamageByEntityEvent event){
-        if (event.getEntity() instanceof Player) {
-            Player hurtPlayer = (Player) event.getEntity();
+        if (event.getEntity() instanceof Player hurtPlayer) {
             String hurtUUID = hurtPlayer.getUniqueId().toString();
-            if (event.getDamager() instanceof Player) {
-                Player attackingPlayer = (Player) event.getDamager();
+            if (event.getDamager() instanceof Player attackingPlayer) {
                 attackingPlayer.setInvulnerable(false);
                 Clan attackingClan = ClansStorageUtil.findClanByOwner(attackingPlayer);
                 Clan victimClan = ClansStorageUtil.findClanByOwner(hurtPlayer);

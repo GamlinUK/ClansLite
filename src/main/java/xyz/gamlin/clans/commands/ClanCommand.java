@@ -1,7 +1,7 @@
 package xyz.gamlin.clans.commands;
 
 import com.tcoded.folialib.FoliaLib;
-import com.tcoded.folialib.wrapper.WrappedTask;
+import com.tcoded.folialib.wrapper.task.WrappedTask;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

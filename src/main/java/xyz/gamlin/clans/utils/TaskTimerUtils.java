@@ -1,7 +1,7 @@
 package xyz.gamlin.clans.utils;
 
 import com.tcoded.folialib.FoliaLib;
-import com.tcoded.folialib.wrapper.WrappedTask;
+import com.tcoded.folialib.wrapper.task.WrappedTask;
 import xyz.gamlin.clans.Clans;
 
 import java.io.IOException;

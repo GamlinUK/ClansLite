@@ -49,12 +49,11 @@ public class ClanAdmin implements CommandExecutor {
                 if (args[0].equalsIgnoreCase("reload")) {
                     sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("plugin-reload-begin")));
                     FoliaLib foliaLib = new FoliaLib(Clans.getPlugin());
-                    Clans plugin = Clans.getPlugin();
-                    plugin.onDisable();
+                    Clans.getPlugin().onDisable();
                     foliaLib.getImpl().runLater(new Runnable() {
                         @Override
                         public void run() {
-                            plugin.onEnable();
+                            Bukkit.getPluginManager().getPlugin("ClansLite").onEnable();
                         }
                     }, 5L, TimeUnit.SECONDS);
                     foliaLib.getImpl().runLater(new Runnable() {
@@ -157,12 +156,11 @@ public class ClanAdmin implements CommandExecutor {
                 if (args[0].equalsIgnoreCase("reload")) {
                     logger.info(ColorUtils.translateColorCodes(messagesConfig.getString("plugin-reload-begin")));
                     FoliaLib foliaLib = new FoliaLib(Clans.getPlugin());
-                    Clans plugin = Clans.getPlugin();
-                    plugin.onDisable();
+                    Clans.getPlugin().onDisable();
                     foliaLib.getImpl().runLater(new Runnable() {
                         @Override
                         public void run() {
-                            plugin.onEnable();
+                            Bukkit.getPluginManager().getPlugin("ClansLite").onEnable();
                         }
                     }, 5L, TimeUnit.SECONDS);
                     foliaLib.getImpl().runLater(new Runnable() {
