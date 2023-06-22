@@ -6,7 +6,8 @@ ClansLite is a light-weight clans plugin for Minecraft servers running Spigot or
 
 ClansLite does not support any grief prevention tools such as land claiming, it does support customisable single chest protections.
 
-Want to try out the very latest dev builds?  [Click here]
+Want to try out the very latest dev builds?
+https://github.com/Loving11ish/ClansLite-Beta-Builds/releases
 Use the above dev build at your own risk! Please follow any and ALL instructions provided with EACH dev build released!
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -705,5 +706,5 @@ See documentation tab for list of available placeholders.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Please report any issues and feel free to join my [discord](https://discord.gg/crapticraft)
+Please report any issues and feel free to join my [discord] (https://discord.gg/crapticraft)
 ###Thank you for using my plugin!
