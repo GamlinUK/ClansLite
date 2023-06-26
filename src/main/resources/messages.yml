@@ -168,7 +168,7 @@ failed-not-enough-points: "&3Sorry, your clan doesn't have enough points to purc
 players-with-access-list:
   header: "&7----- &6Players With Access To Chest &7-----&r\n"
   player-entry: "  &7>> &e%PLAYER%&7\n"
-  footer: "&7----- &6Players With Access To Chest &7-----&r\n"
+  footer: "&7----- &6Players With Access To Chest &7-----&r"
 
 #Clan Homes
 successfully-set-clan-home: "&3You &aSuccessfully &3set the clan home to your current location!"
@@ -239,10 +239,10 @@ clan-player-not-found-2: "&6ClansLite: &4Ensure that &6%PLAYER% &4has joined bef
 #/chest Command Responses
 chest-command-incorrect-usage:
   line-1: "&6ClansLite chest protections usage:"
-  line-2: "&3/chest lock"
-  line-3: "&3/chest unlock"
-  line-4: "&3/chest buylock <amount>"
-  line-5: "&3/chest accesslist"
+  line-2: "&3/clanchest lock"
+  line-3: "&3/clanchest unlock"
+  line-4: "&3/clanchest buylock <amount>"
+  line-5: "&3/clanchest accesslist"
 
 #/clan Command Responses
 clan-command-incorrect-usage:
@@ -262,6 +262,7 @@ clan-command-incorrect-usage:
   line-14: "&3/clan pvp"
   line-15: "&3/clan [sethome|delhome|home]"
   line-16: "&3/clan points [deposit|withdraw] <amount>"
+  line-17: "&3/clan playerpoints <listall>"
 
 #/clanadmin Command Responses
 clanadmin-command-incorrect-usage:

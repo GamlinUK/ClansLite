@@ -11,7 +11,7 @@ softdepend: [ PlaceholderAPI, PlugManX ]
 commands:
   clan:
     description: Create, delete and manage clans!
-    usage: "Usage: /clan [create|disband|invite|kick|info|list|prefix|transfer|ally|enemy|sethome|delhome|home|points]"
+    usage: "Usage: /clan [create|disband|invite|kick|info|list|prefix|transfer|ally|enemy|sethome|delhome|home|points|playerpoints]"
     permission: clanslite.clan
     aliases:
       - clans
@@ -24,40 +24,30 @@ commands:
     aliases:
       - ca
       - cla
-  cc:
+  clanchat:
     description: Send a message to your clan members only.
-    usage: "Usage: /cc <message>"
+    usage: "Usage: /clanchat <message>"
     permission: clanslite.clan
     aliases:
-      - clanchat
       - clanc
       - cchat
       - chat
-  chatspy:
+  clanchatspy:
     description: Allows admins to see ALL clan chat messages.
-    usage: "Usage: /chatspy"
+    usage: "Usage: /clanchatspy"
     permission: clanslite.chat.spy
     aliases:
       - cs
       - ccs
-      - clanchatspy
       - spy
-  chest:
+  clanchest:
     description: Protect your clan chests.
-    usage: "Usage: /chest [lock|unlock|accesslist|buylock]"
+    usage: "Usage: /clanchest [lock|unlock|accesslist|buylock]"
     permission: clanslite.clan
     aliases:
       - cchest
       - cch
       - cht
-  playerpoints:
-    description: Displays a players point balance or displays all players points balances.
-    usage: "Usage: /playerpoints [listall]"
-    permission: clanslite.clan
-    aliases:
-      - pp
-      - points
-      - ppoints
 
 permissions:
   clanslite.clan:

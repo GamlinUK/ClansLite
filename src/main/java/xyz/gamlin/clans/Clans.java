@@ -181,16 +181,14 @@ public final class Clans extends JavaPlugin {
         //Register the plugin commands
         this.getCommand("clan").setExecutor(new ClanCommand());
         this.getCommand("clanadmin").setExecutor(new ClanAdmin());
-        this.getCommand("cc").setExecutor(new ClanChatCommand());
-        this.getCommand("chatspy").setExecutor(new ClanChatSpyCommand());
-        this.getCommand("chest").setExecutor(new ChestCommand());
-        this.getCommand("playerpoints").setExecutor(new PlayerPointsCommand());
+        this.getCommand("clanchat").setExecutor(new ClanChatCommand());
+        this.getCommand("clanchatspy").setExecutor(new ClanChatSpyCommand());
+        this.getCommand("clanchest").setExecutor(new ClanChestCommand());
 
         //Register the command tab completers
         this.getCommand("clan").setTabCompleter(new ClanCommandTabCompleter());
-        this.getCommand("chest").setTabCompleter(new ChestCommandTabCompleter());
+        this.getCommand("clanchest").setTabCompleter(new ChestCommandTabCompleter());
         this.getCommand("clanadmin").setTabCompleter(new ClanAdminTabCompleter());
-        this.getCommand("playerpoints").setTabCompleter(new PlayerPointsCommand());
 
         //Register the plugin events
         this.getServer().getPluginManager().registerEvents(new PlayerConnectionEvent(), this);

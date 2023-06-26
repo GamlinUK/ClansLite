@@ -61,6 +61,7 @@ public class ClanCommand implements CommandExecutor {
                     sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-14")));
                     sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-15")));
                     sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-16")));
+                    sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-17")));
                     return true;
                 }else if (clansConfig.getBoolean("clan-home.enabled")){
                     sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-command-incorrect-usage.line-1")));
@@ -162,6 +163,8 @@ public class ClanCommand implements CommandExecutor {
                         return new ClanHomeSubCommand().tpClanHomeSubCommand(sender);
                     case "points":
                         return new ClanPointSubCommand().clanPointSubCommand(sender, args);
+                    case "playerpoints":
+                        return new ClanPlayerPointsSubCommand().clanPlayerPointsSubCommand(sender, args);
                     default:
                         player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("incorrect-command-usage")));
 

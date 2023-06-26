@@ -1,9 +1,9 @@
-package xyz.gamlin.clans.commands;
+package xyz.gamlin.clans.commands.clanSubCommands;
 
-import org.bukkit.command.*;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.Nullable;
 import xyz.gamlin.clans.Clans;
 import xyz.gamlin.clans.models.ClanPlayer;
 import xyz.gamlin.clans.utils.ColorUtils;
@@ -12,7 +12,7 @@ import xyz.gamlin.clans.utils.UsermapStorageUtil;
 import java.util.*;
 import java.util.logging.Logger;
 
-public class PlayerPointsCommand implements CommandExecutor, TabCompleter {
+public class ClanPlayerPointsSubCommand {
 
     Logger logger = Clans.getPlugin().getLogger();
 
@@ -21,10 +21,8 @@ public class PlayerPointsCommand implements CommandExecutor, TabCompleter {
 
     private static final String POINT_PLACEHOLDER = "%POINTVALUE%";
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player){
-            Player player = (Player) sender;
+    public boolean clanPlayerPointsSubCommand(CommandSender sender, String[] args) {
+        if (sender instanceof Player player){
             if (!clansConfig.getBoolean("points.player-points.enabled")){
                 player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("function-disabled")));
                 return true;
@@ -71,30 +69,5 @@ public class PlayerPointsCommand implements CommandExecutor, TabCompleter {
         stringBuilder.append(ColorUtils.translateColorCodes(messagesConfig.getString("all-points-list-footer")));
         sender.sendMessage(ColorUtils.translateColorCodes(stringBuilder.toString()));
         return true;
-    }
-
-    @Nullable
-    @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-        List<String> arguments = new ArrayList<>();
-
-        if (sender instanceof Player){
-            Player player = (Player) sender;
-            if (player.hasPermission("clanslite.points.listall")||player.hasPermission("clanslite.admin")
-                    ||player.hasPermission("clanslite.*")||player.isOp()){
-                arguments.add("listall");
-            }
-        }
-
-        List<String> result = new ArrayList<>();
-        if (args.length == 1){
-            for (String a : arguments){
-                if (a.toLowerCase().startsWith(args[0].toLowerCase())){
-                    result.add(a);
-                }
-            }
-            return result;
-        }
-        return null;
     }
 }

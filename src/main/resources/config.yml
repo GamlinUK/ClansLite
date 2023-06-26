@@ -89,8 +89,6 @@ protections:
   chests:
     #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
     #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-    #THIS FEATURE IS COMING SOON!! IT IS CURRENTLY DISABLED!! PLEASE WAIT FOR THE NEXT UPDATE!!
-
     ##THIS FEATURE IS EXTREMELY EXPERIMENTAL CURRENTLY!##
     ##USE WITH CAUTION AND FREQUENT BACKUPS!##
     #Globaly enable the clan protected chests system. [Default value: false]

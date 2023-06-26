@@ -15,7 +15,7 @@ import xyz.gamlin.clans.utils.ColorUtils;
 
 import java.util.logging.Logger;
 
-public class ChestCommand implements CommandExecutor {
+public class ClanChestCommand implements CommandExecutor {
 
     Logger logger = Clans.getPlugin().getLogger();
 
