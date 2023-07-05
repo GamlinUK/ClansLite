@@ -16,8 +16,7 @@ public class ClanTransferOwnerSubCommand {
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
 
     public boolean transferClanOwnerSubCommand(CommandSender sender, String[] args){
-        if (sender instanceof Player){
-            Player player = (Player) sender;
+        if (sender instanceof Player player){
             if (args.length > 1){
                 String PLAYER_PLACEHOLDER = "%PLAYER%";
                 Player newClanOwner = Bukkit.getPlayerExact(args[1]);

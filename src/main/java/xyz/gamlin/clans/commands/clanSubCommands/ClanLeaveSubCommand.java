@@ -14,24 +14,22 @@ public class ClanLeaveSubCommand {
     private static final String CLAN_PLACEHOLDER = "%CLAN%";
 
     public boolean clanLeaveSubCommand(CommandSender sender) {
-        if (sender instanceof Player) {
-            Player player = ((Player) sender).getPlayer();
+        if (sender instanceof Player player) {
             if (ClansStorageUtil.findClanByOwner(player) != null) {
                 player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("failed-clan-owner")));
                 return true;
             }
             Clan targetClan = ClansStorageUtil.findClanByPlayer(player);
             if (targetClan != null) {
-                if (targetClan.removeClanMember(player.getUniqueId().toString())) {
+                if (ClansStorageUtil.removeClanMember(targetClan, player)){
                     String leaveMessage = ColorUtils.translateColorCodes(messagesConfig.getString("clan-leave-successful")).replace(CLAN_PLACEHOLDER, targetClan.getClanFinalName());
                     player.sendMessage(leaveMessage);
-                } else {
+                }else {
                     player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-leave-failed")));
                 }
             }
             return true;
-
         }
-        return false;
+        return true;
     }
 }

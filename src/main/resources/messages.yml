@@ -105,6 +105,8 @@ clan-pvp-status-disabled: "\n\n&3Friendly Fire: &c&oDISABLED"
 clan-home-set-true: "\n\n&3Home Set: &a&oTRUE"
 clan-home-set-false: "\n\n&3Home Set: &c&oFALSE"
 clan-points-value: "\n\n&3Clan Points Balance: &a%POINTS%"
+clan-chest-amount: "\n\n&3Current Protected Chests: &a%CHESTS%"
+clan-total-allowed-chests: "\n\n&3Max Allowed Protected Chests: &a%MAXALLOWED%"
 clan-info-footer: "\n&7-----"
 not-in-clan: "&3You are not in a clan!"
 

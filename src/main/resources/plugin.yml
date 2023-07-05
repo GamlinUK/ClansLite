@@ -4,7 +4,7 @@ main: xyz.gamlin.clans.Clans
 api-version: 1.13
 folia-supported: true
 prefix: ClansLite
-authors: [ Loving11ish, GameKuchen ]
+authors: [ Loving11ish, GameKuchen, Gamlin ]
 description: A simple and lightweight Clans plugin for Minecraft.
 website: https://www.spigotmc.org/resources/clanslite.97163/
 softdepend: [ PlaceholderAPI, PlugManX ]

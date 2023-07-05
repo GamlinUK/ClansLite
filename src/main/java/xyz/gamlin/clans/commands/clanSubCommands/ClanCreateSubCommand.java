@@ -29,8 +29,7 @@ public class ClanCreateSubCommand {
     ArrayList<String> clanNamesList = new ArrayList<>();
 
     public boolean createClanSubCommand(CommandSender sender, String[] args, List<String> bannedTags) {
-        if (sender instanceof Player) {
-            Player player = ((Player) sender).getPlayer();
+        if (sender instanceof Player player) {
             clans.forEach((clans) ->
                     clanNamesList.add(clans.getValue().getClanFinalName()));
             if (args.length >= 2) {

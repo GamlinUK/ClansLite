@@ -19,8 +19,7 @@ public class ClanDelHomeSubCommand {
     Logger logger = Clans.getPlugin().getLogger();
 
     public boolean deleteClanHomeSubCommand(CommandSender sender) {
-        if (sender instanceof Player) {
-            Player player = ((Player) sender).getPlayer();
+        if (sender instanceof Player player) {
             if (clansConfig.getBoolean("clan-home.enabled")){
                 if (ClansStorageUtil.findClanByOwner(player) != null){
                     Clan clanByOwner = ClansStorageUtil.findClanByOwner(player);

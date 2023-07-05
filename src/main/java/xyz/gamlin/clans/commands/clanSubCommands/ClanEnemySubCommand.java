@@ -26,8 +26,7 @@ public class ClanEnemySubCommand {
     private static final String CLAN_OWNER = "%CLANOWNER%";
 
     public boolean clanEnemySubCommand(CommandSender sender, String[] args) {
-        if (sender instanceof Player) {
-            Player player = ((Player) sender).getPlayer();
+        if (sender instanceof Player player) {
             if (args.length > 2){
                 if (args[1].equalsIgnoreCase("add")){
                     if (args[2].length() > 1){

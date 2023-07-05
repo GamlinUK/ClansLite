@@ -25,8 +25,7 @@ public class ClanPointSubCommand {
     private static final String POINT_PLACEHOLDER = "%POINTS%";
 
     public boolean clanPointSubCommand(CommandSender sender, String[] args) {
-        if (sender instanceof Player){
-            Player player = (Player) sender;
+        if (sender instanceof Player player){
             if (clansConfig.getBoolean("points.player-points.enabled")){
                 if (args.length > 2){
                     if (args[1].equalsIgnoreCase("deposit")){

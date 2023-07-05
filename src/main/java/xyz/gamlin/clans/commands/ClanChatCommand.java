@@ -32,8 +32,7 @@ public class ClanChatCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (sender instanceof Player){
-            Player player = (Player) sender;
+        if (sender instanceof Player player){
             UUID uuid = player.getUniqueId();
             if (!(clansConfig.getBoolean("clan-chat.enabled"))){
                 player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("function-disabled")));

@@ -17,8 +17,7 @@ public class ClanInviteSubCommand {
     private static final String INVITED_PLAYER = "%INVITED%";
 
     public boolean clanInviteSubCommand(CommandSender sender, String[] args) {
-        if (sender instanceof Player) {
-            Player player = ((Player) sender).getPlayer();
+        if (sender instanceof Player player) {
             if (args.length == 2) {
                 if (args[1].length() < 1) {
                     sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-no-valid-player")));

@@ -16,8 +16,7 @@ public class ClanChatSpyCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
+        if (sender instanceof Player player) {
             if (clansConfig.getBoolean("clan-chat.chat-spy.enabled")){
                 if (player.hasPermission("clanslite.chat.spy")||player.hasPermission("clanslite.*")
                         ||player.hasPermission("clanslite.admin")||player.isOp()){

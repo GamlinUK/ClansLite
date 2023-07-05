@@ -20,8 +20,7 @@ public class ClanSetHomeSubCommand {
     Logger logger = Clans.getPlugin().getLogger();
 
     public boolean setClanHomeSubCommand(CommandSender sender) {
-        if (sender instanceof Player) {
-            Player player = ((Player) sender).getPlayer();
+        if (sender instanceof Player player) {
             if (clansConfig.getBoolean("clan-home.enabled")){
                 if (ClansStorageUtil.isClanOwner(player)){
                     if (ClansStorageUtil.findClanByOwner(player) != null){

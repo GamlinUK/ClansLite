@@ -30,10 +30,8 @@ public class PlayerKillEvent implements Listener {
         if (!clansConfig.getBoolean("points.player-points.enabled")){
             return;
         }
-        if (event.getDamager() instanceof Player){
-            if (event.getEntity() instanceof Player){
-                Player killer = (Player) event.getDamager();
-                Player victim = (Player) event.getEntity();
+        if (event.getDamager() instanceof Player killer){
+            if (event.getEntity() instanceof Player victim){
                 if (victim.getLastDamage() >= victim.getHealth()){
 
                     if (ClansStorageUtil.findClanByPlayer(killer) == null||ClansStorageUtil.findClanByPlayer(victim) == null){

@@ -22,8 +22,7 @@ public class ClanPrefixSubCommand {
     ArrayList<String> clansPrefixList = new ArrayList<>();
 
     public boolean clanPrefixSubCommand(CommandSender sender, String[] args, List<String> bannedTags) {
-        if (sender instanceof Player) {
-            Player player = ((Player) sender).getPlayer();
+        if (sender instanceof Player player) {
             clans.forEach((clans) ->
                     clansPrefixList.add(clans.getValue().getClanPrefix()));
             if (args.length == 2) {

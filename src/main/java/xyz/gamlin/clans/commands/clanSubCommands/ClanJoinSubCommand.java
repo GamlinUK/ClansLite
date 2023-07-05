@@ -25,8 +25,7 @@ public class ClanJoinSubCommand {
     private static final String CLAN_PLACEHOLDER = "%CLAN%";
 
     public boolean clanJoinSubCommand(CommandSender sender) {
-        if (sender instanceof Player) {
-            Player player = ((Player) sender).getPlayer();
+        if (sender instanceof Player player) {
             AtomicReference<String> inviterUUIDString = new AtomicReference<>("");
             Set<Map.Entry<UUID, ClanInvite>> clanInvitesList = ClanInviteUtil.getInvites();
             if (ClanInviteUtil.searchInvitee(player.getUniqueId().toString())) {

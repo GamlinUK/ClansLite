@@ -299,6 +299,44 @@ public class ClansStorageUtil {
         return true;
     }
 
+    public static boolean removeClanMember(Clan clan, Player player){
+        UUID uuid = player.getUniqueId();
+        String memberUUID = uuid.toString();
+        clan.removeClanMember(memberUUID);
+        if (clansConfig.getBoolean("protections.chests.enabled")){
+            HashMap<String, Chest> clanChestList = clan.getProtectedChests();
+            if (!clanChestList.isEmpty()){
+                for (Map.Entry<String, Chest> chestEntry : clanChestList.entrySet()){
+                    Chest chest = chestEntry.getValue();
+                    ArrayList<String> playersWithAccess = chest.getPlayersWithAccess();
+                    playersWithAccess.remove(memberUUID);
+                    chest.setPlayersWithAccess(playersWithAccess);
+                    clanChestList.replace(chestEntry.getKey(), chest);
+                }
+            }
+        }
+        return true;
+    }
+
+    public static boolean removeOfflineClanMember(Clan clan, OfflinePlayer offlinePlayer){
+        UUID offlineUUID = offlinePlayer.getUniqueId();
+        String offlineMemberUUID = offlineUUID.toString();
+        clan.removeClanMember(offlineMemberUUID);
+        if (clansConfig.getBoolean("protections.chests.enabled")){
+            HashMap<String, Chest> clanChestList = clan.getProtectedChests();
+            if (!clanChestList.isEmpty()){
+                for (Map.Entry<String, Chest> chestEntry : clanChestList.entrySet()){
+                    Chest chest = chestEntry.getValue();
+                    ArrayList<String> playersWithAccess = chest.getPlayersWithAccess();
+                    playersWithAccess.add(offlineMemberUUID);
+                    chest.setPlayersWithAccess(playersWithAccess);
+                    clanChestList.replace(chestEntry.getKey(), chest);
+                }
+            }
+        }
+        return true;
+    }
+
     public static void addClanEnemy(Player clanOwner, Player enemyClanOwner){
         UUID ownerUUID = clanOwner.getUniqueId();
         UUID enemyUUID = enemyClanOwner.getUniqueId();

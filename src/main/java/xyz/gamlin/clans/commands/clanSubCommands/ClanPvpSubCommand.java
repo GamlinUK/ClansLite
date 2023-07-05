@@ -14,8 +14,7 @@ public class ClanPvpSubCommand {
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
 
     public boolean clanPvpSubCommand(CommandSender sender) {
-        if (sender instanceof Player) {
-            Player player = ((Player) sender).getPlayer();
+        if (sender instanceof Player player) {
             if (clansConfig.getBoolean("protections.pvp.pvp-command-enabled")){
                 if (ClansStorageUtil.isClanOwner(player)){
                     if (ClansStorageUtil.findClanByOwner(player) != null){

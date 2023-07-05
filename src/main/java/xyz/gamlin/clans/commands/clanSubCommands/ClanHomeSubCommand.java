@@ -30,8 +30,7 @@ public class ClanHomeSubCommand {
     HashMap<UUID, Long> homeCoolDownTimer = new HashMap<>();
 
     public boolean tpClanHomeSubCommand(CommandSender sender) {
-        if (sender instanceof Player) {
-            Player player = ((Player) sender).getPlayer();
+        if (sender instanceof Player player) {
             if (clansConfig.getBoolean("clan-home.enabled")){
                 UUID uuid = player.getUniqueId();
                 if (ClansStorageUtil.findClanByOwner(player) != null){

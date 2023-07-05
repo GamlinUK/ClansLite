@@ -14,8 +14,7 @@ public class ClanDisbandSubCommand {
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
 
     public boolean disbandClanSubCommand(CommandSender sender) {
-        if (sender instanceof Player) {
-            Player player = ((Player) sender).getPlayer();
+        if (sender instanceof Player player) {
                 try {
                     if (ClansStorageUtil.deleteClan(player)) {
                         sender.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-successfully-disbanded")));
