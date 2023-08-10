@@ -3,6 +3,7 @@ package xyz.gamlin.clans.commands.clanSubCommands;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import xyz.gamlin.clans.Clans;
@@ -12,13 +13,14 @@ import xyz.gamlin.clans.utils.ClansStorageUtil;
 import xyz.gamlin.clans.utils.ColorUtils;
 
 import java.util.*;
-import java.util.logging.Logger;
 
 public class ClanCreateSubCommand {
+    
+    ConsoleCommandSender console = Bukkit.getConsoleSender();
 
     FileConfiguration clansConfig = Clans.getPlugin().getConfig();
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
-    Logger logger = Clans.getPlugin().getLogger();
+    
     private static final String CLAN_PLACEHOLDER = "%CLAN%";
     private static final String CLAN_OWNER = "%CLANOWNER%";
 
@@ -74,7 +76,7 @@ public class ClanCreateSubCommand {
                         player.sendMessage(clanCreated);
                         fireClanCreateEvent(player, clan);
                         if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                            logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanCreateEvent"));
+                            console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanCreateEvent"));
                         }
                         if (clansConfig.getBoolean("clan-creation.announce-to-all")) {
                             if (clansConfig.getBoolean("clan-creation.send-as-title")) {

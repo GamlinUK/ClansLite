@@ -3,6 +3,7 @@ package xyz.gamlin.clans.commands.clanSubCommands;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import xyz.gamlin.clans.Clans;
@@ -11,13 +12,12 @@ import xyz.gamlin.clans.models.Clan;
 import xyz.gamlin.clans.utils.ClansStorageUtil;
 import xyz.gamlin.clans.utils.ColorUtils;
 
-import java.util.logging.Logger;
-
 public class ClanSetHomeSubCommand {
+
+    ConsoleCommandSender console = Bukkit.getConsoleSender();
 
     FileConfiguration clansConfig = Clans.getPlugin().getConfig();
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
-    Logger logger = Clans.getPlugin().getLogger();
 
     public boolean setClanHomeSubCommand(CommandSender sender) {
         if (sender instanceof Player player) {
@@ -28,7 +28,7 @@ public class ClanSetHomeSubCommand {
                         Location location = player.getLocation();
                         fireClanHomeSetEvent(player, clan, location);
                         if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                            logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanHomeSetEvent"));
+                            console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanHomeSetEvent"));
                         }
                         clan.setClanHomeWorld(player.getLocation().getWorld().getName());
                         clan.setClanHomeX(player.getLocation().getX());

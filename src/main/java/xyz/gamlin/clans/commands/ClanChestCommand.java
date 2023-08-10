@@ -1,5 +1,6 @@
 package xyz.gamlin.clans.commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,11 +14,9 @@ import xyz.gamlin.clans.commands.clanChestLockSubCommands.ChestLockSubCommand;
 import xyz.gamlin.clans.commands.clanChestLockSubCommands.ChestUnlockSubCommand;
 import xyz.gamlin.clans.utils.ColorUtils;
 
-import java.util.logging.Logger;
-
 public class ClanChestCommand implements CommandExecutor {
 
-    Logger logger = Clans.getPlugin().getLogger();
+    ConsoleCommandSender console = Bukkit.getConsoleSender();
 
     FileConfiguration clansConfig = Clans.getPlugin().getConfig();
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
@@ -52,10 +51,10 @@ public class ClanChestCommand implements CommandExecutor {
 //----------------------------------------------------------------------------------------------------------------------
         if (sender instanceof ConsoleCommandSender) {
             if (!clansConfig.getBoolean("protections.chests.enabled")){
-                logger.info(ColorUtils.translateColorCodes(messagesConfig.getString("function-disabled")));
+                console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("function-disabled")));
                 return true;
             }
-            logger.warning(ColorUtils.translateColorCodes(messagesConfig.getString("player-only-command")));
+            console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("player-only-command")));
         }
         return true;
     }

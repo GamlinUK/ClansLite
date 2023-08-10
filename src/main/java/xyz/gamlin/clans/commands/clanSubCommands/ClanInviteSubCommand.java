@@ -14,6 +14,7 @@ public class ClanInviteSubCommand {
 
     FileConfiguration clansConfig = Clans.getPlugin().getConfig();
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+
     private static final String INVITED_PLAYER = "%INVITED%";
 
     public boolean clanInviteSubCommand(CommandSender sender, String[] args) {

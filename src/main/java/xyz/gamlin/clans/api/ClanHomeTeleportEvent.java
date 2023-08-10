@@ -14,6 +14,15 @@ public class ClanHomeTeleportEvent extends Event {
     private final Location homeLocation;
     private final Location tpFromLocation;
 
+    public ClanHomeTeleportEvent(boolean isAsync, Player createdBy, Clan clan, Location homeLocation, Location tpFromLocation) {
+        super(isAsync);
+        this.createdBy = createdBy;
+        this.clan = clan;
+        this.homeLocation = homeLocation;
+        this.tpFromLocation = tpFromLocation;
+    }
+
+    @Deprecated
     public ClanHomeTeleportEvent(Player createdBy, Clan clan, Location homeLocation, Location tpFromLocation) {
         this.createdBy = createdBy;
         this.clan = clan;

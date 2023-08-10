@@ -2,6 +2,7 @@ package xyz.gamlin.clans.commands.clanSubCommands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import xyz.gamlin.clans.Clans;
@@ -10,13 +11,12 @@ import xyz.gamlin.clans.models.Clan;
 import xyz.gamlin.clans.utils.ClansStorageUtil;
 import xyz.gamlin.clans.utils.ColorUtils;
 
-import java.util.logging.Logger;
-
 public class ClanDelHomeSubCommand {
+    
+    ConsoleCommandSender console = Bukkit.getConsoleSender();
 
     FileConfiguration clansConfig = Clans.getPlugin().getConfig();
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
-    Logger logger = Clans.getPlugin().getLogger();
 
     public boolean deleteClanHomeSubCommand(CommandSender sender) {
         if (sender instanceof Player player) {
@@ -26,7 +26,7 @@ public class ClanDelHomeSubCommand {
                     if (ClansStorageUtil.isHomeSet(clanByOwner)){
                         fireClanHomeDeleteEvent(player, clanByOwner);
                         if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                            logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanHomeDeleteEvent"));
+                            console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanHomeDeleteEvent"));
                         }
                         ClansStorageUtil.deleteHome(clanByOwner);
                         player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("successfully-deleted-clan-home")));

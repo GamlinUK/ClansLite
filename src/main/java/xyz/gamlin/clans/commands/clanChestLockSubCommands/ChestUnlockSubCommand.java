@@ -4,6 +4,7 @@ import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.TileState;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -15,11 +16,10 @@ import xyz.gamlin.clans.utils.ClansStorageUtil;
 import xyz.gamlin.clans.utils.ColorUtils;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 
 public class ChestUnlockSubCommand {
 
-    Logger logger = Clans.getPlugin().getLogger();
+    ConsoleCommandSender console = Bukkit.getConsoleSender();
 
     FileConfiguration clansConfig = Clans.getPlugin().getConfig();
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
@@ -53,7 +53,7 @@ public class ChestUnlockSubCommand {
                                     if (ClansStorageUtil.removeProtectedChest(clanOwnerUUIDString, location, player)){
                                         fireChestUnlockEvent(player, location);
                                         if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                                            logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ChestUnlockEvent"));
+                                            console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ChestUnlockEvent"));
                                         }
                                         player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("chest-protection-removed-successfully")
                                                 .replace(X_PLACEHOLDER, String.valueOf(x))
@@ -65,8 +65,8 @@ public class ChestUnlockSubCommand {
                                         return true;
                                     }
                                 }catch (IOException e){
-                                    logger.warning(ColorUtils.translateColorCodes(messagesConfig.getString("clans-update-error-1")));
-                                    logger.warning(ColorUtils.translateColorCodes(messagesConfig.getString("clans-update-error-2")));
+                                    console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clans-update-error-1")));
+                                    console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clans-update-error-2")));
                                     e.printStackTrace();
                                 }
                                 return true;

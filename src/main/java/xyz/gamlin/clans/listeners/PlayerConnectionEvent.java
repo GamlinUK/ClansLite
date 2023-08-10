@@ -1,5 +1,7 @@
 package xyz.gamlin.clans.listeners;
 
+import org.bukkit.Bukkit;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,12 +13,12 @@ import xyz.gamlin.clans.utils.ColorUtils;
 import xyz.gamlin.clans.utils.UsermapStorageUtil;
 
 import java.util.UUID;
-import java.util.logging.Logger;
 
 public class PlayerConnectionEvent implements Listener {
+    
+    ConsoleCommandSender console = Bukkit.getConsoleSender();
 
     FileConfiguration clansConfig = Clans.getPlugin().getConfig();
-    Logger logger = Clans.getPlugin().getLogger();
 
     @EventHandler (priority = EventPriority.HIGH)
     public void onPlayerJoin(PlayerJoinEvent event){
@@ -29,7 +31,7 @@ public class PlayerConnectionEvent implements Listener {
         if (UsermapStorageUtil.hasPlayerNameChanged(player)){
             UsermapStorageUtil.updatePlayerName(player);
             if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aUpdated player name"));
+                console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aUpdated player name"));
             }
         }
     }
@@ -47,18 +49,18 @@ public class PlayerConnectionEvent implements Listener {
                 if (UsermapStorageUtil.hasPlayerNameChanged(player)){
                     UsermapStorageUtil.updatePlayerName(player);
                     if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                        logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aUpdated bedrock player name"));
+                        console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aUpdated bedrock player name"));
                     }
                 }
                 if (UsermapStorageUtil.hasBedrockPlayerJavaUUIDChanged(player)){
                     UsermapStorageUtil.updateBedrockPlayerJavaUUID(player);
                     if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                        logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aUpdated bedrock player Java UUID"));
+                        console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aUpdated bedrock player Java UUID"));
                     }
                 }
                 Clans.bedrockPlayers.put(player, Clans.getFloodgateApi().getPlayer(uuid).getJavaUniqueId().toString());
                 if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                    logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aAdded bedrock player to connected bedrock players hashmap"));
+                    console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aAdded bedrock player to connected bedrock players hashmap"));
                 }
             }
         }

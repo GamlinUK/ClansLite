@@ -3,6 +3,7 @@ package xyz.gamlin.clans.menuSystem.paginatedMenu;
 import com.tcoded.folialib.FoliaLib;
 import com.tcoded.folialib.wrapper.task.WrappedTask;
 import org.bukkit.*;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -21,18 +22,18 @@ import xyz.gamlin.clans.utils.ColorUtils;
 import java.util.ArrayList;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
 
 import static org.bukkit.Bukkit.getServer;
 
 public class ClanListGUI extends PaginatedMenu {
+    
+    ConsoleCommandSender console = Bukkit.getConsoleSender();
 
     public static WrappedTask task5;
 
     FileConfiguration guiConfig = Clans.getPlugin().clanGUIFileManager.getClanGUIConfig();
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
     FileConfiguration clansConfig = Clans.getPlugin().getConfig();
-    Logger logger = Clans.getPlugin().getLogger();
 
     public ClanListGUI(PlayerMenuUtility playerMenuUtility) {
         super(playerMenuUtility);
@@ -73,7 +74,7 @@ public class ClanListGUI extends PaginatedMenu {
             if (guiConfig.getBoolean("clan-list.icons.auto-refresh-data.enabled")){
                 task5.cancel();
                 if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                    logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aAuto refresh task cancelled"));
+                    console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aAuto refresh task cancelled"));
                 }
             }
         }else if (event.getCurrentItem().getType().equals(Material.BARRIER)) {
@@ -81,7 +82,7 @@ public class ClanListGUI extends PaginatedMenu {
             if (guiConfig.getBoolean("clan-list.icons.auto-refresh-data.enabled")){
                 task5.cancel();
                 if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                    logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aAuto refresh task cancelled"));
+                    console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aAuto refresh task cancelled"));
                 }
             }
         }else if(event.getCurrentItem().getType().equals(Material.STONE_BUTTON)){
@@ -132,7 +133,7 @@ public class ClanListGUI extends PaginatedMenu {
                                 skull.setOwningPlayer(getServer().getOfflinePlayer(ownerUUID));
                                 playerHead.setItemMeta(skull);
                                 if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                                    logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aRetrieved player head info for UUID: &d" + clanOwnerUUIDString));
+                                    console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aRetrieved player head sendMessage for UUID: &d" + clanOwnerUUIDString));
                                 }
 
                                 ItemMeta meta = playerHead.getItemMeta();
@@ -202,7 +203,7 @@ public class ClanListGUI extends PaginatedMenu {
 
                                 inventory.setItem(index, playerHead);
                                 if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                                    logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aAuto refresh task running"));
+                                    console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aAuto refresh task running"));
                                 }
                             }
                         }
@@ -231,7 +232,7 @@ public class ClanListGUI extends PaginatedMenu {
                         skull.setOwningPlayer(getServer().getOfflinePlayer(ownerUUID));
                         playerHead.setItemMeta(skull);
                         if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                            logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aRetrieved player head info for UUID: &d" + clanOwnerUUIDString));
+                            console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aRetrieved player head sendMessage for UUID: &d" + clanOwnerUUIDString));
                         }
 
                         ItemMeta meta = playerHead.getItemMeta();
@@ -296,7 +297,7 @@ public class ClanListGUI extends PaginatedMenu {
 
                         inventory.addItem(playerHead);
                         if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                            logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aAuto refresh task not running"));
+                            console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aAuto refresh task not running"));
                         }
                     }
                 }

@@ -1,6 +1,8 @@
 package xyz.gamlin.clans.listeners;
 
 import com.tcoded.folialib.wrapper.task.WrappedTask;
+import org.bukkit.Bukkit;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,13 +14,12 @@ import xyz.gamlin.clans.menuSystem.Menu;
 import xyz.gamlin.clans.menuSystem.paginatedMenu.ClanListGUI;
 import xyz.gamlin.clans.utils.ColorUtils;
 
-import java.util.logging.Logger;
-
 public class MenuEvent implements Listener {
+
+    ConsoleCommandSender console = Bukkit.getConsoleSender();
 
     FileConfiguration guiConfig = Clans.getPlugin().clanGUIFileManager.getClanGUIConfig();
     FileConfiguration clansConfig = Clans.getPlugin().getConfig();
-    Logger logger = Clans.getPlugin().getLogger();
 
     @EventHandler
     public void onMenuClick(InventoryClickEvent event){
@@ -42,7 +43,7 @@ public class MenuEvent implements Listener {
                 if (!wrappedTask.isCancelled()){
                     wrappedTask.cancel();
                     if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                        logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aAuto refresh task cancelled"));
+                        console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aAuto refresh task cancelled"));
                     }
                 }
             }

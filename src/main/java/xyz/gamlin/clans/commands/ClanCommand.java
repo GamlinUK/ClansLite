@@ -2,6 +2,7 @@ package xyz.gamlin.clans.commands;
 
 import com.tcoded.folialib.FoliaLib;
 import com.tcoded.folialib.wrapper.task.WrappedTask;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -15,11 +16,10 @@ import xyz.gamlin.clans.utils.ColorUtils;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
 
 public class ClanCommand implements CommandExecutor {
 
-    Logger logger = Clans.getPlugin().getLogger();
+    ConsoleCommandSender console = Bukkit.getConsoleSender();
 
     public static WrappedTask task1;
 
@@ -173,7 +173,7 @@ public class ClanCommand implements CommandExecutor {
 
 //----------------------------------------------------------------------------------------------------------------------
         if (sender instanceof ConsoleCommandSender) {
-            logger.warning(ColorUtils.translateColorCodes(messagesConfig.getString("player-only-command")));
+            console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("player-only-command")));
         }
         // If the player (or console) uses our command correct, we can return true
         return true;

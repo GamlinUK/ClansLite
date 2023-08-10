@@ -7,6 +7,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.block.TileState;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -18,11 +19,9 @@ import xyz.gamlin.clans.models.Clan;
 import xyz.gamlin.clans.utils.ClansStorageUtil;
 import xyz.gamlin.clans.utils.ColorUtils;
 
-import java.util.logging.Logger;
-
 public class ChestLockSubCommand {
 
-    Logger logger = Clans.getPlugin().getLogger();
+    ConsoleCommandSender console = Bukkit.getConsoleSender();
 
     FileConfiguration clansConfig = Clans.getPlugin().getConfig();
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
@@ -99,7 +98,7 @@ public class ChestLockSubCommand {
             tileState.update();
             fireChestLockEvent(player, clan, ClansStorageUtil.getChestByLocation(location));
             if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ChestLockEvent"));
+                console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ChestLockEvent"));
             }
         }
     }

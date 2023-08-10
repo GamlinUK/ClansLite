@@ -2,6 +2,7 @@ package xyz.gamlin.clans.commands.clanSubCommands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import xyz.gamlin.clans.Clans;
@@ -13,13 +14,14 @@ import xyz.gamlin.clans.utils.ColorUtils;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 public class ClanAllySubCommand {
 
+    ConsoleCommandSender console = Bukkit.getConsoleSender();
+    
     FileConfiguration clansConfig = Clans.getPlugin().getConfig();
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
-    Logger logger = Clans.getPlugin().getLogger();
+    
     private static final String ALLY_CLAN = "%ALLYCLAN%";
     private static final String ALLY_OWNER = "%ALLYOWNER%";
     private static final String CLAN_OWNER = "%CLANOWNER%";
@@ -54,7 +56,7 @@ public class ClanAllySubCommand {
                                                 ClansStorageUtil.addClanAlly(player, allyClanOwner);
                                                 fireClanAllyAddEvent(player, clan, allyClanOwner, allyClan);
                                                 if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                                                    logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanAllyAddEvent"));
+                                                    console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanAllyAddEvent"));
                                                 }
                                                 player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("added-clan-to-your-allies").replace(ALLY_CLAN, allyClan.getClanFinalName())));
                                             }
@@ -94,7 +96,7 @@ public class ClanAllySubCommand {
                                         if (alliedClans.contains(allyClanOwnerString)){
                                             fireClanAllyRemoveEvent(player, allyClanOwner, allyClan);
                                             if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                                                logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanAllyRemoveEvent"));
+                                                console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanAllyRemoveEvent"));
                                             }
                                             ClansStorageUtil.removeClanAlly(player, allyClanOwner);
                                             player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("removed-clan-from-your-allies").replace(ALLY_CLAN, allyClan.getClanFinalName())));

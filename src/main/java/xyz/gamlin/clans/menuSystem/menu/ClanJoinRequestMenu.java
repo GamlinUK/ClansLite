@@ -17,7 +17,6 @@ public class ClanJoinRequestMenu extends Menu {
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
     FileConfiguration guiConfig = Clans.getPlugin().clanGUIFileManager.getClanGUIConfig();
 
-
     public ClanJoinRequestMenu(PlayerMenuUtility playerMenuUtility){
         super(playerMenuUtility);
     }

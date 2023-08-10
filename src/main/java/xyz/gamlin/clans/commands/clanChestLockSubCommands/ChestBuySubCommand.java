@@ -2,6 +2,7 @@ package xyz.gamlin.clans.commands.clanChestLockSubCommands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import xyz.gamlin.clans.Clans;
@@ -10,11 +11,9 @@ import xyz.gamlin.clans.models.Clan;
 import xyz.gamlin.clans.utils.ClansStorageUtil;
 import xyz.gamlin.clans.utils.ColorUtils;
 
-import java.util.logging.Logger;
-
 public class ChestBuySubCommand {
 
-    Logger logger = Clans.getPlugin().getLogger();
+    ConsoleCommandSender console = Bukkit.getConsoleSender();
 
     FileConfiguration clansConfig = Clans.getPlugin().getConfig();
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
@@ -74,7 +73,7 @@ public class ChestBuySubCommand {
                         .replace(AMOUNT_PLACEHOLDER, String.valueOf(amountOfChests))));
                 fireChestBuyEvent(player, clan, maxAllowedChests, maxAllowedChests + amountOfChests);
                 if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                    logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ChestBuyEvent"));
+                    console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ChestBuyEvent"));
                 }
             }else {
                 player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("failed-not-enough-points")

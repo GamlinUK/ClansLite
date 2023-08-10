@@ -2,6 +2,7 @@ package xyz.gamlin.clans.commands.clanSubCommands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import xyz.gamlin.clans.Clans;
@@ -13,11 +14,10 @@ import xyz.gamlin.clans.utils.ColorUtils;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.logging.Logger;
 
 public class ClanJoinSubCommand {
 
-    Logger logger = Clans.getPlugin().getLogger();
+    ConsoleCommandSender console = Bukkit.getConsoleSender();
 
     FileConfiguration clansConfig = Clans.getPlugin().getConfig();
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
@@ -31,7 +31,7 @@ public class ClanJoinSubCommand {
             if (ClanInviteUtil.searchInvitee(player.getUniqueId().toString())) {
                 clanInvitesList.forEach((invites) ->
                         inviterUUIDString.set(invites.getValue().getInviter()));
-                logger.info(String.valueOf(inviterUUIDString.get()));
+                console.sendMessage(String.valueOf(inviterUUIDString.get()));
                 Player inviterPlayer = Bukkit.getPlayer(UUID.fromString(inviterUUIDString.get()));
                 Clan clan = ClansStorageUtil.findClanByOwner(inviterPlayer);
                 if (clan != null) {

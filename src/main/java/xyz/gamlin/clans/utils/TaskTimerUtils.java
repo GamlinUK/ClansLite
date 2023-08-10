@@ -2,15 +2,18 @@ package xyz.gamlin.clans.utils;
 
 import com.tcoded.folialib.FoliaLib;
 import com.tcoded.folialib.wrapper.task.WrappedTask;
+import org.bukkit.Bukkit;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import xyz.gamlin.clans.Clans;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
 
 public class TaskTimerUtils {
 
-    static Logger logger = Clans.getPlugin().getLogger();
+    static ConsoleCommandSender console = Bukkit.getConsoleSender();
+    static FileConfiguration config = Clans.getPlugin().getConfig();
     static FoliaLib foliaLib = new FoliaLib(Clans.getPlugin());
 
     public static WrappedTask task1;
@@ -27,14 +30,31 @@ public class TaskTimerUtils {
                     try {
                         ClansStorageUtil.saveClans();
                         if (Clans.getPlugin().getConfig().getBoolean("general.show-auto-save-task-message.enabled")){
-                            logger.info(ColorUtils.translateColorCodes(Clans.getPlugin().messagesFileManager.getMessagesConfig().getString("auto-save-complete")));
+                            console.sendMessage(ColorUtils.translateColorCodes(Clans.getPlugin().messagesFileManager.getMessagesConfig().getString("auto-save-complete")));
                         }
+                        runClansAutoSaveTwo();
+                        task1.cancel();
+                        if (config.getBoolean("general.developer-debug-mode.enabled")){
+                            console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aWrapped task: " + task1.toString()));
+                            console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aTimed task canceled successfully"));
+                        }
+                        return;
                     } catch (IOException e) {
-                        logger.severe(ColorUtils.translateColorCodes(Clans.getPlugin().messagesFileManager.getMessagesConfig().getString("auto-save-failed")));
+                        console.sendMessage(ColorUtils.translateColorCodes(Clans.getPlugin().messagesFileManager.getMessagesConfig().getString("auto-save-failed")));
                         e.printStackTrace();
+                        runClansAutoSaveTwo();
+                        task1.cancel();
+                        if (config.getBoolean("general.developer-debug-mode.enabled")){
+                            console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aWrapped task: " + task1.toString()));
+                            console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aTimed task canceled successfully"));
+                        }
                     }
                     runClansAutoSaveTwo();
                     task1.cancel();
+                    if (config.getBoolean("general.developer-debug-mode.enabled")){
+                        console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aWrapped task: " + task1.toString()));
+                        console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aTimed task canceled successfully"));
+                    }
                     return;
                 }
                 else {
@@ -53,14 +73,31 @@ public class TaskTimerUtils {
                     try {
                         ClansStorageUtil.saveClans();
                         if (Clans.getPlugin().getConfig().getBoolean("general.show-auto-save-task-message.enabled")){
-                            logger.info(ColorUtils.translateColorCodes(Clans.getPlugin().messagesFileManager.getMessagesConfig().getString("auto-save-complete")));
+                            console.sendMessage(ColorUtils.translateColorCodes(Clans.getPlugin().messagesFileManager.getMessagesConfig().getString("auto-save-complete")));
                         }
+                        runClansAutoSaveOne();
+                        task2.cancel();
+                        if (config.getBoolean("general.developer-debug-mode.enabled")){
+                            console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aWrapped task: " + task2.toString()));
+                            console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aTimed task canceled successfully"));
+                        }
+                        return;
                     } catch (IOException e) {
-                        logger.severe(ColorUtils.translateColorCodes(Clans.getPlugin().messagesFileManager.getMessagesConfig().getString("auto-save-failed")));
+                        console.sendMessage(ColorUtils.translateColorCodes(Clans.getPlugin().messagesFileManager.getMessagesConfig().getString("auto-save-failed")));
                         e.printStackTrace();
+                        runClansAutoSaveOne();
+                        task2.cancel();
+                        if (config.getBoolean("general.developer-debug-mode.enabled")){
+                            console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aWrapped task: " + task2.toString()));
+                            console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aTimed task canceled successfully"));
+                        }
                     }
                     runClansAutoSaveOne();
                     task2.cancel();
+                    if (config.getBoolean("general.developer-debug-mode.enabled")){
+                        console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aWrapped task: " + task2.toString()));
+                        console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aTimed task canceled successfully"));
+                    }
                     return;
                 }
                 else {
@@ -79,13 +116,30 @@ public class TaskTimerUtils {
                     try {
                         ClanInviteUtil.emptyInviteList();
                         if (Clans.getPlugin().getConfig().getBoolean("general.show-auto-invite-wipe-message.enabled")){
-                            logger.info(ColorUtils.translateColorCodes(Clans.getPlugin().messagesFileManager.getMessagesConfig().getString("auto-invite-wipe-complete")));
+                            console.sendMessage(ColorUtils.translateColorCodes(Clans.getPlugin().messagesFileManager.getMessagesConfig().getString("auto-invite-wipe-complete")));
                         }
+                        runClanInviteClearTwo();
+                        task3.cancel();
+                        if (config.getBoolean("general.developer-debug-mode.enabled")){
+                            console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aWrapped task: " + task3.toString()));
+                            console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aTimed task canceled successfully"));
+                        }
+                        return;
                     }catch (UnsupportedOperationException exception){
-                        logger.info(ColorUtils.translateColorCodes(Clans.getPlugin().messagesFileManager.getMessagesConfig().getString("invite-wipe-failed")));
+                        console.sendMessage(ColorUtils.translateColorCodes(Clans.getPlugin().messagesFileManager.getMessagesConfig().getString("invite-wipe-failed")));
+                        runClanInviteClearTwo();
+                        task3.cancel();
+                        if (config.getBoolean("general.developer-debug-mode.enabled")){
+                            console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aWrapped task: " + task3.toString()));
+                            console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aTimed task canceled successfully"));
+                        }
                     }
                     runClanInviteClearTwo();
                     task3.cancel();
+                    if (config.getBoolean("general.developer-debug-mode.enabled")){
+                        console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aWrapped task: " + task3.toString()));
+                        console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aTimed task canceled successfully"));
+                    }
                     return;
                 }else {
                     time --;
@@ -103,13 +157,30 @@ public class TaskTimerUtils {
                     try {
                         ClanInviteUtil.emptyInviteList();
                         if (Clans.getPlugin().getConfig().getBoolean("general.show-auto-invite-wipe-message.enabled")){
-                            logger.info(ColorUtils.translateColorCodes(Clans.getPlugin().messagesFileManager.getMessagesConfig().getString("auto-invite-wipe-complete")));
+                            console.sendMessage(ColorUtils.translateColorCodes(Clans.getPlugin().messagesFileManager.getMessagesConfig().getString("auto-invite-wipe-complete")));
                         }
+                        runClanInviteClearOne();
+                        task4.cancel();
+                        if (config.getBoolean("general.developer-debug-mode.enabled")){
+                            console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aWrapped task: " + task4.toString()));
+                            console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aTimed task canceled successfully"));
+                        }
+                        return;
                     }catch (UnsupportedOperationException exception){
-                        logger.info(ColorUtils.translateColorCodes(Clans.getPlugin().messagesFileManager.getMessagesConfig().getString("invite-wipe-failed")));
+                        console.sendMessage(ColorUtils.translateColorCodes(Clans.getPlugin().messagesFileManager.getMessagesConfig().getString("invite-wipe-failed")));
+                        runClanInviteClearOne();
+                        task4.cancel();
+                        if (config.getBoolean("general.developer-debug-mode.enabled")){
+                            console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aWrapped task: " + task4.toString()));
+                            console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aTimed task canceled successfully"));
+                        }
                     }
                     runClanInviteClearOne();
                     task4.cancel();
+                    if (config.getBoolean("general.developer-debug-mode.enabled")){
+                        console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aWrapped task: " + task4.toString()));
+                        console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aTimed task canceled successfully"));
+                    }
                     return;
                 }else {
                     time --;

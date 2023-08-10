@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -16,12 +17,11 @@ import xyz.gamlin.clans.models.Clan;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 public class ClansStorageUtil {
 
-    private static final Logger logger = Clans.getPlugin().getLogger();
+    private static final ConsoleCommandSender console = Bukkit.getConsoleSender();
 
     private static final Pattern STRIP_COLOR_PATTERN = Pattern.compile("(?i)" + String.valueOf('&') + "[0-9A-FK-OR]");
 
@@ -54,9 +54,9 @@ public class ClansStorageUtil {
                 clansStorage.set("clans.data." + entry.getKey() + ".maxAllowedProtectedChests", entry.getValue().getMaxAllowedProtectedChests());
                 for (Map.Entry<String, Chest> chestLocation : chests.entrySet()){
                     if (chestLocation.getValue().getChestWorldName() == null){
-                        logger.warning(ColorUtils.translateColorCodes(messagesConfig.getString("chest-location-save-failed-1")
+                        console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("chest-location-save-failed-1")
                                 .replace("%CLAN%", chestLocation.getValue().getChestWorldName().toString())));
-                        logger.warning(ColorUtils.translateColorCodes(messagesConfig.getString("chest-location-save-failed-2")
+                        console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("chest-location-save-failed-2")
                                 .replace("%CLAN%", chestLocation.getValue().getChestWorldName().toString())));
                         continue;
                     }
@@ -136,7 +136,7 @@ public class ClansStorageUtil {
                         chest.setPlayersWithAccess(playersWithAccess);
                         protectedChests.put(chestUUID, chest);
                     }else {
-                        logger.warning(ColorUtils.translateColorCodes(messagesConfig.getString("chest-location-load-failed")
+                        console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("chest-location-load-failed")
                                 .replace("%WORLD%", chestWorld).replace("%CLAN%", clanFinalName)));
                     }
                 });
@@ -176,7 +176,7 @@ public class ClansStorageUtil {
                 if (clansList.containsKey(uuid)){
                     fireClanDisbandEvent(player);
                     if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                        logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanDisbandEvent"));
+                        console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanDisbandEvent"));
                     }
                     clansList.remove(uuid);
                     clansStorage.set("clans.data." + key, null);
@@ -198,14 +198,14 @@ public class ClansStorageUtil {
             if (clansList.containsKey(uuid)){
                 fireOfflineClanDisbandEvent(offlinePlayer);
                 if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                    logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired OfflineClanDisbandEvent"));
+                    console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired OfflineClanDisbandEvent"));
                 }
                 clansList.remove(uuid);
                 clansStorage.set("clans.data." + key, null);
                 Clans.getPlugin().clansFileManager.saveClansConfig();
                 return true;
             }else {
-                logger.warning(ColorUtils.translateColorCodes(messagesConfig.getString("clans-update-error-1")));
+                console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clans-update-error-1")));
                 return false;
             }
         }
@@ -387,9 +387,9 @@ public class ClansStorageUtil {
         String clanFinalName = clan.getClanFinalName();
         if (clansConfig.getBoolean("general.developer-debug-mode.enabled")||!clansStorage.getBoolean("name-strip-colour-complete")
                 ||clanFinalName.contains("&")||clanFinalName.contains("#")){
-            logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFound Colour Code To Strip"));
-            logger.info(ColorUtils.translateColorCodes("&aOriginal Name: ") + clanFinalName);
-            logger.info(ColorUtils.translateColorCodes("&aNew Name: ") + (clanFinalName == null?null:STRIP_COLOR_PATTERN.matcher(clanFinalName).replaceAll("")));
+            console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFound Colour Code To Strip"));
+            console.sendMessage(ColorUtils.translateColorCodes("&aOriginal Name: ") + clanFinalName);
+            console.sendMessage(ColorUtils.translateColorCodes("&aNew Name: ") + (clanFinalName == null?null:STRIP_COLOR_PATTERN.matcher(clanFinalName).replaceAll("")));
         }
         return clanFinalName == null?null:STRIP_COLOR_PATTERN.matcher(clanFinalName).replaceAll("");
     }
@@ -439,7 +439,7 @@ public class ClansStorageUtil {
                     if (clansList.containsKey(originalOwnerUUID)){
                         fireClanTransferOwnershipEvent(originalClanOwner, newClanOwner, newClan);
                         if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                            logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanTransferOwnershipEvent"));
+                            console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanTransferOwnershipEvent"));
                         }
                         clansList.remove(originalOwnerUUID);
                         clansStorage.set("clans.data." + originalOwnerKey, null);

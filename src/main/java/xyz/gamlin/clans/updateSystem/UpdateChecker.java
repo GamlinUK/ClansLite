@@ -1,6 +1,8 @@
 package xyz.gamlin.clans.updateSystem;
 
 import com.tcoded.folialib.FoliaLib;
+import org.bukkit.Bukkit;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.util.Consumer;
 import xyz.gamlin.clans.Clans;
@@ -10,13 +12,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Scanner;
-import java.util.logging.Logger;
 
 public class UpdateChecker {
 
+    ConsoleCommandSender console = Bukkit.getConsoleSender();
+
     private int resourceId;
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
-    Logger logger = Clans.getPlugin().getLogger();
 
     public UpdateChecker(int resourceId) {
         this.resourceId = resourceId;
@@ -30,7 +32,7 @@ public class UpdateChecker {
                     consumer.accept(scanner.next());
                 }
             } catch (IOException exception) {
-                logger.warning(ColorUtils.translateColorCodes(messagesConfig.getString("update-check-failure") + exception.getMessage()));
+                console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("update-check-failure") + exception.getMessage()));
             }
         });
     }

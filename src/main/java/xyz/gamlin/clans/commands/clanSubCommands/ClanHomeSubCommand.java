@@ -1,28 +1,29 @@
 package xyz.gamlin.clans.commands.clanSubCommands;
 
-import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import xyz.gamlin.clans.Clans;
 import xyz.gamlin.clans.api.ClanHomePreTeleportEvent;
-import xyz.gamlin.clans.api.ClanHomeTeleportEvent;
 import xyz.gamlin.clans.models.Clan;
 import xyz.gamlin.clans.utils.ClansStorageUtil;
 import xyz.gamlin.clans.utils.ColorUtils;
+import xyz.gamlin.clans.utils.TeleportUtils;
 
 import java.util.HashMap;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 public class ClanHomeSubCommand {
 
+    ConsoleCommandSender console = Bukkit.getConsoleSender();
+
     FileConfiguration clansConfig = Clans.getPlugin().getConfig();
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
-    Logger logger = Clans.getPlugin().getLogger();
+    
     private static final String TIME_LEFT = "%TIMELEFT%";
 
     private static ClanHomePreTeleportEvent homePreTeleportEvent = null;
@@ -38,11 +39,11 @@ public class ClanHomeSubCommand {
                     if (clanByOwner.getClanHomeWorld() != null){
                         fireClanHomePreTPEvent(player, clanByOwner);
                         if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                            logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanHomePreTPEvent"));
+                            console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanHomePreTPEvent"));
                         }
                         if (homePreTeleportEvent.isCancelled()){
                             if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                                logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aClanHomePreTPEvent cancelled by external source"));
+                                console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aClanHomePreTPEvent cancelled by external source"));
                             }
                             return true;
                         }
@@ -63,40 +64,45 @@ public class ClanHomeSubCommand {
                                     }else {
                                         homeCoolDownTimer.put(uuid, System.currentTimeMillis() + (clansConfig.getLong("clan-home.cool-down.time") * 1000));
                                         Location location = new Location(world, x, y, z, yaw, pitch);
-                                        fireClanHomeTeleportEvent(player, clanByOwner, location, player.getLocation());
-                                        if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                                            logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanHomeTeleportEvent"));
+                                        if (clansConfig.getBoolean("clan-home.delay-before-teleport.enabled")){
+                                            TeleportUtils teleportUtils = new TeleportUtils();
+                                            teleportUtils.teleportAsyncTimed(player, clanByOwner, location);
+                                        }else {
+                                            TeleportUtils teleportUtils = new TeleportUtils();
+                                            teleportUtils.teleportAsync(player, clanByOwner, location);
                                         }
-                                        PaperLib.teleportAsync(player, location);
-                                        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("successfully-teleported-to-home")));
+
                                     }
                                 }else {
                                     Location location = new Location(world, x, y, z, yaw, pitch);
-                                    fireClanHomeTeleportEvent(player, clanByOwner, location, player.getLocation());
-                                    if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                                        logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanHomeTeleportEvent"));
+                                    if (clansConfig.getBoolean("clan-home.delay-before-teleport.enabled")){
+                                        TeleportUtils teleportUtils = new TeleportUtils();
+                                        teleportUtils.teleportAsyncTimed(player, clanByOwner, location);
+                                    }else {
+                                        TeleportUtils teleportUtils = new TeleportUtils();
+                                        teleportUtils.teleportAsync(player, clanByOwner, location);
                                     }
-                                    PaperLib.teleportAsync(player, location);
-                                    player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("successfully-teleported-to-home")));
                                 }
                             }else {
                                 homeCoolDownTimer.put(uuid, System.currentTimeMillis() + (clansConfig.getLong("clan-home.cool-down.time") * 1000));
                                 Location location = new Location(world, x, y, z, yaw, pitch);
-                                fireClanHomeTeleportEvent(player, clanByOwner, location, player.getLocation());
-                                if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                                    logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanHomeTeleportEvent"));
+                                if (clansConfig.getBoolean("clan-home.delay-before-teleport.enabled")){
+                                    TeleportUtils teleportUtils = new TeleportUtils();
+                                    teleportUtils.teleportAsyncTimed(player, clanByOwner, location);
+                                }else {
+                                    TeleportUtils teleportUtils = new TeleportUtils();
+                                    teleportUtils.teleportAsync(player, clanByOwner, location);
                                 }
-                                PaperLib.teleportAsync(player, location);
-                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("successfully-teleported-to-home")));
                             }
                         }else {
                             Location location = new Location(world, x, y, z, yaw, pitch);
-                            fireClanHomeTeleportEvent(player, clanByOwner, location, player.getLocation());
-                            if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                                logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanHomeTeleportEvent"));
+                            if (clansConfig.getBoolean("clan-home.delay-before-teleport.enabled")){
+                                TeleportUtils teleportUtils = new TeleportUtils();
+                                teleportUtils.teleportAsyncTimed(player, clanByOwner, location);
+                            }else {
+                                TeleportUtils teleportUtils = new TeleportUtils();
+                                teleportUtils.teleportAsync(player, clanByOwner, location);
                             }
-                            PaperLib.teleportAsync(player, location);
-                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("successfully-teleported-to-home")));
                         }
                     }else {
                         player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("failed-no-home-set")));
@@ -105,11 +111,11 @@ public class ClanHomeSubCommand {
                     Clan clanByPlayer = ClansStorageUtil.findClanByPlayer(player);
                     fireClanHomePreTPEvent(player, clanByPlayer);
                     if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                        logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanHomePreTPEvent"));
+                        console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanHomePreTPEvent"));
                     }
                     if (homePreTeleportEvent.isCancelled()){
                         if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                            logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aClanHomePreTPEvent cancelled by external source"));
+                            console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aClanHomePreTPEvent cancelled by external source"));
                         }
                         return true;
                     }
@@ -131,40 +137,44 @@ public class ClanHomeSubCommand {
                                     }else {
                                         homeCoolDownTimer.put(uuid, System.currentTimeMillis() + (clansConfig.getLong("clan-home.cool-down.time") * 1000));
                                         Location location = new Location(world, x, y, z, yaw, pitch);
-                                        fireClanHomeTeleportEvent(player, clanByPlayer, location, player.getLocation());
-                                        if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                                            logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanHomeTeleportEvent"));
+                                        if (clansConfig.getBoolean("clan-home.delay-before-teleport.enabled")){
+                                            TeleportUtils teleportUtils = new TeleportUtils();
+                                            teleportUtils.teleportAsyncTimed(player, clanByPlayer, location);
+                                        }else {
+                                            TeleportUtils teleportUtils = new TeleportUtils();
+                                            teleportUtils.teleportAsync(player, clanByPlayer, location);
                                         }
-                                        PaperLib.teleportAsync(player, location);
-                                        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("successfully-teleported-to-home")));
                                     }
                                 }else {
                                     Location location = new Location(world, x, y, z, yaw, pitch);
-                                    fireClanHomeTeleportEvent(player, clanByPlayer, location, player.getLocation());
-                                    if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                                        logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanHomeTeleportEvent"));
+                                    if (clansConfig.getBoolean("clan-home.delay-before-teleport.enabled")){
+                                        TeleportUtils teleportUtils = new TeleportUtils();
+                                        teleportUtils.teleportAsyncTimed(player, clanByPlayer, location);
+                                    }else {
+                                        TeleportUtils teleportUtils = new TeleportUtils();
+                                        teleportUtils.teleportAsync(player, clanByPlayer, location);
                                     }
-                                    PaperLib.teleportAsync(player, location);
-                                    player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("successfully-teleported-to-home")));
                                 }
                             }else {
                                 homeCoolDownTimer.put(uuid, System.currentTimeMillis() + (clansConfig.getLong("clan-home.cool-down.time") * 1000));
                                 Location location = new Location(world, x, y, z, yaw, pitch);
-                                fireClanHomeTeleportEvent(player, clanByPlayer, location, player.getLocation());
-                                if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                                    logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanHomeTeleportEvent"));
+                                if (clansConfig.getBoolean("clan-home.delay-before-teleport.enabled")){
+                                    TeleportUtils teleportUtils = new TeleportUtils();
+                                    teleportUtils.teleportAsyncTimed(player, clanByPlayer, location);
+                                }else {
+                                    TeleportUtils teleportUtils = new TeleportUtils();
+                                    teleportUtils.teleportAsync(player, clanByPlayer, location);
                                 }
-                                PaperLib.teleportAsync(player, location);
-                                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("successfully-teleported-to-home")));
                             }
                         }else {
                             Location location = new Location(world, x, y, z, yaw, pitch);
-                            fireClanHomeTeleportEvent(player, clanByPlayer, location, player.getLocation());
-                            if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                                logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanHomeTeleportEvent"));
+                            if (clansConfig.getBoolean("clan-home.delay-before-teleport.enabled")){
+                                TeleportUtils teleportUtils = new TeleportUtils();
+                                teleportUtils.teleportAsyncTimed(player, clanByPlayer, location);
+                            }else {
+                                TeleportUtils teleportUtils = new TeleportUtils();
+                                teleportUtils.teleportAsync(player, clanByPlayer, location);
                             }
-                            PaperLib.teleportAsync(player, location);
-                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("successfully-teleported-to-home")));
                         }
                     }else {
                         player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("failed-no-home-set")));
@@ -185,10 +195,5 @@ public class ClanHomeSubCommand {
         ClanHomePreTeleportEvent clanHomePreTeleportEvent = new ClanHomePreTeleportEvent(player, clan);
         Bukkit.getPluginManager().callEvent(clanHomePreTeleportEvent);
         homePreTeleportEvent = clanHomePreTeleportEvent;
-    }
-
-    private static void fireClanHomeTeleportEvent(Player player, Clan clan, Location homeLocation, Location tpFromLocation) {
-        ClanHomeTeleportEvent clanHomeTeleportEvent = new ClanHomeTeleportEvent(player, clan, homeLocation, tpFromLocation);
-        Bukkit.getPluginManager().callEvent(clanHomeTeleportEvent);
     }
 }

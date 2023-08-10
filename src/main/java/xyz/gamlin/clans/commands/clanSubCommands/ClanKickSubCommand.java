@@ -14,6 +14,7 @@ import xyz.gamlin.clans.utils.UsermapStorageUtil;
 public class ClanKickSubCommand {
 
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+
     private static final String CLAN_PLACEHOLDER = "%CLAN%";
     private static final String PLAYER_TO_KICK = "%KICKEDPLAYER%";
 

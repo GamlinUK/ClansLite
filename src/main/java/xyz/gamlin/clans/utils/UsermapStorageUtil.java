@@ -2,6 +2,7 @@ package xyz.gamlin.clans.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.geysermc.floodgate.api.player.FloodgatePlayer;
@@ -11,11 +12,10 @@ import xyz.gamlin.clans.models.ClanPlayer;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.logging.Logger;
 
 public class UsermapStorageUtil {
 
-    private static Logger logger = Clans.getPlugin().getLogger();
+    private static ConsoleCommandSender console = Bukkit.getConsoleSender();
 
     private static Map<UUID, ClanPlayer> usermap = new HashMap<>();
 
@@ -99,9 +99,9 @@ public class UsermapStorageUtil {
             ClanPlayer clanPlayer = usermap.get(uuid);
             return clanPlayer;
         }else {
-            logger.warning(ColorUtils.translateColorCodes(messagesConfig.getString("clan-player-not-found-1")
+            console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-player-not-found-1")
                     .replace(PLAYER_PLACEHOLDER, player.getName())));
-            logger.warning(ColorUtils.translateColorCodes(messagesConfig.getString("clan-player-not-found-2")
+            console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-player-not-found-2")
                     .replace(PLAYER_PLACEHOLDER, player.getName())));
         }
         return null;
@@ -113,9 +113,9 @@ public class UsermapStorageUtil {
             ClanPlayer clanPlayer = usermap.get(uuid);
             return clanPlayer;
         }else {
-            logger.warning(ColorUtils.translateColorCodes(messagesConfig.getString("clan-player-not-found-1")
+            console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-player-not-found-1")
                     .replace(PLAYER_PLACEHOLDER, offlinePlayer.getName())));
-            logger.warning(ColorUtils.translateColorCodes(messagesConfig.getString("clan-player-not-found-2")
+            console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-player-not-found-2")
                     .replace(PLAYER_PLACEHOLDER, offlinePlayer.getName())));
         }
         return null;
@@ -126,9 +126,9 @@ public class UsermapStorageUtil {
             if (clanPlayer.getLastPlayerName().equalsIgnoreCase(name)){
                 return Bukkit.getPlayer(clanPlayer.getLastPlayerName());
             }else {
-                logger.warning(ColorUtils.translateColorCodes(messagesConfig.getString("clan-player-not-found-1")
+                console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-player-not-found-1")
                         .replace(PLAYER_PLACEHOLDER, name)));
-                logger.warning(ColorUtils.translateColorCodes(messagesConfig.getString("clan-player-not-found-2")
+                console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-player-not-found-2")
                         .replace(PLAYER_PLACEHOLDER, name)));
             }
         }
@@ -140,9 +140,9 @@ public class UsermapStorageUtil {
             if (clanPlayer.getLastPlayerName().equalsIgnoreCase(name)){
                 return Bukkit.getOfflinePlayer(UUID.fromString(clanPlayer.getJavaUUID()));
             }else {
-                logger.warning(ColorUtils.translateColorCodes(messagesConfig.getString("clan-player-not-found-1")
+                console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-player-not-found-1")
                         .replace(PLAYER_PLACEHOLDER, name)));
-                logger.warning(ColorUtils.translateColorCodes(messagesConfig.getString("clan-player-not-found-2")
+                console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-player-not-found-2")
                         .replace(PLAYER_PLACEHOLDER, name)));
             }
         }
@@ -198,14 +198,14 @@ public class UsermapStorageUtil {
             clanPlayer.setCanChatSpy(true);
             fireClanChatSpyToggledEvent(player, clanPlayer ,true);
             if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanChatSpyToggledEvent"));
+                console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanChatSpyToggledEvent"));
             }
             return true;
         }else {
             clanPlayer.setCanChatSpy(false);
             fireClanChatSpyToggledEvent(player, clanPlayer ,false);
             if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanChatSpyToggledEvent"));
+                console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanChatSpyToggledEvent"));
             }
             return false;
         }

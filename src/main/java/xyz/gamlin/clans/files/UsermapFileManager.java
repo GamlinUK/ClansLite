@@ -1,5 +1,7 @@
 package xyz.gamlin.clans.files;
 
+import org.bukkit.Bukkit;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import xyz.gamlin.clans.Clans;
@@ -9,15 +11,14 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.logging.Logger;
 
 public class UsermapFileManager {
+
+    ConsoleCommandSender console = Bukkit.getConsoleSender();
 
     private Clans plugin;
     private FileConfiguration dataConfig = null;
     private File configFile = null;
-
-    Logger logger = Clans.getPlugin().getLogger();
 
     public void UsermapFileManager(Clans plugin){
         this.plugin = plugin;
@@ -50,8 +51,8 @@ public class UsermapFileManager {
         try {
             this.getUsermapConfig().save(this.configFile);
         }catch (IOException e){
-            logger.severe(ColorUtils.translateColorCodes("&6ClansLite: &4Could not save usermap.yml"));
-            logger.severe(ColorUtils.translateColorCodes("&6ClansLite: &4Check the below message for the reasons!"));
+            console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &4Could not save usermap.yml"));
+            console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &4Check the below message for the reasons!"));
             e.printStackTrace();
         }
     }

@@ -3,6 +3,7 @@ package xyz.gamlin.clans.listeners;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.TileState;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Player;
@@ -20,13 +21,13 @@ import xyz.gamlin.clans.utils.ColorUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
 public class ChestBreakEvent implements Listener {
 
+    ConsoleCommandSender console = Bukkit.getConsoleSender();
+    
     FileConfiguration clansConfig = Clans.getPlugin().getConfig();
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
-    Logger logger = Clans.getPlugin().getLogger();
 
     private static final String CLAN_PLACEHOLDER = "%CLAN%";
     private static final String X_PLACEHOLDER = "%X%";
@@ -80,8 +81,8 @@ public class ChestBreakEvent implements Listener {
                                 tileState.update();
                             }
                         }catch (IOException e){
-                            logger.warning(ColorUtils.translateColorCodes(messagesConfig.getString("clans-update-error-1")));
-                            logger.warning(ColorUtils.translateColorCodes(messagesConfig.getString("clans-update-error-2")));
+                            console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clans-update-error-1")));
+                            console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clans-update-error-2")));
                             e.printStackTrace();
                         }
 
@@ -147,8 +148,8 @@ public class ChestBreakEvent implements Listener {
                 tileState.update();
             }
         }catch (IOException e){
-            logger.warning(ColorUtils.translateColorCodes(messagesConfig.getString("clans-update-error-1")));
-            logger.warning(ColorUtils.translateColorCodes(messagesConfig.getString("clans-update-error-2")));
+            console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clans-update-error-1")));
+            console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clans-update-error-2")));
             e.printStackTrace();
         }
     }

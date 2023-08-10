@@ -1,19 +1,19 @@
 package xyz.gamlin.clans.utils;
 
 import org.bukkit.Bukkit;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import xyz.gamlin.clans.Clans;
 import xyz.gamlin.clans.models.ClanInvite;
 
 import java.util.*;
-import java.util.logging.Logger;
 
 public class ClanInviteUtil {
+    
+    private static final ConsoleCommandSender console = Bukkit.getConsoleSender();
 
     private static final FileConfiguration clansConfig = Clans.getPlugin().getConfig();
-    private static final Logger logger = Clans.getPlugin().getLogger();
-
     private static Map<UUID, ClanInvite> invitesList = new HashMap<>();
     
     public static ClanInvite createInvite(String inviterUUID, String inviteeUUID){
@@ -22,7 +22,7 @@ public class ClanInviteUtil {
         if (!invitesList.containsKey(uuid)){
             invitesList.put(uuid, new ClanInvite(inviterUUID, inviteeUUID));
             if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aClan invite created"));
+                console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aClan invite created"));
             }
             return invitesList.get(uuid);
         }else {
@@ -46,7 +46,7 @@ public class ClanInviteUtil {
             if (currentTime.getTime() - clanInvite.getInviteTime().getTime() > expiryTime){
                 invitesList.remove(clanInvite);
                 if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                    logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aExpired clan invites removed"));
+                    console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aExpired clan invites removed"));
                 }
             }
         }
@@ -71,13 +71,13 @@ public class ClanInviteUtil {
             UUID uuid = UUID.fromString(inviterUUID);
             if (invitesList.containsKey(uuid)){
                 if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                    logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aInvite owner uuid: &d" + inviterUUID));
+                    console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aInvite owner uuid: &d" + inviterUUID));
                 }
                 return Bukkit.getPlayer(uuid);
             }
         }else {
-            logger.warning(ColorUtils.translateColorCodes("&6ClansLite: &4An error occurred whilst getting an Invite Owner."));
-            logger.warning(ColorUtils.translateColorCodes("&6ClansLite: &4Error: &3The provided UUID is too long."));
+            console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &4An error occurred whilst getting an Invite Owner."));
+            console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &4Error: &3The provided UUID is too long."));
         }
         return null;
     }

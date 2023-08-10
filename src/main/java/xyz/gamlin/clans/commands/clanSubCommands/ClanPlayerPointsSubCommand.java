@@ -1,5 +1,6 @@
 package xyz.gamlin.clans.commands.clanSubCommands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -10,11 +11,10 @@ import xyz.gamlin.clans.utils.ColorUtils;
 import xyz.gamlin.clans.utils.UsermapStorageUtil;
 
 import java.util.*;
-import java.util.logging.Logger;
 
 public class ClanPlayerPointsSubCommand {
 
-    Logger logger = Clans.getPlugin().getLogger();
+    ConsoleCommandSender console = Bukkit.getConsoleSender();
 
     FileConfiguration clansConfig = Clans.getPlugin().getConfig();
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
@@ -50,7 +50,7 @@ public class ClanPlayerPointsSubCommand {
                     return listAllPoints(sender);
                 }
             }else {
-                logger.info(ColorUtils.translateColorCodes(messagesConfig.getString("player-only-command")));
+                console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("player-only-command")));
             }
         }
         return true;

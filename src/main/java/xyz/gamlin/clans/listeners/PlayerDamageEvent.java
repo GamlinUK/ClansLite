@@ -1,6 +1,7 @@
 package xyz.gamlin.clans.listeners;
 
 import org.bukkit.Bukkit;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,11 +15,11 @@ import xyz.gamlin.clans.utils.ClansStorageUtil;
 import xyz.gamlin.clans.utils.ColorUtils;
 
 import java.util.*;
-import java.util.logging.Logger;
 
 public class PlayerDamageEvent implements Listener {
 
-    Logger logger = Clans.getPlugin().getLogger();
+    ConsoleCommandSender console = Bukkit.getConsoleSender();
+
     FileConfiguration clansConfig = Clans.getPlugin().getConfig();
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
 
@@ -49,7 +50,7 @@ public class PlayerDamageEvent implements Listener {
                                 event.setCancelled(true);
                                 fireClanFriendlyFireAttackEvent(hurtPlayer, attackingPlayer, hurtPlayer, attackingClan, victimClan);
                                 if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                                    logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanFriendlyFireAttackEvent"));
+                                    console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanFriendlyFireAttackEvent"));
                                 }
                                 attackingPlayer.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("friendly-fire-is-disabled")));
                             }
@@ -80,7 +81,7 @@ public class PlayerDamageEvent implements Listener {
                                     event.setCancelled(true);
                                     fireClanFriendlyFireAttackEvent(hurtPlayer, attackingPlayer, hurtPlayer, attackingClanByPlayer, victimClanByPlayer);
                                     if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                                        logger.info(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanFriendlyFireAttackEvent"));
+                                        console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanFriendlyFireAttackEvent"));
                                     }
                                     attackingPlayer.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("friendly-fire-is-disabled")));
                                 }

@@ -15,14 +15,16 @@ import xyz.gamlin.clans.utils.ColorUtils;
 import xyz.gamlin.clans.utils.UsermapStorageUtil;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
 
 public class ClanAdmin implements CommandExecutor {
 
-    Logger logger = Clans.getPlugin().getLogger();
+    ConsoleCommandSender console = Bukkit.getConsoleSender();
+    
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
 
+    private ArrayList<Player> onlinePlayers = new ArrayList<>(Bukkit.getOnlinePlayers());
     private static final String PLAYER_TO_KICK = "%KICKEDPLAYER%";
 
     @Override
@@ -48,6 +50,14 @@ public class ClanAdmin implements CommandExecutor {
 //----------------------------------------------------------------------------------------------------------------------
                 if (args[0].equalsIgnoreCase("reload")) {
                     player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("plugin-reload-begin")));
+                    for (Player p : onlinePlayers){
+                        if (p.getName().equalsIgnoreCase(player.getName())){
+                            continue;
+                        }
+                        if (!onlinePlayers.isEmpty()){
+                            p.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("plugin-reload-broadcast-start")));
+                        }
+                    }
                     FoliaLib foliaLib = new FoliaLib(Clans.getPlugin());
                     Clans.getPlugin().onDisable();
                     foliaLib.getImpl().runLater(new Runnable() {
@@ -64,6 +74,14 @@ public class ClanAdmin implements CommandExecutor {
                             Clans.getPlugin().messagesFileManager.reloadMessagesConfig();
                             Clans.getPlugin().clanGUIFileManager.reloadClanGUIConfig();
                             player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("plugin-reload-successful")));
+                            for (Player p : onlinePlayers){
+                                if (p.getName().equalsIgnoreCase(player.getName())){
+                                    continue;
+                                }
+                                if (!onlinePlayers.isEmpty()){
+                                    p.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("plugin-reload-successful")));
+                                }
+                            }
                         }
                     }, 5L, TimeUnit.SECONDS);
                 }
@@ -137,24 +155,29 @@ public class ClanAdmin implements CommandExecutor {
         if (sender instanceof ConsoleCommandSender) {
             if (args.length > 0){
                 if (args[0].equalsIgnoreCase("save")) {
-                    logger.info(ColorUtils.translateColorCodes(messagesConfig.getString("saving-clans-start")));
+                    console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("saving-clans-start")));
                     try {
                         if (!ClansStorageUtil.getRawClansList().isEmpty()){
                             ClansStorageUtil.saveClans();
                         }else {
-                            logger.warning(ColorUtils.translateColorCodes(messagesConfig.getString("save-failed-no-clans")));
+                            console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("save-failed-no-clans")));
                         }
                     } catch (IOException e) {
-                        logger.severe(ColorUtils.translateColorCodes(messagesConfig.getString("clans-save-error-1")));
-                        logger.severe(ColorUtils.translateColorCodes(messagesConfig.getString("clans-save-error-2")));
+                        console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clans-save-error-1")));
+                        console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clans-save-error-2")));
                         e.printStackTrace();
                     }
-                    logger.info(ColorUtils.translateColorCodes(messagesConfig.getString("save-completed")));
+                    console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("save-completed")));
                 }
 
 //----------------------------------------------------------------------------------------------------------------------
                 if (args[0].equalsIgnoreCase("reload")) {
-                    logger.info(ColorUtils.translateColorCodes(messagesConfig.getString("plugin-reload-begin")));
+                    console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("plugin-reload-begin")));
+                    for (Player p : onlinePlayers){
+                        if (!onlinePlayers.isEmpty()){
+                            p.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("plugin-reload-broadcast-start")));
+                        }
+                    }
                     FoliaLib foliaLib = new FoliaLib(Clans.getPlugin());
                     Clans.getPlugin().onDisable();
                     foliaLib.getImpl().runLater(new Runnable() {
@@ -170,7 +193,12 @@ public class ClanAdmin implements CommandExecutor {
                             ClanCommand.updateBannedTagsList();
                             Clans.getPlugin().messagesFileManager.reloadMessagesConfig();
                             Clans.getPlugin().clanGUIFileManager.reloadClanGUIConfig();
-                            logger.info(ColorUtils.translateColorCodes(messagesConfig.getString("plugin-reload-successful")));
+                            console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("plugin-reload-successful")));
+                            for (Player p : onlinePlayers){
+                                if (!onlinePlayers.isEmpty()){
+                                    p.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("plugin-reload-successful")));
+                                }
+                            }
                         }
                     }, 5L, TimeUnit.SECONDS);
                 }
@@ -184,56 +212,56 @@ public class ClanAdmin implements CommandExecutor {
                             if (onlinePlayerOwner != null){
                                 try {
                                     if (ClansStorageUtil.deleteClan(onlinePlayerOwner)){
-                                        logger.info(ColorUtils.translateColorCodes(messagesConfig.getString("clan-successfully-disbanded")));
+                                        console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-successfully-disbanded")));
                                     }else {
-                                        logger.warning(ColorUtils.translateColorCodes(messagesConfig.getString("clan-admin-disband-failure")));
+                                        console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-admin-disband-failure")));
                                     }
                                 } catch (IOException e) {
-                                    logger.severe(ColorUtils.translateColorCodes(messagesConfig.getString("clans-update-error-1")));
-                                    logger.severe(ColorUtils.translateColorCodes(messagesConfig.getString("clans-update-error-2")));
+                                    console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clans-update-error-1")));
+                                    console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clans-update-error-2")));
                                     e.printStackTrace();
                                 }
                             }else if (offlinePlayerOwner != null){
                                 try {
                                     if (ClansStorageUtil.deleteOfflineClan(offlinePlayerOwner)){
-                                        logger.info(ColorUtils.translateColorCodes(messagesConfig.getString("clan-successfully-disbanded")));
+                                        console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-successfully-disbanded")));
                                     }else {
-                                        logger.warning(ColorUtils.translateColorCodes(messagesConfig.getString("clan-admin-disband-failure")));
+                                        console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-admin-disband-failure")));
                                     }
                                 } catch (IOException e) {
-                                    logger.severe(ColorUtils.translateColorCodes(messagesConfig.getString("clans-update-error-1")));
-                                    logger.severe(ColorUtils.translateColorCodes(messagesConfig.getString("clans-update-error-2")));
+                                    console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clans-update-error-1")));
+                                    console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clans-update-error-2")));
                                     e.printStackTrace();
                                 }
                             }else {
-                                logger.warning(ColorUtils.translateColorCodes(messagesConfig.getString("could-not-find-specified-player").replace(PLAYER_TO_KICK, args[1])));
+                                console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("could-not-find-specified-player").replace(PLAYER_TO_KICK, args[1])));
                             }
                         }else {
-                            logger.warning(ColorUtils.translateColorCodes(messagesConfig.getString("incorrect-disband-command-usage")));
+                            console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("incorrect-disband-command-usage")));
                         }
                     }
                 }
 
 //----------------------------------------------------------------------------------------------------------------------
                 if (args[0].equalsIgnoreCase("about")) {
-                    logger.info(ColorUtils.translateColorCodes("&3~~~~~~~~~~ &6ClansLite &3~~~~~~~~~~"));
-                    logger.info(ColorUtils.translateColorCodes("&3Version: &6" + Clans.getPlugin().getDescription().getVersion()));
-                    logger.info(ColorUtils.translateColorCodes("&3Authors: &6" + Clans.getPlugin().getDescription().getAuthors()));
-                    logger.info(ColorUtils.translateColorCodes("&3Description: &6" + Clans.getPlugin().getDescription().getDescription()));
-                    logger.info(ColorUtils.translateColorCodes("&3Website: "));
-                    logger.info(ColorUtils.translateColorCodes("&6" + Clans.getPlugin().getDescription().getWebsite()));
-                    logger.info(ColorUtils.translateColorCodes("&3Discord:"));
-                    logger.info(ColorUtils.translateColorCodes("&6https://discord.gg/crapticraft"));
-                    logger.info(ColorUtils.translateColorCodes("&3~~~~~~~~~~ &6ClansLite &3~~~~~~~~~~"));
+                    console.sendMessage(ColorUtils.translateColorCodes("&3~~~~~~~~~~ &6ClansLite &3~~~~~~~~~~"));
+                    console.sendMessage(ColorUtils.translateColorCodes("&3Version: &6" + Clans.getPlugin().getDescription().getVersion()));
+                    console.sendMessage(ColorUtils.translateColorCodes("&3Authors: &6" + Clans.getPlugin().getDescription().getAuthors()));
+                    console.sendMessage(ColorUtils.translateColorCodes("&3Description: &6" + Clans.getPlugin().getDescription().getDescription()));
+                    console.sendMessage(ColorUtils.translateColorCodes("&3Website: "));
+                    console.sendMessage(ColorUtils.translateColorCodes("&6" + Clans.getPlugin().getDescription().getWebsite()));
+                    console.sendMessage(ColorUtils.translateColorCodes("&3Discord:"));
+                    console.sendMessage(ColorUtils.translateColorCodes("&6https://discord.gg/crapticraft"));
+                    console.sendMessage(ColorUtils.translateColorCodes("&3~~~~~~~~~~ &6ClansLite &3~~~~~~~~~~"));
                 }
 
 //----------------------------------------------------------------------------------------------------------------------
             }else {
-                logger.info(ColorUtils.translateColorCodes(messagesConfig.getString("clanadmin-command-incorrect-usage.line-1")));
-                logger.info(ColorUtils.translateColorCodes(messagesConfig.getString("clanadmin-command-incorrect-usage.line-2")));
-                logger.info(ColorUtils.translateColorCodes(messagesConfig.getString("clanadmin-command-incorrect-usage.line-3")));
-                logger.info(ColorUtils.translateColorCodes(messagesConfig.getString("clanadmin-command-incorrect-usage.line-4")));
-                logger.info(ColorUtils.translateColorCodes(messagesConfig.getString("clanadmin-command-incorrect-usage.line-5")));
+                console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clanadmin-command-incorrect-usage.line-1")));
+                console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clanadmin-command-incorrect-usage.line-2")));
+                console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clanadmin-command-incorrect-usage.line-3")));
+                console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clanadmin-command-incorrect-usage.line-4")));
+                console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clanadmin-command-incorrect-usage.line-5")));
             }
         }
         return true;
