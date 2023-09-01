@@ -269,7 +269,7 @@ public final class Clans extends JavaPlugin {
         foliaLib.getImpl().runLaterAsync(new Runnable() {
             @Override
             public void run() {
-                TaskTimerUtils.runClansAutoSaveOne();
+                TaskTimerUtils.runClansAutoSave();
                 console.sendMessage(ColorUtils.translateColorCodes(messagesFileManager.getMessagesConfig().getString("auto-save-started")));
             }
         }, 5L, TimeUnit.SECONDS);
@@ -278,7 +278,7 @@ public final class Clans extends JavaPlugin {
         foliaLib.getImpl().runLaterAsync(new Runnable() {
             @Override
             public void run() {
-                TaskTimerUtils.runClanInviteClearOne();
+                TaskTimerUtils.runClanInviteClear();
                 console.sendMessage(ColorUtils.translateColorCodes(messagesFileManager.getMessagesConfig().getString("auto-invite-wipe-started")));
             }
         }, 5L, TimeUnit.SECONDS);
@@ -306,33 +306,19 @@ public final class Clans extends JavaPlugin {
                     teleportQueue.remove(wrappedTaskEntry.getKey());
                 }
             }
-            if (!TaskTimerUtils.task1.isCancelled()){
+            if (!TaskTimerUtils.autoSaveTask.isCancelled()){
                 if (getConfig().getBoolean("general.developer-debug-mode.enabled")){
-                    console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aWrapped task: " + TaskTimerUtils.task1.toString()));
+                    console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aWrapped task: " + TaskTimerUtils.autoSaveTask.toString()));
                     console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aTimed task 1 canceled successfully"));
                 }
-                TaskTimerUtils.task1.cancel();
+                TaskTimerUtils.autoSaveTask.cancel();
             }
-            if (!TaskTimerUtils.task2.isCancelled()){
+            if (!TaskTimerUtils.inviteClearTask.isCancelled()){
                 if (getConfig().getBoolean("general.developer-debug-mode.enabled")){
-                    console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aWrapped task: " + TaskTimerUtils.task2.toString()));
+                    console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aWrapped task: " + TaskTimerUtils.inviteClearTask.toString()));
                     console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aTimed task 2 canceled successfully"));
                 }
-                TaskTimerUtils.task2.cancel();
-            }
-            if (!TaskTimerUtils.task3.isCancelled()){
-                if (getConfig().getBoolean("general.developer-debug-mode.enabled")){
-                    console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aWrapped task: " + TaskTimerUtils.task3.toString()));
-                    console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aTimed task 3 canceled successfully"));
-                }
-                TaskTimerUtils.task3.cancel();
-            }
-            if (!TaskTimerUtils.task4.isCancelled()){
-                if (getConfig().getBoolean("general.developer-debug-mode.enabled")){
-                    console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aWrapped task: " + TaskTimerUtils.task4.toString()));
-                    console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aTimed task 4 canceled successfully"));
-                }
-                TaskTimerUtils.task4.cancel();
+                TaskTimerUtils.inviteClearTask.cancel();
             }
             if (!ClanListGUI.task5.isCancelled()){
                 if (getConfig().getBoolean("general.developer-debug-mode.enabled")){
