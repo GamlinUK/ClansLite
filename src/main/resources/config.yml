@@ -87,8 +87,9 @@ protections:
     #Enable the ability for a player to bypass the pvp protection using 'clanslite.bypass.pvp'. [Default value: true]
     enable-bypass-permission: true
   chests:
-    #Globaly enable the clan protected chests system. [Default value: false]
-    enabled: false
+    #THIS PROTECTION IS DISABLED IN ANY MC VERSION BELOW 1.14.4!
+    #Globaly enable the clan protected chests system. [Default value: true]
+    enabled: true
     #Enable the ability for a player to bypass the chest protection using 'clanslite.bypass.chests'. [Default value: true]
     enable-bypass-permission: true
     #Allow protected chests to be broken by TNT explosions? [Default value: true]

@@ -1,6 +1,6 @@
 name: ClansLite
 version: '${project.version}'
-main: xyz.gamlin.clans.Clans
+main: me.loving11ish.clans.Clans
 api-version: 1.13
 folia-supported: true
 prefix: ClansLite
@@ -52,20 +52,48 @@ commands:
 permissions:
   clanslite.clan:
     default: true
+    description: "The primary permission to use all base ClansLite features (Non admin)."
   clanslite.maxclansize.group1:
     default: true
+    description: "The default tiered group size permission."
+
   clanslite.*:
     default: op
+    description: "The main permission that allows access to ALL ClansLite features (Admin features included)."
     children:
+
       clanslite.admin:
+        description: "The admin permission that grants ALL admin features."
         children:
           clanslite.chat.spy:
             default: op
+            description: "The permission to use the `/clanchatspy` command and feature."
           clanslite.update:
             default: op
-          clanslite.bypass:
-            default: op
+            description: "The permission to receive in game notification if a plugin update is available."
           clanslite.maxclansize.*:
             default: op
+            description: "The ability to have an unlimited number of clan members."
           clanslite.points.listall:
             default: op
+            description: "The ability to use the `/clan playerpoints listall` command to see all players points."
+
+          clanslite.bypass.*:
+            default: op
+            description: "The master bypass permission that allows bypassing of ALL internal limits and protections."
+            children:
+              clanslite.bypass.homecooldown:
+                default: op
+                description: "The ability to bypass the `/clan home` cooldown timer."
+              clanslite.bypass.homedelay:
+                default: op
+                description: "The ability to bypass the `/clan home` warm up delay timer."
+              clanslite.bypass.chatcooldown:
+                default: op
+                description: "The ability to bypass the `/clanchat <message>` cooldown timer."
+              clanslite.bypass.chests:
+                default: op
+                description: "The ability to bypass the protections on any locked chests."
+              clanslite.bypass.pvp:
+                default: op
+                description: "The ability to bypass the friendly fire status set by a clan."
