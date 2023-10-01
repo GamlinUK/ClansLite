@@ -29,7 +29,7 @@ public class ClanListGUI extends PaginatedMenu {
     
     ConsoleCommandSender console = Bukkit.getConsoleSender();
 
-    public static WrappedTask task5;
+    public static WrappedTask autoGUIRefreshTask;
 
     FileConfiguration guiConfig = Clans.getPlugin().clanGUIFileManager.getClanGUIConfig();
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
@@ -72,7 +72,7 @@ public class ClanListGUI extends PaginatedMenu {
             playerMenuUtility.setOfflineClanOwner(Bukkit.getOfflinePlayer(target));
             new ClanJoinRequestMenu(Clans.getPlayerMenuUtility(player)).open();
             if (guiConfig.getBoolean("clan-list.icons.auto-refresh-data.enabled")){
-                task5.cancel();
+                autoGUIRefreshTask.cancel();
                 if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
                     console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aAuto refresh task cancelled"));
                 }
@@ -80,7 +80,7 @@ public class ClanListGUI extends PaginatedMenu {
         }else if (event.getCurrentItem().getType().equals(Material.BARRIER)) {
             player.closeInventory();
             if (guiConfig.getBoolean("clan-list.icons.auto-refresh-data.enabled")){
-                task5.cancel();
+                autoGUIRefreshTask.cancel();
                 if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
                     console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aAuto refresh task cancelled"));
                 }
@@ -109,7 +109,7 @@ public class ClanListGUI extends PaginatedMenu {
         addMenuControls();
         if (guiConfig.getBoolean("clan-list.icons.auto-refresh-data.enabled")){
             FoliaLib foliaLib = new FoliaLib(Clans.getPlugin());
-            task5 = foliaLib.getImpl().runTimerAsync(new Runnable() {
+            autoGUIRefreshTask = foliaLib.getImpl().runTimerAsync(new Runnable() {
                 @Override
                 public void run() {
                     //The thing you will be looping through to place items

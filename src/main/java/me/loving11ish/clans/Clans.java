@@ -4,6 +4,9 @@ import com.rylinaux.plugman.api.PlugManAPI;
 import com.tcoded.folialib.FoliaLib;
 import com.tcoded.folialib.wrapper.task.WrappedTask;
 import io.papermc.lib.PaperLib;
+import me.loving11ish.clans.externalhooks.FloodgateAPI;
+import me.loving11ish.clans.externalhooks.PlaceholderAPI;
+import me.loving11ish.clans.externalhooks.PlugManXAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -45,6 +48,8 @@ public final class Clans extends JavaPlugin {
     private static FloodgateApi floodgateApi;
     private static VersionCheckerUtils versionCheckerUtils;
     private static boolean chestsEnabled = false;
+    private static boolean GUIEnabled = false;
+
     public MessagesFileManager messagesFileManager;
     public ClansFileManager clansFileManager;
     public ClanGUIFileManager clanGUIFileManager;
@@ -63,7 +68,7 @@ public final class Clans extends JavaPlugin {
         versionCheckerUtils.setVersion();
 
         //Server version compatibility check
-        if (versionCheckerUtils.getVersion() < 13){
+        if (versionCheckerUtils.getVersion() < 13||versionCheckerUtils.getVersion() > 20){
             console.sendMessage(ColorUtils.translateColorCodes("&4-------------------------------------------"));
             console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &4Your server version is: &d" + Bukkit.getServer().getVersion()));
             console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &4This plugin is only supported on the Minecraft versions listed below:"));
@@ -93,7 +98,7 @@ public final class Clans extends JavaPlugin {
         }
 
         //Check if PlugManX is enabled
-        if (Bukkit.getServer().getPluginManager().isPluginEnabled("PlugManX")||isPlugManXEnabled()){
+        if (Bukkit.getServer().getPluginManager().isPluginEnabled("PlugManX")||PlugManXAPI.isPlugManXEnabled()){
             if (!PlugManAPI.iDoNotWantToBeUnOrReloaded("ClansLite")){
                 console.sendMessage(ColorUtils.translateColorCodes("&c-------------------------------------------"));
                 console.sendMessage(ColorUtils.translateColorCodes("&c-------------------------------------------"));
@@ -209,21 +214,28 @@ public final class Clans extends JavaPlugin {
             this.getServer().getPluginManager().registerEvents(new ChestBreakEvent(), this);
             this.getServer().getPluginManager().registerEvents(new ChestOpenEvent(), this);
             chestsEnabled = getConfig().getBoolean("protections.chests.enabled");
+            GUIEnabled = getConfig().getBoolean("use-global-GUI-system");
             if (chestsEnabled){
                 console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &3Chest protection system enabled!"));
             }else {
-                console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &cChest protection system disabled!"));
+                console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &c&lChest protection system disabled!"));
+            }
+            if (GUIEnabled){
+                console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &3Global GUI system enabled!"));
+            }else {
+                console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &c&lGlobal GUI system disabled!"));
             }
         }else {
             console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &cYour current server version does not support PersistentDataContainers!"));
-            console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &cChest protection system disabled!"));
+            console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &c&lChest protection system disabled!"));
+            console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &c&lGlobal GUI system disabled!"));
         }
 
         //Update banned tags list
         ClanCommand.updateBannedTagsList();
 
         //Register PlaceHolderAPI hooks
-        if (Bukkit.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")||isPlaceholderAPIEnabled()){
+        if (Bukkit.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")||PlaceholderAPI.isPlaceholderAPIEnabled()){
             new PlaceholderAPIClanExpansion().register();
             console.sendMessage(ColorUtils.translateColorCodes("-------------------------------------------"));
             console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &3PlaceholderAPI found!"));
@@ -237,7 +249,7 @@ public final class Clans extends JavaPlugin {
         }
 
         //Register FloodgateApi hooks
-        if (Bukkit.getServer().getPluginManager().isPluginEnabled("floodgate")||isFloodgateEnabled()){
+        if (Bukkit.getServer().getPluginManager().isPluginEnabled("floodgate")||FloodgateAPI.isFloodgateEnabled()){
             floodgateApi = FloodgateApi.getInstance();
             console.sendMessage(ColorUtils.translateColorCodes("-------------------------------------------"));
             console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &3FloodgateApi found!"));
@@ -332,12 +344,12 @@ public final class Clans extends JavaPlugin {
                 }
                 TaskTimerUtils.inviteClearTask.cancel();
             }
-            if (!ClanListGUI.task5.isCancelled()){
+            if (!ClanListGUI.autoGUIRefreshTask.isCancelled()){
                 if (getConfig().getBoolean("general.developer-debug-mode.enabled")){
-                    console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aWrapped task: " + ClanListGUI.task5.toString()));
+                    console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aWrapped task: " + ClanListGUI.autoGUIRefreshTask.toString()));
                     console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aTimed task 5 canceled successfully"));
                 }
-                ClanListGUI.task5.cancel();
+                ClanListGUI.autoGUIRefreshTask.cancel();
             }
             if (foliaLib.isUnsupported()){
                 Bukkit.getScheduler().cancelTasks(this);
@@ -408,57 +420,6 @@ public final class Clans extends JavaPlugin {
         }
     }
 
-    public boolean isFloodgateEnabled() {
-        try {
-            Class.forName("org.geysermc.floodgate.api.FloodgateApi");
-            if (getConfig().getBoolean("general.developer-debug-mode.enabled")){
-                console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFound FloodgateApi class at:"));
-                console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &dorg.geysermc.floodgate.api.FloodgateApi"));
-            }
-            return true;
-        } catch (ClassNotFoundException e) {
-            if (getConfig().getBoolean("general.developer-debug-mode.enabled")){
-                console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aCould not find FloodgateApi class at:"));
-                console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &dorg.geysermc.floodgate.api.FloodgateApi"));
-            }
-            return false;
-        }
-    }
-
-    public boolean isPlugManXEnabled() {
-        try {
-            Class.forName("com.rylinaux.plugman.PlugMan");
-            if (getConfig().getBoolean("general.developer-debug-mode.enabled")){
-                console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFound PlugManX main class at:"));
-                console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &dcom.rylinaux.plugman.PlugMan"));
-            }
-            return true;
-        }catch (ClassNotFoundException e){
-            if (getConfig().getBoolean("general.developer-debug-mode.enabled")){
-                console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aCould not find PlugManX main class at:"));
-                console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &dcom.rylinaux.plugman.PlugMan"));
-            }
-            return false;
-        }
-    }
-
-    public boolean isPlaceholderAPIEnabled() {
-        try {
-            Class.forName("me.clip.placeholderapi.PlaceholderAPIPlugin");
-            if (getConfig().getBoolean("general.developer-debug-mode.enabled")){
-                console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFound PlaceholderAPI main class at:"));
-                console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &dme.clip.placeholderapi.PlaceholderAPIPlugin"));
-            }
-            return true;
-        }catch (ClassNotFoundException e){
-            if (getConfig().getBoolean("general.developer-debug-mode.enabled")){
-                console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aCould not find PlaceholderAPI main class at:"));
-                console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &dme.clip.placeholderapi.PlaceholderAPIPlugin"));
-            }
-            return false;
-        }
-    }
-
     public static Clans getPlugin() {
         return plugin;
     }
@@ -473,5 +434,9 @@ public final class Clans extends JavaPlugin {
 
     public static boolean isChestsEnabled() {
         return chestsEnabled;
+    }
+
+    public static boolean isGUIEnabled() {
+        return GUIEnabled;
     }
 }

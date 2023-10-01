@@ -40,7 +40,7 @@ public class MenuEvent implements Listener {
         InventoryHolder holder = event.getInventory().getHolder();
         if (holder instanceof Menu){
             if (((Menu) holder).getMenuName().equalsIgnoreCase(ColorUtils.translateColorCodes(guiConfig.getString("clan-list.name")))){
-                WrappedTask wrappedTask = ClanListGUI.task5;
+                WrappedTask wrappedTask = ClanListGUI.autoGUIRefreshTask;
                 if (!wrappedTask.isCancelled()){
                     wrappedTask.cancel();
                     if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){

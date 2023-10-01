@@ -17,6 +17,7 @@ import me.loving11ish.clans.utils.UsermapStorageUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 public class ClanChatCommand implements CommandExecutor {
@@ -42,10 +43,7 @@ public class ClanChatCommand implements CommandExecutor {
             }
 
             if (args.length < 1) {
-                player.sendMessage(ColorUtils.translateColorCodes(
-                        "&6ClansLite clan chat usage:&3" +
-                                "\n/clanchat <message>"
-                ));
+                player.sendMessage(ColorUtils.translateColorCodes(sendUsage()));
                 return true;
 
             }else {
@@ -319,5 +317,14 @@ public class ClanChatCommand implements CommandExecutor {
     private static void fireClanChatMessageSendEvent(Player player, Clan clan, String prefix, String message, ArrayList<String> recipients) {
         ClanChatMessageSendEvent clanChatMessageSendEvent = new ClanChatMessageSendEvent(player, clan, prefix, message, recipients);
         Bukkit.getPluginManager().callEvent(clanChatMessageSendEvent);
+    }
+
+    private String sendUsage() {
+        StringBuilder stringBuilder = new StringBuilder();
+        List<String> configStringList = messagesConfig.getStringList("clan-chat-command-incorrect-usage");
+        for (String string : configStringList){
+            stringBuilder.append(string);
+        }
+        return stringBuilder.toString();
     }
 }

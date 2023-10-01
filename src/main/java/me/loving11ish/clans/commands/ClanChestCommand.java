@@ -14,6 +14,8 @@ import me.loving11ish.clans.commands.clanChestLockSubCommands.ChestLockSubComman
 import me.loving11ish.clans.commands.clanChestLockSubCommands.ChestUnlockSubCommand;
 import me.loving11ish.clans.utils.ColorUtils;
 
+import java.util.List;
+
 public class ClanChestCommand implements CommandExecutor {
 
     ConsoleCommandSender console = Bukkit.getConsoleSender();
@@ -30,7 +32,7 @@ public class ClanChestCommand implements CommandExecutor {
                 return true;
             }
             if (args.length < 1){
-                sendUsage(player);
+                player.sendMessage(ColorUtils.translateColorCodes(sendUsage()));
                 return true;
             }else {
                 switch (args[0]){
@@ -43,7 +45,7 @@ public class ClanChestCommand implements CommandExecutor {
                     case "accesslist":
                         return new ChestAccessListSubCommand().chestAccessListSubCommand(sender);
                     default:
-                        sendUsage(player);
+                        player.sendMessage(ColorUtils.translateColorCodes(sendUsage()));
                 }
             }
         }
@@ -59,11 +61,12 @@ public class ClanChestCommand implements CommandExecutor {
         return true;
     }
 
-    private void sendUsage(Player player){
-        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("chest-command-incorrect-usage.line-1")));
-        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("chest-command-incorrect-usage.line-2")));
-        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("chest-command-incorrect-usage.line-3")));
-        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("chest-command-incorrect-usage.line-4")));
-        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("chest-command-incorrect-usage.line-5")));
+    private String sendUsage() {
+        StringBuilder stringBuilder = new StringBuilder();
+        List<String> configStringList = messagesConfig.getStringList("chest-command-incorrect-usage");
+        for (String string : configStringList){
+            stringBuilder.append(string);
+        }
+        return stringBuilder.toString();
     }
 }

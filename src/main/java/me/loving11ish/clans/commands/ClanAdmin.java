@@ -16,6 +16,7 @@ import me.loving11ish.clans.utils.UsermapStorageUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class ClanAdmin implements CommandExecutor {
@@ -141,11 +142,7 @@ public class ClanAdmin implements CommandExecutor {
 
 //----------------------------------------------------------------------------------------------------------------------
             }else {
-                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clanadmin-command-incorrect-usage.line-1")));
-                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clanadmin-command-incorrect-usage.line-2")));
-                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clanadmin-command-incorrect-usage.line-3")));
-                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clanadmin-command-incorrect-usage.line-4")));
-                player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clanadmin-command-incorrect-usage.line-5")));
+                player.sendMessage(ColorUtils.translateColorCodes(sendUsageMessage()));
             }
         }
 
@@ -258,13 +255,18 @@ public class ClanAdmin implements CommandExecutor {
 
 //----------------------------------------------------------------------------------------------------------------------
             }else {
-                console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clanadmin-command-incorrect-usage.line-1")));
-                console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clanadmin-command-incorrect-usage.line-2")));
-                console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clanadmin-command-incorrect-usage.line-3")));
-                console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clanadmin-command-incorrect-usage.line-4")));
-                console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clanadmin-command-incorrect-usage.line-5")));
+                console.sendMessage(ColorUtils.translateColorCodes(sendUsageMessage()));
             }
         }
         return true;
+    }
+
+    private String sendUsageMessage() {
+        StringBuilder stringBuilder = new StringBuilder();
+        List<String> configStringList = messagesConfig.getStringList("clanadmin-command-incorrect-usage");
+        for (String string : configStringList){
+            stringBuilder.append(string);
+        }
+        return stringBuilder.toString();
     }
 }
