@@ -209,10 +209,10 @@ public final class Clans extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new PlayerDamageEvent(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerKillEvent(), this);
         this.getServer().getPluginManager().registerEvents(new JoinEvent(), this);
-        this.getServer().getPluginManager().registerEvents(new MenuEvent(), this);
         if (versionCheckerUtils.getVersion() >= 14) {
             this.getServer().getPluginManager().registerEvents(new ChestBreakEvent(), this);
             this.getServer().getPluginManager().registerEvents(new ChestOpenEvent(), this);
+            this.getServer().getPluginManager().registerEvents(new MenuEvent(), this);
             chestsEnabled = getConfig().getBoolean("protections.chests.enabled");
             GUIEnabled = getConfig().getBoolean("use-global-GUI-system");
             if (chestsEnabled){
