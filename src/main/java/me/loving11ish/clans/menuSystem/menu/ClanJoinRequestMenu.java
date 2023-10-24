@@ -34,6 +34,7 @@ public class ClanJoinRequestMenu extends Menu {
     @Override
     public void handleMenu(InventoryClickEvent event){
         Player player = (Player) event.getWhoClicked();
+
         if (event.getCurrentItem().getType().equals(Material.LIME_STAINED_GLASS_PANE)){
             Player targetClanOwner = playerMenuUtility.getOfflineClanOwner().getPlayer();
             if (targetClanOwner != null){
@@ -46,7 +47,9 @@ public class ClanJoinRequestMenu extends Menu {
                 player.closeInventory();
                 player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-invite-request-failed")));
             }
-        }else if (event.getCurrentItem().getType().equals(Material.RED_STAINED_GLASS_PANE)){
+        }
+
+        else if (event.getCurrentItem().getType().equals(Material.RED_STAINED_GLASS_PANE)){
             new ClanListGUI(Clans.getPlayerMenuUtility(player)).open();
         }
     }

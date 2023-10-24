@@ -9,6 +9,7 @@ import me.loving11ish.clans.externalhooks.PlaceholderAPI;
 import me.loving11ish.clans.externalhooks.PlugManXAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -92,8 +93,18 @@ public final class Clans extends JavaPlugin {
             console.sendMessage(ColorUtils.translateColorCodes("&a-------------------------------------------"));
         }
 
+        if (foliaLib.isUnsupported()){
+            console.sendMessage(ColorUtils.translateColorCodes("&4-------------------------------------------"));
+            console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &4Your server appears to running a version other than Spigot based!"));
+            console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &4This plugin uses features that your server most likely doesn't have!"));
+            console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &4Is now disabling!"));
+            console.sendMessage(ColorUtils.translateColorCodes("&4-------------------------------------------"));
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
+
         //Suggest PaperMC if not using
-        if (foliaLib.isUnsupported()||foliaLib.isSpigot()){
+        if (foliaLib.isSpigot()){
             PaperLib.suggestPaper(this);
         }
 
@@ -215,6 +226,21 @@ public final class Clans extends JavaPlugin {
             this.getServer().getPluginManager().registerEvents(new MenuEvent(), this);
             chestsEnabled = getConfig().getBoolean("protections.chests.enabled");
             GUIEnabled = getConfig().getBoolean("use-global-GUI-system");
+
+            FileConfiguration spigotConfig = Bukkit.spigot().getConfig();
+            boolean bungeeEnabled = spigotConfig.getBoolean("settings.bungeecord");
+            boolean isOnlineServer = Bukkit.getOnlineMode();
+            if (!isOnlineServer && !bungeeEnabled){
+                GUIEnabled = false;
+                chestsEnabled = false;
+                console.sendMessage(ColorUtils.translateColorCodes("&4-------------------------------------------"));
+                console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &4This plugin is only supported on online servers or servers running in a network situation!"));
+                console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &4Please set online-mode to true in server.properties"));
+                console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &4Or ensure your proxy setup is correct and your proxy is set to online mode!"));
+                console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &4&lNO SUPPORT WILL BE GIVEN UNLESS THE ABOVE IS CHANGED/SETUP CORRECTLY!"));
+                console.sendMessage(ColorUtils.translateColorCodes("&4-------------------------------------------"));
+            }
+
             if (chestsEnabled){
                 console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &3Chest protection system enabled!"));
             }else {

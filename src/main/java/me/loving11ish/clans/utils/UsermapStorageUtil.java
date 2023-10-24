@@ -135,6 +135,16 @@ public class UsermapStorageUtil {
         return null;
     }
 
+    public static Player getBukkitPlayerByUUID(UUID uuid){
+        String uuidString = uuid.toString();
+        for (ClanPlayer clanPlayer : usermap.values()){
+            if (clanPlayer.getJavaUUID().equalsIgnoreCase(uuidString)){
+                return Bukkit.getPlayer(clanPlayer.getJavaUUID());
+            }
+        }
+        return null;
+    }
+
     public static OfflinePlayer getBukkitOfflinePlayerByName(String name){
         for (ClanPlayer clanPlayer : usermap.values()){
             if (clanPlayer.getLastPlayerName().equalsIgnoreCase(name)){
@@ -144,6 +154,16 @@ public class UsermapStorageUtil {
                         .replace(PLAYER_PLACEHOLDER, name)));
                 console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-player-not-found-2")
                         .replace(PLAYER_PLACEHOLDER, name)));
+            }
+        }
+        return null;
+    }
+
+    public static OfflinePlayer getBukkitOfflinePlayerByUUID(UUID uuid){
+        String uuidString = uuid.toString();
+        for (ClanPlayer clanPlayer : usermap.values()){
+            if (clanPlayer.getJavaUUID().equalsIgnoreCase(uuidString)){
+                return Bukkit.getOfflinePlayer(UUID.fromString(clanPlayer.getJavaUUID()));
             }
         }
         return null;

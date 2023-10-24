@@ -2,6 +2,7 @@ package me.loving11ish.clans.menuSystem.paginatedMenu;
 
 import com.tcoded.folialib.FoliaLib;
 import com.tcoded.folialib.wrapper.task.WrappedTask;
+import me.loving11ish.clans.utils.UsermapStorageUtil;
 import org.bukkit.*;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -22,8 +23,6 @@ import me.loving11ish.clans.utils.ColorUtils;
 import java.util.ArrayList;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-
-import static org.bukkit.Bukkit.getServer;
 
 public class ClanListGUI extends PaginatedMenu {
     
@@ -53,6 +52,7 @@ public class ClanListGUI extends PaginatedMenu {
     public void handleMenu(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
         ArrayList<Clan> clans = new ArrayList<>(ClansStorageUtil.getClanList());
+
         if (event.getCurrentItem().getType().equals(Material.PLAYER_HEAD)){
             Clan onlineClanOwner = ClansStorageUtil.findClanByOwner(player);
             Clan onlineClanPlayer = ClansStorageUtil.findClanByPlayer(player);
@@ -70,14 +70,16 @@ public class ClanListGUI extends PaginatedMenu {
             }
             PlayerMenuUtility playerMenuUtility = Clans.getPlayerMenuUtility(player);
             playerMenuUtility.setOfflineClanOwner(Bukkit.getOfflinePlayer(target));
-            new ClanJoinRequestMenu(Clans.getPlayerMenuUtility(player)).open();
             if (guiConfig.getBoolean("clan-list.icons.auto-refresh-data.enabled")){
                 autoGUIRefreshTask.cancel();
                 if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
                     console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aAuto refresh task cancelled"));
                 }
             }
-        }else if (event.getCurrentItem().getType().equals(Material.BARRIER)) {
+            new ClanJoinRequestMenu(Clans.getPlayerMenuUtility(player)).open();
+        }
+
+        else if (event.getCurrentItem().getType().equals(Material.BARRIER)) {
             player.closeInventory();
             if (guiConfig.getBoolean("clan-list.icons.auto-refresh-data.enabled")){
                 autoGUIRefreshTask.cancel();
@@ -85,7 +87,9 @@ public class ClanListGUI extends PaginatedMenu {
                     console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aAuto refresh task cancelled"));
                 }
             }
-        }else if(event.getCurrentItem().getType().equals(Material.STONE_BUTTON)){
+        }
+
+        else if(event.getCurrentItem().getType().equals(Material.STONE_BUTTON)){
             if (event.getCurrentItem().getItemMeta().getDisplayName().equalsIgnoreCase(ColorUtils.translateColorCodes(guiConfig.getString("clan-list.menu-controls.previous-page-icon-name")))){
                 if (page == 0){
                     player.sendMessage(ColorUtils.translateColorCodes(guiConfig.getString("clan-list.GUI-first-page")));
@@ -125,15 +129,18 @@ public class ClanListGUI extends PaginatedMenu {
                                 //Create an item from our collection and place it into the inventory
                                 String clanOwnerUUIDString = clans.get(i).getClanOwner();
                                 UUID ownerUUID = UUID.fromString(clanOwnerUUIDString);
-                                OfflinePlayer clanOwnerPlayer = Bukkit.getOfflinePlayer(ownerUUID);
+                                OfflinePlayer clanOwnerPlayer = UsermapStorageUtil.getBukkitOfflinePlayerByUUID(ownerUUID);
+                                if (clanOwnerPlayer == null){
+                                    continue;
+                                }
                                 Clan clan = ClansStorageUtil.findClanByOfflineOwner(clanOwnerPlayer);
 
                                 ItemStack playerHead = new ItemStack(Material.PLAYER_HEAD, 1);
                                 SkullMeta skull = (SkullMeta) playerHead.getItemMeta();
-                                skull.setOwningPlayer(getServer().getOfflinePlayer(ownerUUID));
+                                skull.setOwningPlayer(UsermapStorageUtil.getBukkitOfflinePlayerByUUID(ownerUUID));
                                 playerHead.setItemMeta(skull);
                                 if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                                    console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aRetrieved player head sendMessage for UUID: &d" + clanOwnerUUIDString));
+                                    console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aRetrieved player head info for UUID: &d" + clanOwnerUUIDString));
                                 }
 
                                 ItemMeta meta = playerHead.getItemMeta();
@@ -224,15 +231,18 @@ public class ClanListGUI extends PaginatedMenu {
                         //Create an item from our collection and place it into the inventory
                         String clanOwnerUUIDString = clans.get(i).getClanOwner();
                         UUID ownerUUID = UUID.fromString(clanOwnerUUIDString);
-                        OfflinePlayer clanOwnerPlayer = Bukkit.getOfflinePlayer(ownerUUID);
+                        OfflinePlayer clanOwnerPlayer = UsermapStorageUtil.getBukkitOfflinePlayerByUUID(ownerUUID);
+                        if (clanOwnerPlayer == null){
+                            continue;
+                        }
                         Clan clan = ClansStorageUtil.findClanByOfflineOwner(clanOwnerPlayer);
 
                         ItemStack playerHead = new ItemStack(Material.PLAYER_HEAD, 1);
                         SkullMeta skull = (SkullMeta) playerHead.getItemMeta();
-                        skull.setOwningPlayer(getServer().getOfflinePlayer(ownerUUID));
+                        skull.setOwningPlayer(UsermapStorageUtil.getBukkitOfflinePlayerByUUID(ownerUUID));
                         playerHead.setItemMeta(skull);
                         if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                            console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aRetrieved player head sendMessage for UUID: &d" + clanOwnerUUIDString));
+                            console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aRetrieved player head info for UUID: &d" + clanOwnerUUIDString));
                         }
 
                         ItemMeta meta = playerHead.getItemMeta();
