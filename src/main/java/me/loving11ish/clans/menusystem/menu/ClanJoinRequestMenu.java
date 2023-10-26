@@ -1,4 +1,4 @@
-package me.loving11ish.clans.menuSystem.menu;
+package me.loving11ish.clans.menusystem.menu;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -7,9 +7,9 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import me.loving11ish.clans.Clans;
-import me.loving11ish.clans.menuSystem.Menu;
-import me.loving11ish.clans.menuSystem.PlayerMenuUtility;
-import me.loving11ish.clans.menuSystem.paginatedMenu.ClanListGUI;
+import me.loving11ish.clans.menusystem.Menu;
+import me.loving11ish.clans.menusystem.PlayerMenuUtility;
+import me.loving11ish.clans.menusystem.paginatedMenu.ClanListGUI;
 import me.loving11ish.clans.utils.ColorUtils;
 
 public class ClanJoinRequestMenu extends Menu {

@@ -11,7 +11,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import me.loving11ish.clans.Clans;
 import me.loving11ish.clans.commands.clanSubCommands.*;
-import me.loving11ish.clans.menuSystem.paginatedMenu.ClanListGUI;
+import me.loving11ish.clans.menusystem.paginatedMenu.ClanListGUI;
 import me.loving11ish.clans.utils.ColorUtils;
 
 import java.util.*;

@@ -1,4 +1,4 @@
-package me.loving11ish.clans.menuSystem.paginatedMenu;
+package me.loving11ish.clans.menusystem.paginatedMenu;
 
 import com.tcoded.folialib.FoliaLib;
 import com.tcoded.folialib.wrapper.task.WrappedTask;
@@ -13,9 +13,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.persistence.PersistentDataType;
 import me.loving11ish.clans.Clans;
-import me.loving11ish.clans.menuSystem.PaginatedMenu;
-import me.loving11ish.clans.menuSystem.PlayerMenuUtility;
-import me.loving11ish.clans.menuSystem.menu.ClanJoinRequestMenu;
+import me.loving11ish.clans.menusystem.PaginatedMenu;
+import me.loving11ish.clans.menusystem.PlayerMenuUtility;
+import me.loving11ish.clans.menusystem.menu.ClanJoinRequestMenu;
 import me.loving11ish.clans.models.Clan;
 import me.loving11ish.clans.utils.ClansStorageUtil;
 import me.loving11ish.clans.utils.ColorUtils;

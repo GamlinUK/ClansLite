@@ -1,10 +1,9 @@
-package me.loving11ish.clans.updateSystem;
+package me.loving11ish.clans.updatesystem;
 
 import com.tcoded.folialib.FoliaLib;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.util.Consumer;
 import me.loving11ish.clans.Clans;
 import me.loving11ish.clans.utils.ColorUtils;
 
@@ -12,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Scanner;
+import java.util.function.Consumer;
 
 public class UpdateChecker {
 

@@ -1,4 +1,4 @@
-package me.loving11ish.clans.updateSystem;
+package me.loving11ish.clans.updatesystem;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;

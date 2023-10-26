@@ -9,7 +9,6 @@ import me.loving11ish.clans.externalhooks.PlaceholderAPI;
 import me.loving11ish.clans.externalhooks.PlugManXAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -25,10 +24,10 @@ import me.loving11ish.clans.files.ClansFileManager;
 import me.loving11ish.clans.files.MessagesFileManager;
 import me.loving11ish.clans.files.UsermapFileManager;
 import me.loving11ish.clans.listeners.*;
-import me.loving11ish.clans.menuSystem.PlayerMenuUtility;
-import me.loving11ish.clans.menuSystem.paginatedMenu.ClanListGUI;
-import me.loving11ish.clans.updateSystem.JoinEvent;
-import me.loving11ish.clans.updateSystem.UpdateChecker;
+import me.loving11ish.clans.menusystem.PlayerMenuUtility;
+import me.loving11ish.clans.menusystem.paginatedMenu.ClanListGUI;
+import me.loving11ish.clans.updatesystem.JoinEvent;
+import me.loving11ish.clans.updatesystem.UpdateChecker;
 import me.loving11ish.clans.utils.*;
 
 import java.io.IOException;
@@ -50,6 +49,7 @@ public final class Clans extends JavaPlugin {
     private static VersionCheckerUtils versionCheckerUtils;
     private static boolean chestsEnabled = false;
     private static boolean GUIEnabled = false;
+    private static boolean onlineMode = false;
 
     public MessagesFileManager messagesFileManager;
     public ClansFileManager clansFileManager;
@@ -145,6 +145,8 @@ public final class Clans extends JavaPlugin {
         //Load the plugin configs
         getConfig().options().copyDefaults();
         saveDefaultConfig();
+        GUIEnabled = getConfig().getBoolean("use-global-GUI-system");
+        chestsEnabled = getConfig().getBoolean("protections.chests.enabled");
 
         //Load messages.yml
         this.messagesFileManager = new MessagesFileManager();
@@ -213,6 +215,7 @@ public final class Clans extends JavaPlugin {
         this.getCommand("clanadmin").setTabCompleter(new ClanAdminTabCompleter());
 
         //Register the plugin events
+        this.getServer().getPluginManager().registerEvents(new PlayerPreConnectionEvent(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerConnectionEvent(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerDisconnectEvent(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerMovementEvent(), this);
@@ -220,36 +223,20 @@ public final class Clans extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new PlayerDamageEvent(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerKillEvent(), this);
         this.getServer().getPluginManager().registerEvents(new JoinEvent(), this);
+
         if (versionCheckerUtils.getVersion() >= 14) {
             this.getServer().getPluginManager().registerEvents(new ChestBreakEvent(), this);
             this.getServer().getPluginManager().registerEvents(new ChestOpenEvent(), this);
             this.getServer().getPluginManager().registerEvents(new MenuEvent(), this);
-            chestsEnabled = getConfig().getBoolean("protections.chests.enabled");
-            GUIEnabled = getConfig().getBoolean("use-global-GUI-system");
-
-            FileConfiguration spigotConfig = Bukkit.spigot().getConfig();
-            boolean bungeeEnabled = spigotConfig.getBoolean("settings.bungeecord");
-            boolean isOnlineServer = Bukkit.getOnlineMode();
-            if (!isOnlineServer && !bungeeEnabled){
-                GUIEnabled = false;
-                chestsEnabled = false;
-                console.sendMessage(ColorUtils.translateColorCodes("&4-------------------------------------------"));
-                console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &4This plugin is only supported on online servers or servers running in a network situation!"));
-                console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &4Please set online-mode to true in server.properties"));
-                console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &4Or ensure your proxy setup is correct and your proxy is set to online mode!"));
-                console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &4&lNO SUPPORT WILL BE GIVEN UNLESS THE ABOVE IS CHANGED/SETUP CORRECTLY!"));
-                console.sendMessage(ColorUtils.translateColorCodes("&4-------------------------------------------"));
-            }
-
-            if (chestsEnabled){
-                console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &3Chest protection system enabled!"));
-            }else {
-                console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &c&lChest protection system disabled!"));
-            }
             if (GUIEnabled){
                 console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &3Global GUI system enabled!"));
             }else {
                 console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &c&lGlobal GUI system disabled!"));
+            }
+            if (chestsEnabled){
+                console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &3Chest protection system enabled!"));
+            }else {
+                console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &c&lChest protection system disabled!"));
             }
         }else {
             console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &cYour current server version does not support PersistentDataContainers!"));
@@ -462,7 +449,23 @@ public final class Clans extends JavaPlugin {
         return chestsEnabled;
     }
 
+    public static void setChestsEnabled(boolean chestsEnabled) {
+        Clans.chestsEnabled = chestsEnabled;
+    }
+
     public static boolean isGUIEnabled() {
         return GUIEnabled;
+    }
+
+    public static void setGUIEnabled(boolean GUIEnabled) {
+        Clans.GUIEnabled = GUIEnabled;
+    }
+
+    public static boolean isOnlineMode() {
+        return onlineMode;
+    }
+
+    public static void setOnlineMode(boolean onlineMode) {
+        Clans.onlineMode = onlineMode;
     }
 }

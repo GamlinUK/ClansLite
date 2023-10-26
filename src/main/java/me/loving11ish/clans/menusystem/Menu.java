@@ -1,4 +1,4 @@
-package me.loving11ish.clans.menuSystem;
+package me.loving11ish.clans.menusystem;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

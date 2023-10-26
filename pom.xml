@@ -6,7 +6,7 @@
 
     <groupId>me.loving11ish</groupId>
     <artifactId>ClansLite</artifactId>
-    <version>1.4.2-BETA-01</version>
+    <version>1.4.2-BETA-02</version>
     <packaging>jar</packaging>
 
     <name>ClansLite</name>
@@ -43,6 +43,10 @@
                     <relocation>
                         <pattern>com.tcoded.folialib</pattern>
                         <shadedPattern>me.loving11ish.clans.folialib</shadedPattern>
+                    </relocation>
+                    <relocation>
+                        <pattern>com.github.lightlibs</pattern>
+                        <shadedPattern>me.loving11ish.clans.lightlibs</shadedPattern>
                     </relocation>
                 </relocations>
             </configuration>
@@ -93,6 +97,10 @@
             <id>PlugMan</id>
             <url>https://raw.githubusercontent.com/TheBlackEntity/PlugMan/repository/</url>
         </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -124,7 +132,7 @@
         <dependency>
             <groupId>com.tcoded</groupId>
             <artifactId>FoliaLib</artifactId>
-            <version>0.3.0</version>
+            <version>0.3.1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -138,6 +146,11 @@
             <artifactId>PlugMan</artifactId>
             <version>2.3.3</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.lightlibs</groupId>
+            <artifactId>simplehttpwrapper</artifactId>
+            <version>0.0.3-alpha</version>
         </dependency>
     </dependencies>
 </project>

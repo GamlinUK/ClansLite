@@ -10,8 +10,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.InventoryHolder;
 import me.loving11ish.clans.Clans;
-import me.loving11ish.clans.menuSystem.Menu;
-import me.loving11ish.clans.menuSystem.paginatedMenu.ClanListGUI;
+import me.loving11ish.clans.menusystem.Menu;
+import me.loving11ish.clans.menusystem.paginatedMenu.ClanListGUI;
 import me.loving11ish.clans.utils.ColorUtils;
 
 public class MenuEvent implements Listener {
