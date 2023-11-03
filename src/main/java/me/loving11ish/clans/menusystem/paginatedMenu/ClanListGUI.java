@@ -112,7 +112,7 @@ public class ClanListGUI extends PaginatedMenu {
     public void setMenuItems() {
         addMenuControls();
         if (guiConfig.getBoolean("clan-list.icons.auto-refresh-data.enabled")){
-            FoliaLib foliaLib = new FoliaLib(Clans.getPlugin());
+            FoliaLib foliaLib = Clans.getFoliaLib();
             autoGUIRefreshTask = foliaLib.getImpl().runTimerAsync(new Runnable() {
                 @Override
                 public void run() {
@@ -136,11 +136,14 @@ public class ClanListGUI extends PaginatedMenu {
                                 Clan clan = ClansStorageUtil.findClanByOfflineOwner(clanOwnerPlayer);
 
                                 ItemStack playerHead = new ItemStack(Material.PLAYER_HEAD, 1);
-                                SkullMeta skull = (SkullMeta) playerHead.getItemMeta();
-                                skull.setOwningPlayer(UsermapStorageUtil.getBukkitOfflinePlayerByUUID(ownerUUID));
-                                playerHead.setItemMeta(skull);
-                                if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                                    console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aRetrieved player head info for UUID: &d" + clanOwnerUUIDString));
+
+                                if (Clans.isOnlineMode()){
+                                    SkullMeta skull = (SkullMeta) playerHead.getItemMeta();
+                                    skull.setOwningPlayer(UsermapStorageUtil.getBukkitOfflinePlayerByUUID(ownerUUID));
+                                    playerHead.setItemMeta(skull);
+                                    if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
+                                        console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aRetrieved player head info for UUID: &d" + clanOwnerUUIDString));
+                                    }
                                 }
 
                                 ItemMeta meta = playerHead.getItemMeta();
@@ -238,11 +241,14 @@ public class ClanListGUI extends PaginatedMenu {
                         Clan clan = ClansStorageUtil.findClanByOfflineOwner(clanOwnerPlayer);
 
                         ItemStack playerHead = new ItemStack(Material.PLAYER_HEAD, 1);
-                        SkullMeta skull = (SkullMeta) playerHead.getItemMeta();
-                        skull.setOwningPlayer(UsermapStorageUtil.getBukkitOfflinePlayerByUUID(ownerUUID));
-                        playerHead.setItemMeta(skull);
-                        if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
-                            console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aRetrieved player head info for UUID: &d" + clanOwnerUUIDString));
+
+                        if (Clans.isOnlineMode()){
+                            SkullMeta skull = (SkullMeta) playerHead.getItemMeta();
+                            skull.setOwningPlayer(UsermapStorageUtil.getBukkitOfflinePlayerByUUID(ownerUUID));
+                            playerHead.setItemMeta(skull);
+                            if (clansConfig.getBoolean("general.developer-debug-mode.enabled")){
+                                console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aRetrieved player head info for UUID: &d" + clanOwnerUUIDString));
+                            }
                         }
 
                         ItemMeta meta = playerHead.getItemMeta();

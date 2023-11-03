@@ -18,7 +18,7 @@ public class TeleportUtils {
 
     ConsoleCommandSender console = Bukkit.getConsoleSender();
 
-    private FoliaLib foliaLib = new FoliaLib(Clans.getPlugin());
+    private FoliaLib foliaLib = Clans.getFoliaLib();
 
     public WrappedTask wrappedTask;
 
@@ -59,7 +59,13 @@ public class TeleportUtils {
                         fireClanHomeTeleportEvent(true, player, clan, originLocation, location);
                         if (config.getBoolean("general.developer-debug-mode.enabled")) {
                             console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aDetected running on Folia"));
-                            console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired HomeTeleportEvent in async mode"));
+                            console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanHomeTeleportEvent"));
+                        }
+                    }else {
+                        fireClanHomeTeleportEvent(true, player, clan, originLocation, location);
+                        if (config.getBoolean("general.developer-debug-mode.enabled")) {
+                            console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aDetected not running on Folia"));
+                            console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite-Debug: &aFired ClanHomeTeleportEvent"));
                         }
                     }
                     getWrappedTask().cancel();

@@ -42,6 +42,8 @@ public class PlayerPreConnectionEvent implements Listener {
                             console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &c&lChest protection system disabled!"));
                         }
                     }else {
+                        Clans.setGUIEnabled(false);
+                        Clans.setChestsEnabled(false);
                         console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &cYour current server version does not support PersistentDataContainers!"));
                         console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &c&lChest protection system disabled!"));
                         console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &c&lGlobal GUI system disabled!"));
@@ -54,12 +56,15 @@ public class PlayerPreConnectionEvent implements Listener {
                         console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &c&lGlobal GUI system disabled!"));
                         console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &c&lChest protection system disabled!"));
                     }else {
+                        Clans.setGUIEnabled(false);
+                        Clans.setChestsEnabled(false);
                         console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &cYour current server version does not support PersistentDataContainers!"));
                         console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &c&lChest protection system disabled!"));
                         console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &c&lGlobal GUI system disabled!"));
                     }
                     console.sendMessage(ColorUtils.translateColorCodes("&4-------------------------------------------"));
                     console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &4This plugin is only supported on online servers or servers running in an online network situation!"));
+                    console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &4Some features may behave incorrectly or may be broken completely!"));
                     console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &4Please set &e'online-mode=true' &4in &e'server.properties'"));
                     console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &4Or ensure your proxy setup is correct and your proxy is set to online mode!"));
                     console.sendMessage(ColorUtils.translateColorCodes("&6ClansLite: &4&lNO SUPPORT WILL BE GIVEN UNLESS THE ABOVE IS CHANGED/SETUP CORRECTLY!"));

@@ -28,7 +28,7 @@ public class ClanCommand implements CommandExecutor {
     private static List<String> bannedTags;
 
     public static void updateBannedTagsList(){
-        FoliaLib foliaLib = new FoliaLib(Clans.getPlugin());
+        FoliaLib foliaLib = Clans.getFoliaLib();
         bannedTaskUpdateTask = foliaLib.getImpl().runLaterAsync(() ->
                 bannedTags = Clans.getPlugin().getConfig().getStringList("clan-tags.disallowed-tags"), 1L, TimeUnit.SECONDS);
     }

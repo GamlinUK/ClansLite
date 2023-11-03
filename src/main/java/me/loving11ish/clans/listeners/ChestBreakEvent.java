@@ -36,7 +36,7 @@ public class ChestBreakEvent implements Listener {
 
     @EventHandler
     public void onChestBreak(BlockBreakEvent event){
-        if (!clansConfig.getBoolean("protections.chests.enabled")){
+        if (!Clans.isChestsEnabled()){
             return;
         }
         if (event.getBlock().getType().equals(Material.CHEST)){
@@ -94,7 +94,7 @@ public class ChestBreakEvent implements Listener {
 
     @EventHandler
     public void onTNTDestruction(EntityExplodeEvent event){
-        if (!clansConfig.getBoolean("protections.chests.enabled")){
+        if (!Clans.isChestsEnabled()){
             return;
         }
         if (event.getEntity() instanceof TNTPrimed){
@@ -118,7 +118,7 @@ public class ChestBreakEvent implements Listener {
 
     @EventHandler
     public void onCreeperDestruction(EntityExplodeEvent event){
-        if (!clansConfig.getBoolean("protections.chests.enabled")){
+        if (!Clans.isChestsEnabled()){
             return;
         }
         if (event.getEntity() instanceof Creeper){

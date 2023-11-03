@@ -60,29 +60,22 @@ public class ClanAdmin implements CommandExecutor {
                             p.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("plugin-reload-broadcast-start")));
                         }
                     }
-                    FoliaLib foliaLib = new FoliaLib(Clans.getPlugin());
+                    FoliaLib foliaLib = Clans.getFoliaLib();
                     Clans.getPlugin().onDisable();
-                    foliaLib.getImpl().runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            Bukkit.getPluginManager().getPlugin("ClansLite").onEnable();
-                        }
-                    }, 5L, TimeUnit.SECONDS);
-                    foliaLib.getImpl().runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            Clans.getPlugin().reloadConfig();
-                            ClanCommand.updateBannedTagsList();
-                            Clans.getPlugin().messagesFileManager.reloadMessagesConfig();
-                            Clans.getPlugin().clanGUIFileManager.reloadClanGUIConfig();
-                            player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("plugin-reload-successful")));
-                            for (Player p : onlinePlayers){
-                                if (p.getName().equalsIgnoreCase(player.getName())){
-                                    continue;
-                                }
-                                if (!onlinePlayers.isEmpty()){
-                                    p.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("plugin-reload-successful")));
-                                }
+                    foliaLib.getImpl().runLater(() ->
+                            Bukkit.getPluginManager().getPlugin("ClansLite").onEnable(), 5L, TimeUnit.SECONDS);
+                    foliaLib.getImpl().runLater(() -> {
+                        Clans.getPlugin().reloadConfig();
+                        ClanCommand.updateBannedTagsList();
+                        Clans.getPlugin().messagesFileManager.reloadMessagesConfig();
+                        Clans.getPlugin().clanGUIFileManager.reloadClanGUIConfig();
+                        player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("plugin-reload-successful")));
+                        for (Player p : onlinePlayers){
+                            if (p.getName().equalsIgnoreCase(player.getName())){
+                                continue;
+                            }
+                            if (!onlinePlayers.isEmpty()){
+                                p.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("plugin-reload-successful")));
                             }
                         }
                     }, 5L, TimeUnit.SECONDS);
@@ -176,26 +169,19 @@ public class ClanAdmin implements CommandExecutor {
                             p.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("plugin-reload-broadcast-start")));
                         }
                     }
-                    FoliaLib foliaLib = new FoliaLib(Clans.getPlugin());
+                    FoliaLib foliaLib = Clans.getFoliaLib();
                     Clans.getPlugin().onDisable();
-                    foliaLib.getImpl().runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            Bukkit.getPluginManager().getPlugin("ClansLite").onEnable();
-                        }
-                    }, 5L, TimeUnit.SECONDS);
-                    foliaLib.getImpl().runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            Clans.getPlugin().reloadConfig();
-                            ClanCommand.updateBannedTagsList();
-                            Clans.getPlugin().messagesFileManager.reloadMessagesConfig();
-                            Clans.getPlugin().clanGUIFileManager.reloadClanGUIConfig();
-                            console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("plugin-reload-successful")));
-                            for (Player p : onlinePlayers){
-                                if (!onlinePlayers.isEmpty()){
-                                    p.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("plugin-reload-successful")));
-                                }
+                    foliaLib.getImpl().runLater(() ->
+                            Bukkit.getPluginManager().getPlugin("ClansLite").onEnable(), 5L, TimeUnit.SECONDS);
+                    foliaLib.getImpl().runLater(() -> {
+                        Clans.getPlugin().reloadConfig();
+                        ClanCommand.updateBannedTagsList();
+                        Clans.getPlugin().messagesFileManager.reloadMessagesConfig();
+                        Clans.getPlugin().clanGUIFileManager.reloadClanGUIConfig();
+                        console.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("plugin-reload-successful")));
+                        for (Player p : onlinePlayers){
+                            if (!onlinePlayers.isEmpty()){
+                                p.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("plugin-reload-successful")));
                             }
                         }
                     }, 5L, TimeUnit.SECONDS);

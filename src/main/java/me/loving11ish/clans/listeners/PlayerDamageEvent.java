@@ -43,7 +43,6 @@ public class PlayerDamageEvent implements Listener {
                                 if (clansConfig.getBoolean("protections.pvp.enable-bypass-permission")){
                                     if (attackingPlayer.hasPermission("clanslite.bypass.pvp")
                                             ||attackingPlayer.hasPermission("clanslite.bypass.*")
-                                            ||attackingPlayer.hasPermission("clanslite.bypass")
                                             ||attackingPlayer.hasPermission("clanslite.*")
                                             ||attackingPlayer.isOp()){
                                         return;

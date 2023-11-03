@@ -42,9 +42,9 @@ public final class Clans extends JavaPlugin {
 
     private final PluginDescriptionFile pluginInfo = getDescription();
     private final String pluginVersion = pluginInfo.getVersion();
-    private FoliaLib foliaLib = new FoliaLib(this);
 
     private static Clans plugin;
+    private static FoliaLib foliaLib;
     private static FloodgateApi floodgateApi;
     private static VersionCheckerUtils versionCheckerUtils;
     private static boolean chestsEnabled = false;
@@ -65,6 +65,7 @@ public final class Clans extends JavaPlugin {
     public void onEnable() {
         //Plugin startup logic
         plugin = this;
+        foliaLib = new FoliaLib(this);
         versionCheckerUtils = new VersionCheckerUtils();
         versionCheckerUtils.setVersion();
 
@@ -303,21 +304,15 @@ public final class Clans extends JavaPlugin {
         });
 
         //Start auto save task
-        foliaLib.getImpl().runLaterAsync(new Runnable() {
-            @Override
-            public void run() {
-                TaskTimerUtils.runClansAutoSave();
-                console.sendMessage(ColorUtils.translateColorCodes(messagesFileManager.getMessagesConfig().getString("auto-save-started")));
-            }
+        foliaLib.getImpl().runLaterAsync(() -> {
+            TaskTimerUtils.runClansAutoSave();
+            console.sendMessage(ColorUtils.translateColorCodes(messagesFileManager.getMessagesConfig().getString("auto-save-started")));
         }, 5L, TimeUnit.SECONDS);
 
         //Start auto invite clear task
-        foliaLib.getImpl().runLaterAsync(new Runnable() {
-            @Override
-            public void run() {
-                TaskTimerUtils.runClanInviteClear();
-                console.sendMessage(ColorUtils.translateColorCodes(messagesFileManager.getMessagesConfig().getString("auto-invite-wipe-started")));
-            }
+        foliaLib.getImpl().runLaterAsync(() -> {
+            TaskTimerUtils.runClanInviteClear();
+            console.sendMessage(ColorUtils.translateColorCodes(messagesFileManager.getMessagesConfig().getString("auto-invite-wipe-started")));
         }, 5L, TimeUnit.SECONDS);
     }
 
@@ -435,6 +430,10 @@ public final class Clans extends JavaPlugin {
 
     public static Clans getPlugin() {
         return plugin;
+    }
+
+    public static FoliaLib getFoliaLib() {
+        return foliaLib;
     }
 
     public static FloodgateApi getFloodgateApi() {

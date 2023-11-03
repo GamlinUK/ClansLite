@@ -6,7 +6,7 @@
 
     <groupId>me.loving11ish</groupId>
     <artifactId>ClansLite</artifactId>
-    <version>1.4.2-BETA-02</version>
+    <version>1.4.2</version>
     <packaging>jar</packaging>
 
     <name>ClansLite</name>

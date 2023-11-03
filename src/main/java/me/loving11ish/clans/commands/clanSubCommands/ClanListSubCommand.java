@@ -21,7 +21,7 @@ public class ClanListSubCommand {
             Player player = (Player) sender;
             Set<Map.Entry<UUID, Clan>> clans = ClansStorageUtil.getClans();
             StringBuilder clansString = new StringBuilder();
-            if (clans.size() == 0) {
+            if (clans.isEmpty()) {
                 player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("no-clans-to-list")));
             } else {
                 clansString.append(ColorUtils.translateColorCodes(messagesConfig.getString("clans-list-header") + "\n"));

@@ -18,14 +18,13 @@ import me.loving11ish.clans.utils.ColorUtils;
 
 public class ChestOpenEvent implements Listener {
 
-    FileConfiguration clansConfig = Clans.getPlugin().getConfig();
     FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
 
     private static final String CLAN_PLACEHOLDER = "%CLAN%";
 
     @EventHandler
     public void onChestOpen(PlayerInteractEvent event){
-        if (!clansConfig.getBoolean("protections.chests.enabled")){
+        if (!Clans.isChestsEnabled()){
             return;
         }
         if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)){

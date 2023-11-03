@@ -1,5 +1,6 @@
 package me.loving11ish.clans.utils;
 
+import me.loving11ish.clans.models.ClanPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -238,6 +239,11 @@ public class ClansStorageUtil {
         return clansList.get(uuid);
     }
 
+    public static Clan findClanOwnerByClanPlayer(ClanPlayer clanPlayer){
+        UUID uuid = UUID.fromString(clanPlayer.getJavaUUID());
+        return clansList.get(uuid);
+    }
+
     public static Clan findClanByPlayer(Player player){
         for (Clan clan : clansList.values()){
             if (findClanByOwner(player) != null) {
@@ -262,6 +268,22 @@ public class ClansStorageUtil {
             if (clan.getClanMembers() != null){
                 for (String member : clan.getClanMembers()){
                     if (member.equals(player.getUniqueId().toString())){
+                        return clan;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public static Clan findClanPlayerByClanPlayer(ClanPlayer clanPlayer){
+        for (Clan clan : clansList.values()){
+            if (findClanOwnerByClanPlayer(clanPlayer) != null){
+                return clan;
+            }
+            if (clan.getClanMembers() != null){
+                for (String member : clan.getClanMembers()){
+                    if (member.equals(clanPlayer.getJavaUUID())){
                         return clan;
                     }
                 }

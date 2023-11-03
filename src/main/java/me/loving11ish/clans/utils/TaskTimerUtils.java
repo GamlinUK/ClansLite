@@ -14,7 +14,7 @@ public class TaskTimerUtils {
 
     static ConsoleCommandSender console = Bukkit.getConsoleSender();
     static FileConfiguration config = Clans.getPlugin().getConfig();
-    static FoliaLib foliaLib = new FoliaLib(Clans.getPlugin());
+    static FoliaLib foliaLib = Clans.getFoliaLib();
 
     public static WrappedTask autoSaveTask;
     public static WrappedTask inviteClearTask;
