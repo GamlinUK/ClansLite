@@ -19,7 +19,7 @@ import java.util.List;
 
 public class ChestAccessListSubCommand {
 
-    FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+    private final FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
 
     private static final String PLAYER_PLACEHOLDER = "%PLAYER%";
 

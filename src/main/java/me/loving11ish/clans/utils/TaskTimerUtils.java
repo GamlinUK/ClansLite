@@ -12,9 +12,9 @@ import java.util.concurrent.TimeUnit;
 
 public class TaskTimerUtils {
 
-    static ConsoleCommandSender console = Bukkit.getConsoleSender();
-    static FileConfiguration config = Clans.getPlugin().getConfig();
-    static FoliaLib foliaLib = Clans.getFoliaLib();
+    private final static ConsoleCommandSender console = Bukkit.getConsoleSender();
+    private final static FileConfiguration config = Clans.getPlugin().getConfig();
+    private final static FoliaLib foliaLib = Clans.getFoliaLib();
 
     public static WrappedTask autoSaveTask;
     public static WrappedTask inviteClearTask;

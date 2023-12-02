@@ -19,16 +19,16 @@ import java.util.UUID;
 
 public class ClanHomeSubCommand {
 
-    ConsoleCommandSender console = Bukkit.getConsoleSender();
+    private final ConsoleCommandSender console = Bukkit.getConsoleSender();
 
-    FileConfiguration clansConfig = Clans.getPlugin().getConfig();
-    FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+    private final FileConfiguration clansConfig = Clans.getPlugin().getConfig();
+    private final FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
     
     private static final String TIME_LEFT = "%TIMELEFT%";
 
     private static ClanHomePreTeleportEvent homePreTeleportEvent = null;
 
-    HashMap<UUID, Long> homeCoolDownTimer = new HashMap<>();
+    private final HashMap<UUID, Long> homeCoolDownTimer = new HashMap<>();
 
     public boolean tpClanHomeSubCommand(CommandSender sender) {
         if (sender instanceof Player) {

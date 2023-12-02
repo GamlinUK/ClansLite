@@ -15,10 +15,10 @@ import me.loving11ish.clans.utils.UsermapStorageUtil;
 import java.util.UUID;
 
 public class PlayerConnectionEvent implements Listener {
-    
-    ConsoleCommandSender console = Bukkit.getConsoleSender();
 
-    FileConfiguration clansConfig = Clans.getPlugin().getConfig();
+    private final ConsoleCommandSender console = Bukkit.getConsoleSender();
+
+    private final FileConfiguration clansConfig = Clans.getPlugin().getConfig();
 
     @EventHandler (priority = EventPriority.HIGH)
     public void onPlayerJoin(PlayerJoinEvent event){

@@ -11,8 +11,8 @@ import me.loving11ish.clans.utils.UsermapStorageUtil;
 
 public class ClanChatSpyCommand implements CommandExecutor {
 
-    FileConfiguration clansConfig = Clans.getPlugin().getConfig();
-    FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+    private final FileConfiguration clansConfig = Clans.getPlugin().getConfig();
+    private final FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {

@@ -13,10 +13,10 @@ import me.loving11ish.clans.utils.ColorUtils;
 
 public class ChestBuySubCommand {
 
-    ConsoleCommandSender console = Bukkit.getConsoleSender();
+    private final ConsoleCommandSender console = Bukkit.getConsoleSender();
 
-    FileConfiguration clansConfig = Clans.getPlugin().getConfig();
-    FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+    private final FileConfiguration clansConfig = Clans.getPlugin().getConfig();
+    private final FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
 
     private final int purchasePrice = clansConfig.getInt("protections.chests.clan-points-purchase-value");
     private static final String AMOUNT_PLACEHOLDER = "%AMOUNT%";

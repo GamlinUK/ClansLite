@@ -18,10 +18,10 @@ import java.util.*;
 
 public class PlayerDamageEvent implements Listener {
 
-    ConsoleCommandSender console = Bukkit.getConsoleSender();
+    private final ConsoleCommandSender console = Bukkit.getConsoleSender();
 
-    FileConfiguration clansConfig = Clans.getPlugin().getConfig();
-    FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+    private final FileConfiguration clansConfig = Clans.getPlugin().getConfig();
+    private final FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
 
     @EventHandler (priority = EventPriority.NORMAL)
     public void onPlayerHit(EntityDamageByEntityEvent event){

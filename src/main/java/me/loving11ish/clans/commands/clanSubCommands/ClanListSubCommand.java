@@ -14,7 +14,7 @@ import java.util.UUID;
 
 public class ClanListSubCommand {
 
-    FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+    private final FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
 
     public boolean clanListSubCommand(CommandSender sender) {
         if (sender instanceof Player) {

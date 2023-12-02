@@ -15,11 +15,11 @@ import me.loving11ish.clans.utils.ColorUtils;
 import java.util.*;
 
 public class ClanCreateSubCommand {
-    
-    ConsoleCommandSender console = Bukkit.getConsoleSender();
 
-    FileConfiguration clansConfig = Clans.getPlugin().getConfig();
-    FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+    private final ConsoleCommandSender console = Bukkit.getConsoleSender();
+
+    private final FileConfiguration clansConfig = Clans.getPlugin().getConfig();
+    private final FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
     
     private static final String CLAN_PLACEHOLDER = "%CLAN%";
     private static final String CLAN_OWNER = "%CLANOWNER%";
@@ -27,8 +27,8 @@ public class ClanCreateSubCommand {
     int MIN_CHAR_LIMIT = clansConfig.getInt("clan-tags.min-character-limit");
     int MAX_CHAR_LIMIT = clansConfig.getInt("clan-tags.max-character-limit");
 
-    Set<Map.Entry<UUID, Clan>> clans = ClansStorageUtil.getClans();
-    ArrayList<String> clanNamesList = new ArrayList<>();
+    private final Set<Map.Entry<UUID, Clan>> clans = ClansStorageUtil.getClans();
+    private final ArrayList<String> clanNamesList = new ArrayList<>();
 
     public boolean createClanSubCommand(CommandSender sender, String[] args, List<String> bannedTags) {
         if (sender instanceof Player) {

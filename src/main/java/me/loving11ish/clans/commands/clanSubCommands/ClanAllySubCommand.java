@@ -17,10 +17,10 @@ import java.util.UUID;
 
 public class ClanAllySubCommand {
 
-    ConsoleCommandSender console = Bukkit.getConsoleSender();
-    
-    FileConfiguration clansConfig = Clans.getPlugin().getConfig();
-    FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+    private final ConsoleCommandSender console = Bukkit.getConsoleSender();
+
+    private final FileConfiguration clansConfig = Clans.getPlugin().getConfig();
+    private final FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
     
     private static final String ALLY_CLAN = "%ALLYCLAN%";
     private static final String ALLY_OWNER = "%ALLYOWNER%";

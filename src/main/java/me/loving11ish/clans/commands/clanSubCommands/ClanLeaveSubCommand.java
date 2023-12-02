@@ -10,7 +10,7 @@ import me.loving11ish.clans.utils.ColorUtils;
 
 public class ClanLeaveSubCommand {
 
-    FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+    private final FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
 
     private static final String CLAN_PLACEHOLDER = "%CLAN%";
 

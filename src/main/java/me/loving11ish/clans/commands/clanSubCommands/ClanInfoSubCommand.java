@@ -14,8 +14,8 @@ import java.util.*;
 
 public class ClanInfoSubCommand {
 
-    FileConfiguration clansConfig = Clans.getPlugin().getConfig();
-    FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+    private final FileConfiguration clansConfig = Clans.getPlugin().getConfig();
+    private final FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
 
     private static final String CLAN_PLACEHOLDER = "%CLAN%";
     private static final String OWNER = "%OWNER%";

@@ -21,10 +21,10 @@ import me.loving11ish.clans.utils.ColorUtils;
 
 public class ChestLockSubCommand {
 
-    ConsoleCommandSender console = Bukkit.getConsoleSender();
+    private final ConsoleCommandSender console = Bukkit.getConsoleSender();
 
-    FileConfiguration clansConfig = Clans.getPlugin().getConfig();
-    FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+    private final FileConfiguration clansConfig = Clans.getPlugin().getConfig();
+    private final FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
 
     private static final String LIMIT_PLACEHOLDER = "%LIMIT%";
     private static final String X_PLACEHOLDER = "%X%";

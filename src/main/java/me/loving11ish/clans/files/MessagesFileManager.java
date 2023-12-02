@@ -14,7 +14,7 @@ import java.io.InputStreamReader;
 
 public class MessagesFileManager {
 
-    ConsoleCommandSender console = Bukkit.getConsoleSender();
+    private final ConsoleCommandSender console = Bukkit.getConsoleSender();
 
     private Clans plugin;
     private FileConfiguration dataConfig = null;

@@ -16,14 +16,14 @@ import java.util.concurrent.TimeUnit;
 
 public class TeleportUtils {
 
-    ConsoleCommandSender console = Bukkit.getConsoleSender();
+    private final ConsoleCommandSender console = Bukkit.getConsoleSender();
 
     private FoliaLib foliaLib = Clans.getFoliaLib();
 
     public WrappedTask wrappedTask;
 
-    FileConfiguration config = Clans.getPlugin().getConfig();
-    FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+    private final FileConfiguration config = Clans.getPlugin().getConfig();
+    private final FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
 
     public void teleportAsync(Player player, Clan clan, Location location) {
         Location originLocation = player.getLocation();

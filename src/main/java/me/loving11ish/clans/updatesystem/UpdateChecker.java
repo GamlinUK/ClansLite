@@ -15,10 +15,11 @@ import java.util.function.Consumer;
 
 public class UpdateChecker {
 
-    ConsoleCommandSender console = Bukkit.getConsoleSender();
+    private final ConsoleCommandSender console = Bukkit.getConsoleSender();
+
+    private final FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
 
     private int resourceId;
-    FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
 
     public UpdateChecker(int resourceId) {
         this.resourceId = resourceId;

@@ -11,7 +11,7 @@ import java.io.IOException;
 
 public class ClanDisbandSubCommand {
 
-    FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+    private final FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
 
     public boolean disbandClanSubCommand(CommandSender sender) {
         if (sender instanceof Player) {

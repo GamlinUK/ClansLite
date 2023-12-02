@@ -10,8 +10,8 @@ import me.loving11ish.clans.utils.ColorUtils;
 
 public class ClanPvpSubCommand {
 
-    FileConfiguration clansConfig = Clans.getPlugin().getConfig();
-    FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+    private final FileConfiguration clansConfig = Clans.getPlugin().getConfig();
+    private final FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
 
     public boolean clanPvpSubCommand(CommandSender sender) {
         if (sender instanceof Player) {

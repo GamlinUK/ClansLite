@@ -15,9 +15,9 @@ import java.util.UUID;
 
 public class PlayerPreConnectionEvent implements Listener {
 
-    ConsoleCommandSender console = Bukkit.getConsoleSender();
+    private final ConsoleCommandSender console = Bukkit.getConsoleSender();
 
-    FileConfiguration clansConfig = Clans.getPlugin().getConfig();
+    private final FileConfiguration clansConfig = Clans.getPlugin().getConfig();
 
     private boolean firstPlayerConnected = true;
 

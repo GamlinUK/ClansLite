@@ -21,9 +21,9 @@ import java.util.concurrent.TimeUnit;
 
 public class ClanAdmin implements CommandExecutor {
 
-    ConsoleCommandSender console = Bukkit.getConsoleSender();
-    
-    FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+    private final ConsoleCommandSender console = Bukkit.getConsoleSender();
+
+    private final FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
 
     private ArrayList<Player> onlinePlayers = new ArrayList<>(Bukkit.getOnlinePlayers());
     private static final String PLAYER_TO_KICK = "%KICKEDPLAYER%";

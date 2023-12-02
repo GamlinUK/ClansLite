@@ -13,9 +13,9 @@ import me.loving11ish.clans.utils.ColorUtils;
 
 public class PlayerDisconnectEvent implements Listener {
 
-    ConsoleCommandSender console = Bukkit.getConsoleSender();
+    private final ConsoleCommandSender console = Bukkit.getConsoleSender();
 
-    FileConfiguration clansConfig = Clans.getPlugin().getConfig();
+    private final FileConfiguration clansConfig = Clans.getPlugin().getConfig();
 
     @EventHandler (priority = EventPriority.HIGH)
     public void onPlayerQuit(PlayerQuitEvent event){

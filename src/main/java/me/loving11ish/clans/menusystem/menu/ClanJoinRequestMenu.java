@@ -14,8 +14,8 @@ import me.loving11ish.clans.utils.ColorUtils;
 
 public class ClanJoinRequestMenu extends Menu {
 
-    FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
-    FileConfiguration guiConfig = Clans.getPlugin().clanGUIFileManager.getClanGUIConfig();
+    private final FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+    private final FileConfiguration guiConfig = Clans.getPlugin().clanGUIFileManager.getClanGUIConfig();
 
     public ClanJoinRequestMenu(PlayerMenuUtility playerMenuUtility){
         super(playerMenuUtility);

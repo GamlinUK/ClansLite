@@ -19,11 +19,11 @@ import java.util.concurrent.TimeUnit;
 
 public class ClanCommand implements CommandExecutor {
 
-    ConsoleCommandSender console = Bukkit.getConsoleSender();
+    private final ConsoleCommandSender console = Bukkit.getConsoleSender();
 
     public static WrappedTask bannedTaskUpdateTask;
 
-    FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+    private final FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
 
     private static List<String> bannedTags;
 

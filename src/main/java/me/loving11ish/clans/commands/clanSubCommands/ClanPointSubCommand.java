@@ -16,10 +16,10 @@ import me.loving11ish.clans.utils.UsermapStorageUtil;
 
 public class ClanPointSubCommand {
 
-    ConsoleCommandSender console = Bukkit.getConsoleSender();
-    
-    FileConfiguration clansConfig = Clans.getPlugin().getConfig();
-    FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+    private final ConsoleCommandSender console = Bukkit.getConsoleSender();
+
+    private final FileConfiguration clansConfig = Clans.getPlugin().getConfig();
+    private final FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
 
     private static final String CLAN_PLACEHOLDER = "%CLAN%";
     private static final String POINT_PLACEHOLDER = "%POINTS%";

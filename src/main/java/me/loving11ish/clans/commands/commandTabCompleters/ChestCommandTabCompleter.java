@@ -11,7 +11,7 @@ import java.util.List;
 
 public class ChestCommandTabCompleter implements TabCompleter {
 
-    List<String> arguments = new ArrayList<>();
+    private final List<String> arguments = new ArrayList<>();
 
     @Nullable
     @Override

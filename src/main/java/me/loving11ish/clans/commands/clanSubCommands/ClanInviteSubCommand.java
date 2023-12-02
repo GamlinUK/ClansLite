@@ -12,8 +12,8 @@ import me.loving11ish.clans.utils.ColorUtils;
 
 public class ClanInviteSubCommand {
 
-    FileConfiguration clansConfig = Clans.getPlugin().getConfig();
-    FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+    private final FileConfiguration clansConfig = Clans.getPlugin().getConfig();
+    private final FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
 
     private static final String INVITED_PLAYER = "%INVITED%";
 

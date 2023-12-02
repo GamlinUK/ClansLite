@@ -38,7 +38,7 @@ import java.util.concurrent.TimeUnit;
 
 public final class Clans extends JavaPlugin {
 
-    ConsoleCommandSender console = Bukkit.getConsoleSender();
+    private final ConsoleCommandSender console = Bukkit.getConsoleSender();
 
     private final PluginDescriptionFile pluginInfo = getDescription();
     private final String pluginVersion = pluginInfo.getVersion();

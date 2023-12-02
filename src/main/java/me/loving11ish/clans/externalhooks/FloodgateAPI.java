@@ -8,9 +8,9 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 public class FloodgateAPI {
 
-    static ConsoleCommandSender console = Bukkit.getConsoleSender();
+    private final static ConsoleCommandSender console = Bukkit.getConsoleSender();
 
-    static FileConfiguration config = Clans.getPlugin().getConfig();
+    private final static FileConfiguration config = Clans.getPlugin().getConfig();
 
     public static boolean isFloodgateEnabled() {
         try {

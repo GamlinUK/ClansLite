@@ -21,16 +21,16 @@ import java.util.List;
 import java.util.UUID;
 
 public class ClanChatCommand implements CommandExecutor {
-    
-    ConsoleCommandSender console = Bukkit.getConsoleSender();
 
-    FileConfiguration clansConfig = Clans.getPlugin().getConfig();
-    FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+    private final ConsoleCommandSender console = Bukkit.getConsoleSender();
+
+    private final FileConfiguration clansConfig = Clans.getPlugin().getConfig();
+    private final FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
 
     private static final String TIME_LEFT = "%TIMELEFT%";
     private static final String CLAN_PLACEHOLDER = "%CLAN%";
 
-    HashMap<UUID, Long> chatCoolDownTimer = new HashMap<>();
+    private final HashMap<UUID, Long> chatCoolDownTimer = new HashMap<>();
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {

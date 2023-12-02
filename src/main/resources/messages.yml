@@ -80,6 +80,7 @@ clan-prefix-too-short: "&3Clan prefix too short - minimum length is &6%CHARMIN% 
 clan-invalid-prefix: "&3Please provide a new prefix. Use &b/clan prefix <prefix>&3!"
 clan-prefix-already-taken: "&3Sorry but &6%CLANPREFIX% &3is already taken.\n&3Please choose another!"
 clan-prefix-is-banned: "&3Sorry but &6%CLANPREFIX% &3is a &cBANNED &3name!\n&3Please choose another!"
+clan-prefix-no-colours-permission: "&3Sorry, you don't have permission to use colours in the prefix."
 must-be-owner-to-change-prefix: "&3You are not an owner of a clan!"
 
 #Clan List Messages

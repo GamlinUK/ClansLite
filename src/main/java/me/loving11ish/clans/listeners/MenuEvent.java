@@ -16,10 +16,10 @@ import me.loving11ish.clans.utils.ColorUtils;
 
 public class MenuEvent implements Listener {
 
-    ConsoleCommandSender console = Bukkit.getConsoleSender();
+    private final ConsoleCommandSender console = Bukkit.getConsoleSender();
 
-    FileConfiguration guiConfig = Clans.getPlugin().clanGUIFileManager.getClanGUIConfig();
-    FileConfiguration clansConfig = Clans.getPlugin().getConfig();
+    private final FileConfiguration guiConfig = Clans.getPlugin().clanGUIFileManager.getClanGUIConfig();
+    private final FileConfiguration clansConfig = Clans.getPlugin().getConfig();
 
     @EventHandler
     public void onMenuClick(InventoryClickEvent event){

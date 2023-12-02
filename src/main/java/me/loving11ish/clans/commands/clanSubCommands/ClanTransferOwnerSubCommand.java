@@ -13,7 +13,7 @@ import java.io.IOException;
 
 public class ClanTransferOwnerSubCommand {
 
-    FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+    private final FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
 
     public boolean transferClanOwnerSubCommand(CommandSender sender, String[] args){
         if (sender instanceof Player){

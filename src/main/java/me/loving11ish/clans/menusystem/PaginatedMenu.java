@@ -7,7 +7,7 @@ import me.loving11ish.clans.utils.ColorUtils;
 
 public abstract class PaginatedMenu extends Menu {
 
-    FileConfiguration guiConfig = Clans.getPlugin().clanGUIFileManager.getClanGUIConfig();
+    private final FileConfiguration guiConfig = Clans.getPlugin().clanGUIFileManager.getClanGUIConfig();
 
     protected int page = 0;
     protected int maxItemsPerPage = 45;

@@ -7,7 +7,7 @@ import java.util.regex.PatternSyntaxException;
 
 public class VersionCheckerUtils {
 
-    ConsoleCommandSender console = Bukkit.getConsoleSender();
+    private final ConsoleCommandSender console = Bukkit.getConsoleSender();
 
     private final String serverPackage = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
     private int version;

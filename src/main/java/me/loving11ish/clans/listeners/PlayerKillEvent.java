@@ -17,10 +17,10 @@ import me.loving11ish.clans.utils.UsermapStorageUtil;
 
 public class PlayerKillEvent implements Listener {
 
-    ConsoleCommandSender console = Bukkit.getConsoleSender();
+    private final ConsoleCommandSender console = Bukkit.getConsoleSender();
 
-    FileConfiguration clansConfig = Clans.getPlugin().getConfig();
-    FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+    private final FileConfiguration clansConfig = Clans.getPlugin().getConfig();
+    private final FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
 
     private Integer nonEnemyPointValue = clansConfig.getInt("points.player-points.non-enemy-clan-point-amount-on-kill");
     private Integer enemyPointValue = clansConfig.getInt("points.player-points.enemy-clan-point-amount-on-kill");

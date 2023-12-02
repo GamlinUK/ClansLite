@@ -13,8 +13,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 public class ClanGUIFileManager {
-    
-    ConsoleCommandSender console = Bukkit.getConsoleSender();
+
+    private final ConsoleCommandSender console = Bukkit.getConsoleSender();
 
     private Clans plugin;
     private FileConfiguration dataConfig = null;

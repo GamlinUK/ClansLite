@@ -18,9 +18,9 @@ import java.util.List;
 
 public class ClanChestCommand implements CommandExecutor {
 
-    ConsoleCommandSender console = Bukkit.getConsoleSender();
+    private final ConsoleCommandSender console = Bukkit.getConsoleSender();
 
-    FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+    private final FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

@@ -14,9 +14,9 @@ import java.io.IOException;
 
 public class MojangAPIRequestUtils {
 
-    static ConsoleCommandSender console = Bukkit.getConsoleSender();
+    private final static ConsoleCommandSender console = Bukkit.getConsoleSender();
 
-    static FileConfiguration clansConfig = Clans.getPlugin().getConfig();
+    private final static FileConfiguration clansConfig = Clans.getPlugin().getConfig();
 
     public static boolean canGetOfflinePlayerData(String uuid, String playerName) throws IOException {
         SimpleHttpResponse response = SimpleHttpWrapper.get("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid, null);

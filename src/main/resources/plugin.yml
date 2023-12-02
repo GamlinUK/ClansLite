@@ -53,6 +53,10 @@ permissions:
   clanslite.clan:
     default: true
     description: "The primary permission to use all base ClansLite features (Non admin)."
+    children:
+      clanslite.clan.prefixcolors:
+        default: true
+        description: "The ability to add colours and styling to the clan prefix."
   clanslite.maxclansize.group1:
     default: true
     description: "The default tiered group size permission."

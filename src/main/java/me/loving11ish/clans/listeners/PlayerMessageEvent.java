@@ -13,7 +13,7 @@ import me.loving11ish.clans.utils.ColorUtils;
 
 public class PlayerMessageEvent implements Listener {
 
-    FileConfiguration configFile = Clans.getPlugin().getConfig();
+    private final FileConfiguration configFile = Clans.getPlugin().getConfig();
 
     @EventHandler
     public void onChatPlayer (AsyncPlayerChatEvent event) {

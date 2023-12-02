@@ -18,7 +18,7 @@ import me.loving11ish.clans.utils.ColorUtils;
 
 public class ChestOpenEvent implements Listener {
 
-    FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+    private final FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
 
     private static final String CLAN_PLACEHOLDER = "%CLAN%";
 

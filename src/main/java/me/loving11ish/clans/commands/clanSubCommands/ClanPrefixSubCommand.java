@@ -12,14 +12,14 @@ import java.util.*;
 
 public class ClanPrefixSubCommand {
 
-    FileConfiguration clansConfig = Clans.getPlugin().getConfig();
-    FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+    private final FileConfiguration clansConfig = Clans.getPlugin().getConfig();
+    private final FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
 
     int MIN_CHAR_LIMIT = clansConfig.getInt("clan-tags.min-character-limit");
     int MAX_CHAR_LIMIT = clansConfig.getInt("clan-tags.max-character-limit");
 
-    Set<Map.Entry<UUID, Clan>> clans = ClansStorageUtil.getClans();
-    ArrayList<String> clansPrefixList = new ArrayList<>();
+    private final Set<Map.Entry<UUID, Clan>> clans = ClansStorageUtil.getClans();
+    private final ArrayList<String> clansPrefixList = new ArrayList<>();
 
     public boolean clanPrefixSubCommand(CommandSender sender, String[] args, List<String> bannedTags) {
         if (sender instanceof Player) {
@@ -33,6 +33,10 @@ public class ClanPrefixSubCommand {
                 }
                 if (clansPrefixList.contains(args[1])){
                     player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-prefix-already-taken").replace("%CLANPREFIX%", args[1])));
+                    return true;
+                }
+                if (args[1].contains("&")||args[1].contains("#") && !player.hasPermission("clanslite.clan.prefixcolors")){
+                    player.sendMessage(ColorUtils.translateColorCodes(messagesConfig.getString("clan-prefix-no-colours-permission")));
                     return true;
                 }
                 if (ClansStorageUtil.isClanOwner(player)){

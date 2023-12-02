@@ -17,11 +17,11 @@ import java.util.List;
 import java.util.UUID;
 
 public class ClanEnemySubCommand {
-    
-    ConsoleCommandSender console = Bukkit.getConsoleSender();
 
-    FileConfiguration clansConfig = Clans.getPlugin().getConfig();
-    FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+    private final ConsoleCommandSender console = Bukkit.getConsoleSender();
+
+    private final FileConfiguration clansConfig = Clans.getPlugin().getConfig();
+    private final FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
     
     private static final String ENEMY_CLAN = "%ENEMYCLAN%";
     private static final String ENEMY_OWNER = "%ENEMYOWNER%";

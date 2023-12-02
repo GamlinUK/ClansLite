@@ -14,9 +14,9 @@ import java.util.UUID;
 
 public class JoinEvent implements Listener {
 
-    FileConfiguration clansConfig = Clans.getPlugin().getConfig();
-    FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
-    List<UUID> notifiedPlayerUUID = new ArrayList<>();
+    private final FileConfiguration clansConfig = Clans.getPlugin().getConfig();
+    private final FileConfiguration messagesConfig = Clans.getPlugin().messagesFileManager.getMessagesConfig();
+    private final List<UUID> notifiedPlayerUUID = new ArrayList<>();
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
