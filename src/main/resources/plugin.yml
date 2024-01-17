@@ -1,28 +1,103 @@
 name: ClansLite
 version: '${project.version}'
-main: xyz.gamlin.clans.Clans
+main: me.loving11ish.clans.Clans
 api-version: 1.13
+folia-supported: true
 prefix: ClansLite
-authors: [ Gamlin, Loving11ish ]
-description: A simple clans plugin for Minecraft.
-website: https://gamlin.xyz
-softdepend: [PlaceholderAPI]
+authors: [ Loving11ish, GameKuchen, Gamlin, TechnicallyCoded ]
+description: A simple and lightweight Clans plugin for Minecraft.
+website: https://www.spigotmc.org/resources/clanslite.97163/
+softdepend: [ PlaceholderAPI, PlugManX ]
 commands:
   clan:
     description: Create, delete and manage clans!
-    usage: "Usage: /clan [created|disband|invite|kick|info|list|prefix|ally]"
+    usage: "Usage: /clan [create|disband|invite|kick|info|list|prefix|transfer|ally|enemy|sethome|delhome|home|points|playerpoints]"
     permission: clanslite.clan
     aliases:
       - clans
       - c
+      - cl
   clanadmin:
-    description: Admin commands for clans
-    usage: "Usage: /clanadmin [save|reload]"
+    description: Admin commands for clans.
+    usage: "Usage: /clanadmin [save|reload|about]"
     permission: clanslite.admin
     aliases:
       - ca
+      - cla
+  clanchat:
+    description: Send a message to your clan members only.
+    usage: "Usage: /clanchat <message>"
+    permission: clanslite.clan
+    aliases:
+      - clanc
+      - cchat
+      - chat
+  clanchatspy:
+    description: Allows admins to see ALL clan chat messages.
+    usage: "Usage: /clanchatspy"
+    permission: clanslite.chat.spy
+    aliases:
+      - cs
+      - ccs
+      - spy
+  clanchest:
+    description: Protect your clan chests.
+    usage: "Usage: /clanchest [lock|unlock|accesslist|buylock]"
+    permission: clanslite.clan
+    aliases:
+      - cchest
+      - cch
+      - cht
+
 permissions:
   clanslite.clan:
     default: true
-  clanslite.clanadmin:
+    description: "The primary permission to use all base ClansLite features (Non admin)."
+    children:
+      clanslite.clan.prefixcolors:
+        default: true
+        description: "The ability to add colours and styling to the clan prefix."
+  clanslite.maxclansize.group1:
+    default: true
+    description: "The default tiered group size permission."
+
+  clanslite.*:
     default: op
+    description: "The main permission that allows access to ALL ClansLite features (Admin features included)."
+    children:
+
+      clanslite.admin:
+        description: "The admin permission that grants ALL admin features."
+        children:
+          clanslite.chat.spy:
+            default: op
+            description: "The permission to use the `/clanchatspy` command and feature."
+          clanslite.update:
+            default: op
+            description: "The permission to receive in game notification if a plugin update is available."
+          clanslite.maxclansize.*:
+            default: op
+            description: "The ability to have an unlimited number of clan members."
+          clanslite.points.listall:
+            default: op
+            description: "The ability to use the `/clan playerpoints listall` command to see all players points."
+
+          clanslite.bypass.*:
+            default: op
+            description: "The master bypass permission that allows bypassing of ALL internal limits and protections."
+            children:
+              clanslite.bypass.homecooldown:
+                default: op
+                description: "The ability to bypass the `/clan home` cooldown timer."
+              clanslite.bypass.homedelay:
+                default: op
+                description: "The ability to bypass the `/clan home` warm up delay timer."
+              clanslite.bypass.chatcooldown:
+                default: op
+                description: "The ability to bypass the `/clanchat <message>` cooldown timer."
+              clanslite.bypass.chests:
+                default: op
+                description: "The ability to bypass the protections on any locked chests."
+              clanslite.bypass.pvp:
+                default: op
+                description: "The ability to bypass the friendly fire status set by a clan."

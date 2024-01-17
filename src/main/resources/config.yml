@@ -1,23 +1,115 @@
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #                                        ----[ClansLite]----                                        #
-#                                        ----[By Gamlin]----                                        #
-#                                ----[Contributors: Loving11ish]----                                #
+#                                     ----[By Loving11ish]----                                      #
+#                    ----[Contributors: Gamlin,TechnicallyCoded,GameKuchen]----                     #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #                                   ----[Plugin Config File]----                                    #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-# Clans config for ${version}
-#Set the maximum amount of members that can join a players clan. [Default value: 8]
-max-clan-size: 8
+#ClansLite config for ${version}
+
+#Do you want to use the GUI system? [Default value: true]
+use-global-GUI-system: true
+
+clan-tags:
+  #Set the minimum length of the clan prefix and name. [Default value: 3]
+  min-character-limit: 3
+  #Set the maximum length of the clan prefix and name. [Default value: 32]
+  max-character-limit: 32
+  #Set below names that are not allowed to be used in prefixes or names. [They ARE case & syntax sensitive]
+  disallowed-tags:
+    - "Gamers"
+    - "Rise"
+    - "Up"
+  #Add a space after the clan prefix in chat. [Default value: true]
+  prefix-add-space-after: true
+  #Add `[]` characters before and after the clan prefix in the chat. [Default value: false]
+  prefix-add-brackets: false
+  #Below is how the above brackets should appear.
+  brackets-opening: "&f["
+  brackets-closing: "&f]"
+
+clan-size:
+  #Set the default maximum amount of members that can join a players' clan. [Default value: 8]
+  default-max-clan-size: 8
+  #To allow the use of a tiered permission system for clan sizes instead of the global amount, use the system below.
+  tiered-clan-system:
+    #Enable the tiered system use. [Default value: false]
+    enabled: false
+    permission-group-list:
+      group-1: 4  #Perm: 'clanslite.maxclansize.group1' [This perm is given by default]
+      group-2: 8  #Perm: 'clanslite.maxclansize.group2'
+      group-3: 12 #Perm: 'clanslite.maxclansize.group3'
+      group-4: 16 #Perm: 'clanslite.maxclansize.group4'
+      group-5: 20 #Perm: 'clanslite.maxclansize.group5'
+      group-6: 24 #Perm: 'clanslite.maxclansize.group6'
+
+clan-creation:
+  #Do you want a message to be sent to all players when a new clan is created? [Default value: true]
+  announce-to-all: true
+  #Do you want the message sent as a title instead of a chat message? [Default value: true]
+  send-as-title: true
+
+clan-join:
+  #Do you want a message to be sent to all players when a player joins a clan? [Default value: true]
+  announce-to-all: true
+  #Do you want the message sent as a title instead of a chat message? [Default value: false]
+  send-as-title: false
+
+clan-chat:
+  #Enable the clan chat system. [Default value: true]
+  enabled: true
+  #Below is the prefix for the clan chat messages. [Default value: &6[&3CC&6]&r]
+  chat-prefix: "&6[&3CC&6]&r &b%CLAN%&r"
+  cool-down:
+    #Enable the cool down on the '/cc <message>' command to prevent chat spamming (RECOMMENDED). [Default value: true]
+    enabled: true
+    #Cool-down time in seconds. [Default value: 5 = 5 seconds]
+    time: 5
+  chat-spy:
+    #Do you want players with the perm 'clanslite.chat.spy' be able to spy on all clan chat messages? [Default value: true]
+    enabled: true
+    #Below is the prefix for th chat spy messages. [Default value: &6[&cSPY&6]&r]
+    chat-spy-prefix: "&6[&cSPY&6]&r"
+
 #Set the maximum amount of allied clans that can a clan can have. [Default value: 4]
 max-clan-allies: 4
+
+#Set the maximum amount of enemy clans that can a clan can have. [Default value: 2]
+max-clan-enemies: 2
 
 #Clan protections
 protections:
   pvp:
     #Globally enable the clan friendly fire system. [Default value: true]
     pvp-command-enabled: true
+    #Enable the ability for a player to bypass the pvp protection using 'clanslite.bypass.pvp'. [Default value: true]
+    enable-bypass-permission: true
+  chests:
+    #THIS PROTECTION IS DISABLED IN ANY MC VERSION BELOW 1.14.4!
+    #Globaly enable the clan protected chests system. [Default value: true]
+    enabled: true
+    #Enable the ability for a player to bypass the chest protection using 'clanslite.bypass.chests'. [Default value: true]
+    enable-bypass-permission: true
+    #Allow protected chests to be broken by TNT explosions? [Default value: true]
+    enable-TNT-destruction: true
+    #Allow protected chests to be broken by Creeper explosions? [Default value: true]
+    enable-creeper-destruction: true
+    #Set the value of clan points required to purchase a new protected chest. [Default value: 250]
+    clan-points-purchase-value: 250
+
+#Clan & Player Points
+points:
+  player-points:
+    #Do you want players to get points when they kill another player? [Default value: true]
+    enabled: true
+    #How many points do you want the killer to get when they kill a non-enemy clan player? [Default value: 5]
+    non-enemy-clan-point-amount-on-kill: 5
+    #How many points do you want the killer to get when they kill an enemy clan player? [Default value: 10]
+    enemy-clan-point-amount-on-kill: 10
+    #Do you want to take the points given to the killer from the victims point balance if available? [Default value: true]
+    take-points-from-victim: true
 
 #Clan home system
 clan-home:
@@ -26,10 +118,33 @@ clan-home:
   cool-down:
     #Enable the cool down on the '/clan home' command to prevent tp spamming (RECOMMENDED). [Default value: true]
     enabled: true
-    #Cool-down time in seconds. [Default value: 60 = 1 minute]
-    time: 60
+    #Cool-down time in seconds. [Default value: 120 = 2 minutes]
+    time: 120
+  delay-before-teleport:
+    #Do you want to have a delay before teleporting the player to their clan home? [Default value: true]
+    enabled: true
+    #How long do you want the countdown delay to be? (In seconds) [Default value: 5]
+    time: 5
+    #Do you want the server to constantly check if the player moves when they have requested a clan home teleport?
+    ##WARNING - THIS ENABLES ADDITIONAL MOVEMENT EVENT CHECKS THAT MAY CAUSE INCREASED LOAD ON YOUR SERVER##
+    ##IF YOU EXPERIENCE PERFORMANCE ISSUES TRY SETTING BELOW TO 'FALSE'##
+    #[Default value: true]
+    cancel-teleport-on-move: true
 
 #ClansLite update system
 plugin-update-notifications:
   #Do you want to enable in game plugin update notifications? (Permission:'clanslite.update'). [Default value: true]
   enabled: true
+
+#ClansLite general settings
+general:
+  show-auto-save-task-message:
+    #Do you want to see notifications in console when the auto-save task runs? [Default value: true]
+    enabled: true
+  show-auto-invite-wipe-message:
+    #Do you want to see notifications in console when the auto-invite-wipe task runs? [Default value: true]
+    enabled: true
+  developer-debug-mode:
+    #Do you want to see a lot of debug messages in console when most actions are performed? [Default value: false]
+    enabled: false
+

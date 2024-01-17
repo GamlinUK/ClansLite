@@ -1,0 +1,63 @@
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#                                        ----[ClansLite]----                                        #
+#                                     ----[By Loving11ish]----                                      #
+#                    ----[Contributors: Gamlin,TechnicallyCoded,GameKuchen]----                     #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#                                 ----[Plugin GUI Config File]----                                  #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#ClansLite gui config for ${version}
+
+#This is the options for the ClanList GUI
+clan-list:
+  #What name would you like the gui to have?
+  name: "&3Clans List"
+
+  #Message sent when your on the first page.
+  GUI-first-page: "&7You are on the first page."
+  #Message sent when your on the last page.
+  GUI-last-page: "&7You are on the last page."
+
+  #Menu controls options
+  menu-controls:
+    #The name of the previous page icon
+    previous-page-icon-name: "&2Previous Page"
+    #The name of the next page icon
+    next-page-icon-name: "&2Next Page"
+    #The name of the close/go back icon
+    close-go-back-icon-name: "&4Close/Go Back"
+
+  icons:
+    #Do you want to use the auto data update system for the icons in the GUI? [Default value: true]
+    ##Disabling this option may help performance on lower spec servers!##
+    auto-refresh-data:
+      enabled: true
+
+    icon-display-name:
+      #Do you want to use the Clan Name as the title for the icon: [Default value: true]
+      #If below is 'false' the name will be empty.
+      use-clan-name: true
+
+    #This allows you to customise the lore text for the player head icons in the ClanList GUI.
+    lore:
+      header: "&7----------"
+      prefix: "&3Clan Prefix: "
+      owner-online: "&3Clan Owner: &d"
+      owner-offline: "&3Clan Owner &7&o(Offline)&3: &d"
+      members: "&3Clan Members:"
+      allies: "&3Clan Allies:"
+      enemies: "&3Clan Enemies:"
+      footer-1: "&7----------"
+      action: "&d&oClick to send an invite request to this clan owner if online"
+      footer-2: "&7----------"
+
+#This is the options for the ClanJoinRequest GUI
+clan-join:
+  #What name would you like the gui to have?
+  name: "&3Ask to join Clan?"
+
+  icons:
+    #This allows you to customise the name text for the icons in the ClanJoinRequest GUI.
+    send-request-name: "&a&oSend request to join?"
+    cancel-request-name: "&c&oCancel and go back"
